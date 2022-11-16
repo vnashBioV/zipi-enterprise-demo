@@ -14,7 +14,12 @@ export default function Cargo({
         fileUrl,
         setFileUrl,
         bookingArrayThree,
-        setBookingArrayThree
+        setBookingArrayThree,
+        defaultCargo,
+        setDefaultCargo,
+        setSearchLocationThree,
+        setLocationtitleThree,
+        setSelectedBookingThree
     }) {
 
     const iconName = ("Jane").substring(0,2);
@@ -35,6 +40,9 @@ export default function Cargo({
     const [weightTrue, setWeightTrue] = useState(false);
     const [heightTrue, setHeightTrue] = useState(false);
     const [selectHazardous, setselectHazardous] = useState(false);
+    const [queryThree, setQueryThree] = useState("");
+    const keysThree = ["productName", "productCode"];
+    const [suggestionsThree, setSuggestionsThree] = useState([])
     const lengthRef = useRef();
     const volumeRef = useRef();
     const heightRef = useRef();
@@ -61,6 +69,19 @@ export default function Cargo({
                     lengthValue:event.target.value
                 } 
             }))
+        }
+
+        const onSearchChangeThree = (queryThree) =>{
+            let matches = []
+            if (queryThree.length>0){
+                matches = bookingArrayThree.filter(booking =>{
+                    const regex = new RegExp(`${queryThree}`, "i");
+                    return booking.details.productName.match(regex);
+                })
+            }
+            console.log('matches', matches)
+            setSuggestionsThree(matches)
+            setQueryThree(queryThree)
         }
 
         const setBreadthTrueFnc = (event)=>{
@@ -214,12 +235,10 @@ export default function Cargo({
                 const cargo_details = cargoDetails.cargoDetails
                 saveCargoContactFnc().then((data ) => {
                     contact_Uid = data.key
-                    firebase.database().ref('cargo_details').child(userUid).push({
-                        "cargo_details":{
+                    firebase.database().ref('/booking_party/' + userUid).child("cargo_details").push({
                         details: cargo_details,
                         date: new Date().toISOString().substring(0,10),
                         sds_url: fileUrl
-                        }
                     });
                     console.log("cargo_details", cargoDetails);
                     console.log("contact_Uid", contact_Uid);
@@ -273,7 +292,7 @@ export default function Cargo({
 
   return (
     <div className={`modal-container duration-500 ease-in-out ${isCargo ? 'opacity-1' : 'opacity-0'}`}>
-        <div className={`modal duration-500 ease-in-out ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{width:"423px", margin:"11rem 0"}}>
+        <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{width:"423px", margin:"9rem 0"}}>
             <div className='cargo-modal'>
                 <h1>New Product</h1>  
                 <p>Add a new package by adding its information</p>
@@ -649,10 +668,60 @@ export default function Cargo({
                     } */}
                 </div>
             </div> 
-            <div className='cancel-add-btn' style={{width:"100%"}}>
-                <button onClick={() => setOpenCargoModal(false)}>Cancel</button>
-                <button onClick={HandleSaveCargo}>Save</button>
-            </div>     
+            <div className="left-cargo-secti">
+                <h2 style={{marginBottom:"17px"}}>Cargos</h2>
+                {bookingArrayThree?.length > 0 ? bookingArrayThree?.filter((booking) =>
+                            keysThree?.some((key) => booking?.details[key].includes(queryThree))
+                        ).map((cargo) =>(
+                    <React.Fragment key={cargo.date}>
+                        <div className='contact-wrapper'
+                            onClick={() => {
+                                const cargselected = ([cargo])
+                                setSearchLocationThree(false)
+                                setLocationtitleThree(false)
+                                setBookingArrayThree(cargselected)
+                                setSelectedBookingThree(cargselected)
+                                setDefaultCargo(cargselected)
+                                setOpenCargoModal(false)
+                                // e.target.style.cssText="background:rgb(212, 212, 212)"
+                                // e.target.style.cssText="pointer-events:none"
+                                // e.target.lastChild.style.cssText="pointer-events:auto"
+
+                                localStorage.setItem("cargoSelectd", JSON.stringify(cargo));
+
+                            }}
+                        >
+                            <div className='box-icon'>
+                                <span><i class="fa-solid fa-cube"></i></span>
+                            </div>                        
+                            <div className='cargo-right-font'>
+                                <p>{cargo.details.productName}</p>
+                                <p>USK: {cargo.details.productCode}</p>
+                                <p>Package: {cargo.details.packageType}</p>
+                                <p>Dimensions: {(parseFloat(cargo.details.weight)/1000).toFixed(3)}t - {((cargo.details.lengthValue *
+                                    cargo.details.breadth *
+                                    cargo.details.height)/1000000).toFixed(5)
+                                }&#x33a5;</p>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                ))
+                
+                : <div className='no-contacts'>
+                    <p>
+                        You currently don't have any cargo. Fill in the cargo details here.
+                    </p>
+                    <div>
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                </div>
+                }
+                <div className='cancel-add-btn' style={{width:"100%", margin:"unset", position:"absolute",bottom:0}}>
+                    <button onClick={() => setOpenCargoModal(false)}>Cancel</button>
+                    <button onClick={HandleSaveCargo}>Save</button>
+                </div>     
+            </div>
+           
         </div>
        
         {openSpinner && <Spinner/>}

@@ -94,8 +94,8 @@ export default function Enterprise() {
     const [modal, setModal] = useState(false)
     const [modalTwo, setModalTwo] = useState(false)
     const [pickHomeIconTwo,setPickHomeIconTwo] = useState(false)
-    const keys = ["puName", "puCompanyName","puSurname"];
-    const keysTwo = ["doName", "doCompanyName","doSurname"];
+    const keys = ["Name", "CompanyName","Surname"];
+    const keysTwo = ["Name", "CompanyName","Surname"];
     const keysThree = ["productName", "productCode"];
     const [suggestionBlok, setSuggestionBlok] = useState(true)
     const [userUid, setUserUid] = useState("");
@@ -130,7 +130,7 @@ export default function Enterprise() {
     const [defaultDrop, setDefaultDrop] = useState([])
     const [allPuDetails,setAllPuDetails] = useState([]);
     const [allDoDetails,setAllDuDetails] = useState([]);
-
+    const [defaultCargo,setDefaultCargo] = useState([]);
 
 
     //=======END ARRAY STATES======================================================================
@@ -152,7 +152,7 @@ export default function Enterprise() {
         if (query.length>0){
             matches = allPuDetails.filter(booking =>{
                 const regex = new RegExp(`${query}`, "gi");
-                return booking.pick_up_details.details.puName.match(regex);
+                return booking.details.Name.match(regex);
             })
         }
         console.log('matches', matches)
@@ -165,7 +165,7 @@ export default function Enterprise() {
         if (queryTwo.length>0){
             matches = allDoDetails.filter(booking =>{
                 const regex = new RegExp(`${queryTwo}`, "i");
-                return booking.drop_of_details.details.doName.match(regex);
+                return booking.details.Name.match(regex);
             })
         }
         console.log('matches', matches)
@@ -178,7 +178,7 @@ export default function Enterprise() {
         if (queryThree.length>0){
             matches = bookingArrayThree.filter(booking =>{
                 const regex = new RegExp(`${queryThree}`, "i");
-                return booking.cargo_details.details.productName.match(regex);
+                return booking.details.productName.match(regex);
             })
         }
         console.log('matches', matches)
@@ -405,19 +405,26 @@ export default function Enterprise() {
                 // });
 
 
-                firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
-                    setAllDuDetails(Object?.values(snapshot.val()).filter((b) =>  b?.drop_of_details));
-                });
+                // firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
+                //     setAllDuDetails(Object?.values(snapshot.val()).filter((b) =>  b?.drop_of_details));
+                // });
 
-                firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
-                    setAllPuDetails(Object?.values(snapshot.val()).filter((b) =>  b?.pick_up_details));
-                    // console.log("testing this fucker", Object.values(snapshot.val()).filter((b) =>  b.pick_up_details))
+                firebase.database().ref('/booking_party/' + uid).child("contacts").on('value', (snapshot) => {
+                    if(snapshot.exists()){
+                        setAllPuDetails(Object?.values(snapshot.val()));
+                        setAllDuDetails(Object?.values(snapshot.val()));
+                    }
+                    // console.log("this is the pick up", snapshot.val())
                 });
                 // firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
                 //     setDoDetails(Object?.values(snapshot.val()).filter((b) =>  b?.drop_of_details));
                 // });
-                firebase.database().ref('cargo_details/').child(uid).on('value', (snapshot) => {
-                    setBookingArrayThree(Object?.values(snapshot.val()).filter((b) =>  b?.cargo_details));
+                firebase.database().ref('/booking_party/' + uid).child("cargo_details").on('value', (snapshot) => {
+                    // if(snapshot.exists()){
+                        setBookingArrayThree(Object?.values(snapshot.val()));
+                    //     console.log("booking cargo", Object?.values(snapshot.val()))
+                    // }
+                    console.log("this is the cargo", Object?.values(snapshot.val()));
                 });
               // ...
             } else {
@@ -446,19 +453,19 @@ export default function Enterprise() {
     //===========END USE EFFECFS==========================================================================
 
     //===========CONSOLE LOGS=============================================================================
-    console.log(bookingArray);
-    console.log("after contact has been selected", pickSelected)
-    console.log("cargo details", bookingArrayThree)
-    console.log("company", company)
-    console.log("cargo details array", cargoDetailsArray)
-    console.log("contact pick up details added to state", puDetails)
-    console.log("contact drop off details added to state", doDetails)
-    //Selected Information 
-    console.log("selected pick up", pickSelected)
-    console.log("selected drop off", dropSelected)
-    console.log("selected cargo", selectedbookingThree)
-    console.log("location one search", suggestions)
-    console.log("location two search", suggestionsTwo)
+    // console.log(bookingArray);
+    // console.log("after contact has been selected", pickSelected)
+    // console.log("cargo details", bookingArrayThree)
+    // console.log("company", company)
+    // console.log("cargo details array", cargoDetailsArray)
+    // console.log("contact pick up details added to state", puDetails)
+    // console.log("contact drop off details added to state", doDetails)
+    // //Selected Information 
+    // console.log("selected pick up", pickSelected)
+    // console.log("selected drop off", dropSelected)
+    // console.log("selected cargo", selectedbookingThree)
+    // console.log("location one search", allPuDetails)
+    // console.log("location two search", suggestionsTwo)
     //============END CONSOLE LOGS========================================================================
 
   return (
@@ -487,7 +494,7 @@ export default function Enterprise() {
                                 {query.length>0 ? 
                                     <div className='search-results'>
                                         {suggestions?.length > 0 ? suggestions?.filter((booking) =>
-                                            keys?.some((key) => booking?.pick_up_details?.details[key].includes(query))
+                                            keys?.some((key) => booking?.details[key].includes(query))
                                         ).map((booking) => (
                                             <div
                                                 onClick={() => {
@@ -515,8 +522,8 @@ export default function Enterprise() {
                                                     }, 1000)
                                                 }}
                                             >
-                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.pick_up_details.details.puName}</p>
-                                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.pick_up_details.details.puCompanyName}</p>
+                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
                                                 <hr />
                                             </div>
                                             // <div>hey</div>
@@ -539,9 +546,9 @@ export default function Enterprise() {
                
                 <div className='pu-containing'>
                     {defaultPick?.length > 0 ? defaultPick?.filter((booking) =>
-                        keys?.some((key) => booking?.pick_up_details?.details[key].includes(query))
+                        keys?.some((key) => booking?.details[key].includes(query))
                     ).map((booking) =>(
-                        <ContactsDetails setContactDate={setContactDate} key={booking.pick_up_details.date} >
+                        <ContactsDetails setContactDate={setContactDate} key={booking.date} >
                             <div
                                 onClick={(event) => handleContactClick(event, booking)}
                                 className={contactBackground ? "" : "contact-no-background"}
@@ -549,9 +556,9 @@ export default function Enterprise() {
                                 <div>
                                     <i className={!pickHomeIcon ? "fa-solid fa-house-chimney" : "fa-solid fa-house-chimney pick-house"}></i>
                                     <div> 
-                                        <p>{booking.pick_up_details.details.puName}</p>
-                                        <p>{booking.pick_up_details.details.puCompanyName}</p>
-                                        <p>{booking.pick_up_details.details.puAddress}</p>
+                                        <p>{booking.details.Name}</p>
+                                        <p>{booking.details.CompanyName}</p>
+                                        <p>{booking.details.Email}</p>
                                     </div>
                                 </div>
                                 
@@ -570,7 +577,7 @@ export default function Enterprise() {
                                     {/* <Default>
                                         <span className={pickDefault ? "not-active-class" : "set-default"}>Set as default</span>
                                     </Default> */}
-                                    <p className={contactDate ? "" : "hide-date"}>{booking.pick_up_details.date}</p>
+                                    <p className={contactDate ? "" : "hide-date"}>{booking.date}</p>
                                 </div>
                             </div>
                             <p className={!changeContact ? "change-contact" : "no-change-contact"} onClick={() => {
@@ -686,7 +693,7 @@ export default function Enterprise() {
                                     {queryTwo.length>0 ? 
                                     <div className='search-results'>
                                         {suggestionsTwo?.length > 0 ? suggestionsTwo?.filter((booking) =>
-                                            keysTwo?.some((key) => booking?.drop_of_details?.details[key].includes(queryTwo))
+                                            keysTwo?.some((key) => booking?.details[key].includes(queryTwo))
                                         ).map((booking) => (
                                             <div
                                                 onClick={() => {
@@ -712,8 +719,8 @@ export default function Enterprise() {
                                                     }, 1000)
                                                 }}
                                             >
-                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.drop_of_details.details.doName}</p>
-                                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.drop_of_details.details.doCompanyName}</p>
+                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
                                                 <hr />
                                             </div>
                                             // <div>hey</div>
@@ -729,7 +736,7 @@ export default function Enterprise() {
                     }
                     <div className='do-containing duration-500 ease-in-out' ref={dropOffContainer}>
                         {defaultDrop?.length > 0 ? defaultDrop?.filter((booking) =>
-                            keysTwo.some((key) => booking.drop_of_details.details[key].includes(queryTwo))
+                            keysTwo.some((key) => booking.details[key].includes(queryTwo))
                         ).map((booking) =>(
                             <ContactsDetails setContactDate={setContactDate} key={booking.date}>
                                 <div
@@ -739,9 +746,9 @@ export default function Enterprise() {
                                     <div>
                                         <i className={!pickHomeIconTwo ? "fa-solid fa-house-chimney" : "fa-solid fa-house-chimney pick-house"}></i>
                                         <div> 
-                                            <p>{booking.drop_of_details.details.doName}</p>
-                                            <p>{booking.drop_of_details.details.doCompanyName}</p>
-                                            <p>{booking.drop_of_details.details.doAddress}</p>
+                                            <p>{booking.details.Name}</p>
+                                            <p>{booking.details.CompanyName}</p>
+                                            <p>{booking.details.Email}</p>
                                         </div>
                                     </div>
                                     
@@ -756,7 +763,7 @@ export default function Enterprise() {
                                             {/* <i class="fa-solid fa-location-dot location-icon"></i> */}
                                         </p>
                                         
-                                        <p className={contactDateTwo ? "" : "hide-date"}>{booking.drop_of_details.date}</p>
+                                        <p className={contactDateTwo ? "" : "hide-date"}>{booking.date}</p>
                                     </div>
                                 </div>
                                 <p className={!changeContactTwo ? "change-contact" : "no-change-contact"}onClick={() => {
@@ -861,7 +868,7 @@ export default function Enterprise() {
                                     <input type="text" placeholder='Search' className='pick-search' onChange={e => onSearchChangeThree(e.target.value)} value={queryThree}  />
                                     {/* <img src={searchIcon} alt="" /> */}
                                 </span> 
-                                <button className='duration-500 ease-in-out'><img className='duration-500 ease-in-out' style={{width:"18px",height:"18px"}}  src={ellipse} alt="" onClick={() => setOpenCargoModal(true)}/></button>
+                                <button className='duration-500 ease-in-out' onClick={() => setOpenCargoModal(true)}><img className='duration-500 ease-in-out' style={{width:"18px",height:"18px"}}  src={ellipse} alt=""/></button>
                             </div>
                         </Search>
                         : <></>
@@ -875,34 +882,23 @@ export default function Enterprise() {
                     <div className='cargo-next'>
                     </div>
                     <div className='cargo-wrapper'>
-                        {bookingArrayThree.length > 0 ? bookingArrayThree.filter((booking) =>
-                            keysThree.some((key) => booking.cargo_details.details[key].includes(queryThree))
+                        {defaultCargo?.length > 0 ? defaultCargo?.filter((cargo) =>
+                            keysThree.some((key) => cargo.details[key].includes(queryThree))
                         ).map((cargo, i) =>{
-                            const weightTon = parseFloat(cargo.cargo_details.details.weight)/1000
+                            const weightTon = parseFloat(cargo.details.weight)/1000
                             return(
                             <React.Fragment key={i}>
-                                    <div className='pill-container duration-500 ease-in-out' onClick={(e) => {
-                                            const cargselected = ([cargo])
-                                            setSearchLocationThree(false)
-                                            setLocationtitleThree(false)
-                                            setBookingArrayThree(cargselected)
-                                            setSelectedBookingThree(cargselected)
-                                            e.target.style.cssText="background:rgb(212, 212, 212)"
-                                            e.target.style.cssText="pointer-events:none"
-                                            e.target.lastChild.style.cssText="pointer-events:auto"
-                                            localStorage.setItem("cargoSelectd", JSON.stringify(cargo));
-                                            setVehicleShow(true)
-                                        }}>
+                                    <div className='pill-container duration-500 ease-in-out'>
                                         <div className='box-icon'>
                                             <span><i class="fa-solid fa-cube"></i></span>
                                         </div>
                                         <div className='cargo-for'>
-                                            <h1>{cargo.cargo_details.details.productName}</h1>
-                                            <p>USK: {cargo.cargo_details.details.productCode}</p>
-                                            <p>Package: {cargo.cargo_details.details.packageType}</p>
-                                            <p>Dimensions: {weightTon.toFixed(3)}t - {((cargo.cargo_details.details.lengthValue *
-                                                cargo.cargo_details.details.breadth *
-                                                cargo.cargo_details.details.height)/1000000).toFixed(5)
+                                            <h1>{cargo.details.productName}</h1>
+                                            <p>USK: {cargo.details.productCode}</p>
+                                            <p>Package: {cargo.details.packageType}</p>
+                                            <p>Dimensions: {weightTon.toFixed(3)}t - {((cargo.details.lengthValue *
+                                                cargo.details.breadth *
+                                                cargo.details.height)/1000000).toFixed(5)
 
                                             }&#x33a5;</p>
                                             {/* <p onClick={openModalFour}>Read more</p> */}
@@ -912,7 +908,7 @@ export default function Enterprise() {
                                             <input type="text" className='cargo-quantity' onChange={(e) => {
                                                 const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
                                                 console.log("quantity array", selectedCargoDetails)
-                                                selectedCargoDetails.cargo_details.details.quantity = e.target.value
+                                                selectedCargoDetails.details.quantity = e.target.value
                                                 console.log("edited quantity", selectedCargoDetails);
                                                 localStorage.setItem("cargoSelectd", JSON.stringify(selectedCargoDetails));
                                             }}/>
@@ -920,11 +916,8 @@ export default function Enterprise() {
                                     </div>
                             </React.Fragment>
                             )})
-                            : 
-                            <div className='no-contact-added'>
-                                <h1 className='add-contacts'>Currently there are no cargo please click the plus button to add cargo</h1>
-                                <img style={{width:'7%'}} src={emptyIcon} alt="" />
-                            </div>
+                            : <div style={{height:"10px"}}></div>
+
                         }
                          {isLoading  &&
                             <EnterpriseLoader/>
@@ -949,6 +942,11 @@ export default function Enterprise() {
                             fileUrl={fileUrl}
                             bookingArrayThree={bookingArrayThree}
                             setBookingArrayThree={setBookingArrayThree}
+                            defaultCargo={defaultCargo}
+                            setDefaultCargo={setDefaultCargo}
+                            setSearchLocationThree={setSearchLocationThree}
+                            setLocationtitleThree={setLocationtitleThree}
+                            setSelectedBookingThree={setSelectedBookingThree}
                         />
                         : <></>
                     }

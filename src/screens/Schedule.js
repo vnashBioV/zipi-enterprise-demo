@@ -92,7 +92,7 @@ export default function SchedulingPage() {
         if(localStorage.getItem("pickSelectd")){
             const storedList = JSON.parse(localStorage.getItem("pickSelectd"))
             setPickUpDetails(storedList);
-            setFinalPick(storedList[0].pick_up_details.details);
+            setFinalPick(storedList[0].details);
         }
     }, [])
 
@@ -100,7 +100,7 @@ export default function SchedulingPage() {
         if(localStorage.getItem("dropSelectd")){
             const storedList = JSON.parse(localStorage.getItem("dropSelectd"))
             setDropDetails(storedList);
-            setFinalDrop(storedList[0].drop_of_details.details);
+            setFinalDrop(storedList[0].details);
         }
     }, [])
 
@@ -124,7 +124,7 @@ export default function SchedulingPage() {
         if(localStorage.getItem("cargoSelectd")){
             const storedList = JSON.parse(localStorage.getItem("cargoSelectd"))
             const vehicleType = JSON.parse(localStorage.getItem("vehicleType"))
-            storedList.cargo_details.details.vehicle_type = vehicleType[0]
+            storedList.details.vehicle_type = vehicleType[0]
             setCargoDetails([storedList]);
             console.log("This is the new cargo", storedList);
         }
@@ -153,17 +153,17 @@ export default function SchedulingPage() {
         return  await firebase.database().ref().push()
     }
 
-    console.log("Selected pick up details", pickUpDetails);
+    // console.log("Selected pick up details", pickUpDetails);
     console.log("Selected drop off details", dropDetails);
-    console.log("This is is is prerequisites", prerequisites);
-    console.log("start date", startDate)
-    console.log("end date", endDate)
-    console.log("cargo schedule", cargoSchedule)
-    console.log("operation days", operationDays)
-    console.log("rate indication", rateIndication)
-    console.log("this is bays", bays)
-    console.log("this is gate in out duration", gateInOutDuration)
-    console.log("range value", rangeValue)
+    // console.log("This is is is prerequisites", prerequisites);
+    // console.log("start date", startDate)
+    // console.log("end date", endDate)
+    // console.log("cargo schedule", cargoSchedule)
+    // console.log("operation days", operationDays)
+    // console.log("rate indication", rateIndication)
+    // console.log("this is bays", bays)
+    // console.log("this is gate in out duration", gateInOutDuration)
+    // console.log("range value", rangeValue)
     // console.log("prerequisites for testing", prerequisites[0].prerequisites.ad_hoc_services);
 
     useEffect(() => {
@@ -181,7 +181,7 @@ export default function SchedulingPage() {
     },[])
 
     // useEffect(() => {
-    //     setActualLoad((((parseFloat((cargoDetails?.cargo_details?.details?.weight)))/32)).toFixed(3))
+    //     setActualLoad((((parseFloat((cargoDetails??.details?.weight)))/32)).toFixed(3))
     // },[])
     
         //Calculate number of days from start date to end date
@@ -199,13 +199,13 @@ export default function SchedulingPage() {
             }
         )
             
-    console.log("Dates between", dates);
-    console.log("vehicle type", prerequisites)
-    console.log("start date", startDate.toISOString().substring(8,10));
-    console.log("end date", endDate.toISOString().substring(8,10));
-    console.log("number of days", numberOfDays);
-    console.log("numberChangeVal", numberChangeVal);
-    console.log("the cargo", cargoDetails);
+    // console.log("Dates between", dates);
+    // console.log("vehicle type", prerequisites)
+    // console.log("start date", startDate.toISOString().substring(8,10));
+    // console.log("end date", endDate.toISOString().substring(8,10));
+    // console.log("number of days", numberOfDays);
+    // console.log("numberChangeVal", numberChangeVal);
+    // console.log("the cargo", cargoDetails);
 
   return (
     <div className={`duration-500 ease-in-out ${isScheduleLoaded ? 'open-schedule' : 'schedule-page'}`}>
@@ -255,9 +255,9 @@ export default function SchedulingPage() {
                     {pickUpDetails.length > 0 ? pickUpDetails.map((pick) =>(
                         <React.Fragment key={pick.date}>
                             <div style={{height: "69px"}}>
-                                <p>{pick.pick_up_details.details?.puName}</p> 
-                                <p>{pick.pick_up_details.details?.puCompanyName}</p> 
-                                <p>{pick.pick_up_details.details?.puAddress}</p>    
+                                <p>{pick.details?.Name}</p> 
+                                <p>{pick.details?.CompanyName}</p> 
+                                <p>{pick.details?.Email}</p>    
                             </div>
                         </React.Fragment>
                     ))
@@ -270,11 +270,11 @@ export default function SchedulingPage() {
                        <p>Not selected</p>
                     </div> */}
                     {dropDetails.length > 0 ? dropDetails.map((drop) =>(
-                        <React.Fragment key={drop.drop_of_details?.date}>
+                        <React.Fragment key={drop?.date}>
                             <div style={{height: "69px"}}>
-                                <p>{drop.drop_of_details.details?.doName}</p> 
-                                <p>{drop.drop_of_details.details?.doCompanyName}</p> 
-                                <p>{drop.drop_of_details.details?.doAddress}</p>    
+                                <p>{drop.details?.Name}</p> 
+                                <p>{drop.details?.CompanyName}</p> 
+                                <p>{drop.details?.Email}</p>    
                             </div>
                         </React.Fragment>
                     ))
@@ -284,10 +284,10 @@ export default function SchedulingPage() {
 
                     <div className='cargo-sum-sched'>
                         {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
-                            <React.Fragment key={cargo.cargo_details.date}>
+                            <React.Fragment key={cargo.date}>
                                 <div>
-                                    <h1>{cargo.cargo_details.details?.productName}</h1> 
-                                    <p>SKU: {cargo.cargo_details.details?.productCode}</p> 
+                                    <h1>{cargo.details?.productName}</h1> 
+                                    <p>SKU: {cargo.details?.productCode}</p> 
                                 </div>
                             </React.Fragment>
                         ))
@@ -308,12 +308,12 @@ export default function SchedulingPage() {
                                 </div>
 
                                 {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
-                                <React.Fragment key={cargo.cargo_details.date}>
+                                <React.Fragment key={cargo.date}>
                                     <div>
-                                        <p>: {cargo.cargo_details.details?.quantity}</p> 
-                                        <p>: {cargo.cargo_details.details?.lengthValue} cm</p> 
-                                        <p>: {cargo.cargo_details.details?.breadth} cm</p> 
-                                        <p>: {cargo.cargo_details.details?.height} cm</p> 
+                                        <p>: {cargo.details?.quantity}</p> 
+                                        <p>: {cargo.details?.lengthValue} cm</p> 
+                                        <p>: {cargo.details?.breadth} cm</p> 
+                                        <p>: {cargo.details?.height} cm</p> 
                                     </div>
                                 </React.Fragment>
                                 ))
@@ -329,22 +329,22 @@ export default function SchedulingPage() {
 
                             <div className='quantity-plus-info'>
                                 {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
-                                <React.Fragment key={cargo.cargo_details?.date}>
+                                <React.Fragment key={cargo?.date}>
                                     <div>
                                         <p>{
-                                                cargo.cargo_details.details?.lengthValue *
-                                                cargo.cargo_details.details?.breadth *
-                                                cargo.cargo_details.details?.height
+                                                cargo.details?.lengthValue *
+                                                cargo.details?.breadth *
+                                                cargo.details?.height
 
                                             }cm&#179; :</p> 
                                         <p>{
-                                                ((cargo.cargo_details.details?.lengthValue *
-                                                cargo.cargo_details.details?.breadth *
-                                                cargo.cargo_details.details?.height)/1000000).toFixed(5)
+                                                ((cargo.details?.lengthValue *
+                                                cargo.details?.breadth *
+                                                cargo.details?.height)/1000000).toFixed(5)
 
                                             }&#x33a5; :</p> 
-                                        <p>{parseFloat((cargo.cargo_details.details?.weight)/1000).toFixed(3)}t :</p> 
-                                        <p>{parseFloat((cargo.cargo_details.details?.weight)/1000).toFixed(3)}t :</p> 
+                                        <p>{parseFloat((cargo.details?.weight)/1000).toFixed(3)}t :</p> 
+                                        <p>{parseFloat((cargo.details?.weight)/1000).toFixed(3)}t :</p> 
                                     </div>
                                 </React.Fragment>
                                 ))
@@ -377,9 +377,9 @@ export default function SchedulingPage() {
                                         <p>Fragile Cargo</p>
                                     </div>
                                     {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
-                                    <React.Fragment key={cargo.cargo_details?.date}>
+                                    <React.Fragment key={cargo?.date}>
                                         <div style={{textAlign:"start"}}>
-                                            <p>: {cargo.cargo_details.details?.packageType}</p> 
+                                            <p>: {cargo.details?.packageType}</p> 
                                         <p>: No</p>
                                         </div>
                                     </React.Fragment>
@@ -397,8 +397,8 @@ export default function SchedulingPage() {
                                     {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
                                     <React.Fragment key={cargo.date}>
                                         <div style={{justifyContent:"end", textAlign:"end"}}>
-                                            <p>{cargo.cargo_details.details?.imoClass} :</p> 
-                                            <p>{cargo.cargo_details.details?.unNumber} :</p>
+                                            <p>{cargo.details?.imoClass} :</p> 
+                                            <p>{cargo.details?.unNumber} :</p>
                                         </div>
                                     </React.Fragment>
                                     ))
@@ -429,8 +429,8 @@ export default function SchedulingPage() {
                                 {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
                                     <React.Fragment key={cargo.date}>
                                         <div style={{justifyContent:"start", textAlign:"start"}}>
-                                            <p>: {cargo.cargo_details.details.hazard?.min_temp}</p> 
-                                            <p>: {cargo.cargo_details.details.hazard?.max_temp}</p>
+                                            <p>: {cargo.details.hazard?.min_temp}</p> 
+                                            <p>: {cargo.details.hazard?.max_temp}</p>
                                         </div>
                                     </React.Fragment>
                                     ))
@@ -444,8 +444,8 @@ export default function SchedulingPage() {
                         </div>
 
                         {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
-                            <React.Fragment key={cargo.cargo_details?.date}>
-                                 <a href={cargo.cargo_details?.sds_url}  className='view-sds'>View SDS <i className="fa-solid fa-eye"></i></a>
+                            <React.Fragment key={cargo?.date}>
+                                 <a href={cargo?.sds_url}  className='view-sds'>View SDS <i className="fa-solid fa-eye"></i></a>
                             </React.Fragment>
                             ))
                     
@@ -623,8 +623,8 @@ export default function SchedulingPage() {
                         <div>
                             {/* <p>Daily Load Capacity</p> */}
                             {pickUpDetails.length > 0 ? pickUpDetails.map((booking) =>{
-                                const Closehours = booking?.pick_up_details.details.puOperatingHours.close.substring(0,2)
-                                const Openhours =  booking?.pick_up_details.details.puOperatingHours.open.substring(0,2)
+                                const Closehours = booking?.details.OperatingHours.close.substring(0,2)
+                                const Openhours =  booking?.details.OperatingHours.open.substring(0,2)
                                 const OH = (Closehours - Openhours)*(60)
                                   loadcal.push(((OH)/(parseFloat(gateInOutDuration)))*(bays))
                                 console.log("loadsCount: ", loadcal);
@@ -660,7 +660,7 @@ export default function SchedulingPage() {
                             <div>
                                 <p>More loads</p>
                                 {cargoDetails.length > 0 ? cargoDetails.map((cargo) => (
-                                <p key={uuidv4()} style={{color: 'red'}}>{rangeValue === 0 ? ((parseFloat((cargo.cargo_details.details.weight)).toFixed(3))/32) : (((parseFloat((cargo.cargo_details.details.weight)).toFixed(3))/32)/rangeValue).toFixed(3)} per day</p>
+                                <p key={uuidv4()} style={{color: 'red'}}>{rangeValue === 0 ? ((parseFloat((cargo.details.weight)).toFixed(3))/32) : (((parseFloat((cargo.details.weight)).toFixed(3))/32)/rangeValue).toFixed(3)} per day</p>
                                 ))
                                     : <></>
                                 }
@@ -670,7 +670,7 @@ export default function SchedulingPage() {
                         <div className='load-required-date'>
                             <p>Actual loads for the cargo</p>
                             {cargoDetails.length > 0 ? cargoDetails.map((cargo) => (
-                                <p>{(parseFloat((cargo.cargo_details.details.weight)).toFixed(3))/32}t</p>
+                                <p>{(parseFloat((cargo.details.weight)).toFixed(3))/32}t</p>
                             ))
                                 : <></>
                             }
@@ -688,8 +688,8 @@ export default function SchedulingPage() {
                     <button onClick={() => {
                             const startDateString = startDate.toISOString().substring(0,10)
                             const endDateString = endDate.toISOString().substring(0,10)
-                            const cargo = cargoDetails[0].cargo_details.details
-                            const cargoSds = cargoDetails[0]?.cargo_details?.sds_url
+                            const cargo = cargoDetails[0].details
+                            const cargoSds = cargoDetails[0]?.sds_url
                             const starting_location = finalPick.puAddress
                             const destination = finalDrop.doAddress
                             const start_date = startDateString
@@ -702,7 +702,7 @@ export default function SchedulingPage() {
                             getBookingIFnc().then((data ) => {
                                booking_id = data.key
                                const bookingref = booking_id.substring(1,7)
-                               const cargoquantity = cargoDetails[0].cargo_details.details.quantity
+                               const cargoquantity = cargoDetails[0].details.quantity
                                firebase.database().ref('/booking/' + booking_id).update({
                                 puDetails: finalPick,
                                 doDetails: finalDrop,
@@ -754,14 +754,14 @@ export default function SchedulingPage() {
 
                             });
                              
-                            console.log("Final pick details", pickUpDetails);
-                            console.log("Final drop details", dropDetails);
-                            console.log("Final prerequisite", prerequisites);
-                            console.log("Final start date", startDateString);
-                            console.log("Final end", endDateString);
-                            console.log("Final operation days", operationDays);
-                            console.log("Final include holidays", includeHolidays);
-                            console.log("Final rateIndication", rateIndication);
+                            // console.log("Final pick details", pickUpDetails);
+                            // console.log("Final drop details", dropDetails);
+                            // console.log("Final prerequisite", prerequisites);
+                            // console.log("Final start date", startDateString);
+                            // console.log("Final end", endDateString);
+                            // console.log("Final operation days", operationDays);
+                            // console.log("Final include holidays", includeHolidays);
+                            // console.log("Final rateIndication", rateIndication);
 
                             setPrerequisitesArray({prerequisites:prerequisites[0].prerequisites})
                             

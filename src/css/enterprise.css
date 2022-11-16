@@ -7,7 +7,10 @@
     margin-bottom: 2.5rem;
 }
 .pick-padding{
-  padding: 3px 23px 0px 23px !important;
+  padding: 3px 23px 5px 23px !important;
+}
+.fa-pen{
+  font-size: 10px;
 }
 
 .enterprise-booking-page > div{
@@ -269,7 +272,7 @@
   padding: 3px 10px;
   border: 1px solid;
   border-radius: 14px;
-  font-size: 12px;
+  font-size: 11px;
   color: #5d5d5d;
   pointer-events: auto;
   cursor: pointer;
@@ -283,7 +286,6 @@
   border-radius: 10px;
   background-color: #f3f3f3;
   margin-bottom: 13px;
-  cursor: pointer;
 }
 .pill-container:nth-child(3n){
   margin-right: 0;
@@ -517,5 +519,8 @@
   z-index: 2;
   cursor: pointer;
   border-radius: 10px;
+}
+.contacts-details p{
+  line-height: 12px !important;
 }
 

@@ -159,7 +159,7 @@ function BiddingPageTwo() {
                   </div>
               </div>
               <div className='asking-rate'>
-                    <p style={{marginBottom:"10px"}}>{selectedValue?.puDetails ? selectedValue?.puDetails?.puCityName : "Johannesburg"} to {selectedValue.doDetails ? selectedValue.doDetails?.doCityName : "Johannesburg"}</p>
+                    <p style={{marginBottom:"10px"}}>{selectedValue?.details ? selectedValue?.details?.CityName : "Johannesburg"} to {selectedValue.details ? selectedValue.details?.CityName : "Johannesburg"}</p>
                 <div>
                       <p style={{color:"#606060"}}>Your asking rate: R{selectedValue.rate_required}</p>
                     <p style={{color:"#0039BF", cursor:"pointer"}} onClick={() => setOpenDetails(true)}>View Details</p>

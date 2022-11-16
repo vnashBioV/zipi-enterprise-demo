@@ -44,7 +44,7 @@ export default function AddLocationOneContact({
     const [isLoading , setIsLoading] = useState(false);
     const [isAddOne, setIsaddOne] = useState(false);
     const [query, setQuery] = useState("");
-    const keys = ["puName", "puCompanyName","puSurname"];
+    const keys = ["Name", "CompanyName","Surname"];
     const [suggestions, setSuggestions] = useState([]);
 
     //=========STATES ARRAY=========================================================================
@@ -53,7 +53,7 @@ export default function AddLocationOneContact({
 
     //========CONSOLE LOGS==========================================================================
     console.log(bookingArray)
-    console.log("booking working array",bookingArray.length)
+    console.log("booking working array",allPuDetails)
     //========END CONSOLE LOGS======================================================================
 
     //==========FUNCTIONS===========================================================================
@@ -66,7 +66,7 @@ export default function AddLocationOneContact({
         if (query.length>0){
             matches = allPuDetails.filter(booking =>{
                 const regex = new RegExp(`${query}`, "i");
-                return booking.pick_up_details.details.puCompanyName.match(regex);
+                return booking.details.CompanyName.match(regex);
             })
         }
         console.log('matches', matches)
@@ -125,9 +125,9 @@ export default function AddLocationOneContact({
                 placeholder='Company Name'
                 onChange={e =>{setBookingArray((prevState) => ({
                     ...prevState,
-                    puDetails:{
-                        ...prevState.puDetails,
-                        puCompanyName:e.target.value
+                    details:{
+                        ...prevState.details,
+                        CompanyName:e.target.value
                     } 
                 }))
                     onSearchChange(e.target.value) 
@@ -143,9 +143,9 @@ export default function AddLocationOneContact({
                 placeholder='City Name'
                 onChange={e =>setBookingArray((prevState) => ({
                     ...prevState,
-                    puDetails:{
-                        ...prevState.puDetails,
-                        puCityName:e.target.value
+                    details:{
+                        ...prevState.details,
+                        CityName:e.target.value
                     } 
                     }))
                 }
@@ -155,9 +155,9 @@ export default function AddLocationOneContact({
                 placeholder='Complex / Building'
                 onChange={e =>setBookingArray((prevState) => ({
                     ...prevState,
-                    puDetails:{
-                        ...prevState.puDetails,
-                        puComplexBuilding:e.target.value
+                    details:{
+                        ...prevState.details,
+                        ComplexBuilding:e.target.value
                     } 
                     }))
                 }
@@ -170,9 +170,9 @@ export default function AddLocationOneContact({
                     placeholder='Special instructions for driver'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                        puDetails:{
-                            ...prevState.puDetails,
-                            puSpecialInstructions:e.target.value
+                        details:{
+                            ...prevState.details,
+                            SpecialInstructions:e.target.value
                         } 
                         }))
                     }
@@ -185,9 +185,9 @@ export default function AddLocationOneContact({
                     <input type="radio" value="20 mins" name='gigo' 
                         onClick={e =>setBookingArray((prevState) => ({
                             ...prevState,
-                            puDetails:{
-                                ...prevState.puDetails,
-                                puGateInGateOut:e.target.value
+                            details:{
+                                ...prevState.details,
+                                GateInGateOut:e.target.value
                             } 
                             }))
                         }
@@ -198,9 +198,9 @@ export default function AddLocationOneContact({
                     <input type="radio" value="2 hrs" name='gigo'
                         onClick={e =>setBookingArray((prevState) => ({
                             ...prevState,
-                            puDetails:{
-                                ...prevState.puDetails,
-                                puGateInGateOut:e.target.value
+                            details:{
+                                ...prevState.details,
+                                GateInGateOut:e.target.value
                             } 
                             }))
                         }
@@ -213,9 +213,9 @@ export default function AddLocationOneContact({
                     <input type="radio" value="40 mins" name='gigo'
                         onClick={e =>setBookingArray((prevState) => ({
                             ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puGateInGateOut:e.target.value
+                                details:{
+                                    ...prevState.details,
+                                    GateInGateOut:e.target.value
                                 } 
                             }))
                         }
@@ -226,9 +226,9 @@ export default function AddLocationOneContact({
                     <input type="radio" value="3 hrs" name='gigo'
                         onClick={e =>setBookingArray((prevState) => ({
                             ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puGateInGateOut:e.target.value
+                                details:{
+                                    ...prevState.details,
+                                    GateInGateOut:e.target.value
                                 } 
                             }))
                         }
@@ -242,9 +242,9 @@ export default function AddLocationOneContact({
                         <input type="radio" value="60 mins" name='gigo'
                             onClick={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                    puDetails:{
-                                        ...prevState.puDetails,
-                                        puGateInGateOut:e.target.value
+                                    details:{
+                                        ...prevState.details,
+                                        GateInGateOut:e.target.value
                                     } 
                                 }))
                             }
@@ -255,9 +255,9 @@ export default function AddLocationOneContact({
                         <input type="radio" value="90 mins" name='gigo' 
                             onClick={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                    puDetails:{
-                                        ...prevState.puDetails,
-                                        puGateInGateOut:e.target.value
+                                    details:{
+                                        ...prevState.details,
+                                        GateInGateOut:e.target.value
                                     } 
                                 }))
                             }
@@ -269,9 +269,9 @@ export default function AddLocationOneContact({
                     <input type="text" name='gigo' placeholder='Other (mins)'
                         onChange={e =>setBookingArray((prevState) => ({
                             ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puGateInGateOut:e.target.value
+                                details:{
+                                    ...prevState.details,
+                                    GateInGateOut:e.target.value
                                 } 
                             }))
                         }
@@ -282,9 +282,9 @@ export default function AddLocationOneContact({
                 <input type="number" placeholder='Loading/offloading Bays'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                            puDetails:{
-                                ...prevState.puDetails,
-                                puLoadingBays:e.target.value
+                            details:{
+                                ...prevState.details,
+                                LoadingBays:e.target.value
                             } 
                         }))
                     }
@@ -308,10 +308,10 @@ export default function AddLocationOneContact({
                             placeholder=''
                             onChange={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puOperatingHours:{
-                                        ...prevState.puDetails?.puOperatingHours,
+                                details:{
+                                    ...prevState.details,
+                                    OperatingHours:{
+                                        ...prevState.details?.OperatingHours,
                                             open:e.target.value
                                     }
                                 } 
@@ -326,10 +326,10 @@ export default function AddLocationOneContact({
                             placeholder=''
                             onChange={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puOperatingHours:{
-                                        ...prevState.puDetails.puOperatingHours,
+                                details:{
+                                    ...prevState.details,
+                                    OperatingHours:{
+                                        ...prevState.details.OperatingHours,
                                             close:e.target.value
                                     }
                                 } 
@@ -353,10 +353,10 @@ export default function AddLocationOneContact({
                             placeholder=''
                             onChange={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puPublicHoliday:{
-                                        ...prevState.puDetails.puPublicHoliday,
+                                details:{
+                                    ...prevState.details,
+                                    PublicHoliday:{
+                                        ...prevState.puDetails.PublicHoliday,
                                             open:e.target.value
                                     }
                                 } 
@@ -371,10 +371,10 @@ export default function AddLocationOneContact({
                             placeholder=''
                             onChange={e =>setBookingArray((prevState) => ({
                                 ...prevState,
-                                puDetails:{
-                                    ...prevState.puDetails,
-                                    puPublicHoliday:{
-                                        ...prevState.puDetails.puPublicHoliday,
+                                details:{
+                                    ...prevState.details,
+                                    PublicHoliday:{
+                                        ...prevState.details.PublicHoliday,
                                             close:e.target.value
                                     }
                                 } 
@@ -394,9 +394,9 @@ export default function AddLocationOneContact({
                 placeholder='Email'
                 onChange={e =>setBookingArray((prevState) => ({
                     ...prevState,
-                    puDetails:{
-                        ...prevState.puDetails,
-                        puEmail:e.target.value
+                    details:{
+                        ...prevState.details,
+                        Email:e.target.value
                     } 
                     }))
                 }
@@ -407,9 +407,9 @@ export default function AddLocationOneContact({
                     placeholder='Name'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                        puDetails:{
-                            ...prevState.puDetails,
-                            puName:e.target.value
+                        details:{
+                            ...prevState.details,
+                            Name:e.target.value
                         } 
                         }))
                     }
@@ -419,9 +419,9 @@ export default function AddLocationOneContact({
                     placeholder='Surname'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                        puDetails:{
-                            ...prevState.puDetails,
-                            puSurname:e.target.value
+                        details:{
+                            ...prevState.details,
+                            Surname:e.target.value
                         } 
                         }))
                     }
@@ -433,9 +433,9 @@ export default function AddLocationOneContact({
                     placeholder='Phone'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                        puDetails:{
-                            ...prevState.puDetails,
-                            puPhone:e.target.value
+                        details:{
+                            ...prevState.details,
+                            Phone:e.target.value
                         } 
                         }))
                     }
@@ -445,9 +445,9 @@ export default function AddLocationOneContact({
                     placeholder='Telephone'
                     onChange={e =>setBookingArray((prevState) => ({
                         ...prevState,
-                        puDetails:{
-                            ...prevState.puDetails,
-                            puTelephone:e.target.value
+                        details:{
+                            ...prevState.details,
+                            Telephone:e.target.value
                         } 
                         }))
                     }
@@ -456,9 +456,9 @@ export default function AddLocationOneContact({
             <select 
                 onChange={e =>setBookingArray((prevState) => ({
                     ...prevState,
-                    puDetails:{
-                        ...prevState.puDetails,
-                        puNotificationType:e.target.value
+                    details:{
+                        ...prevState.details,
+                        NotificationType:e.target.value
                     } 
                     }))
                 }
@@ -476,14 +476,12 @@ export default function AddLocationOneContact({
                             // console.log("newBooking", newBooking)
                             // setPuDetails([...puDetails, newBooking])
                             var contact_Uid
-                            const pick_up_details = bookingArray.puDetails
+                            const pick_up_details = bookingArray.details
                             savePickContactFnc().then((data ) => {
                                 contact_Uid = data.key
-                                firebase.database().ref('/contacts/').child(userUid).push({
-                                   "pick_up_details":{
+                                firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
                                     details: pick_up_details,
                                     date: new Date().toISOString().substring(0,10)
-                                    }
                                 });
                                 console.log("pick_up_details", bookingArray);
                                 console.log("contact_Uid", contact_Uid);
@@ -520,7 +518,7 @@ export default function AddLocationOneContact({
         <div>
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
             {allPuDetails?.length > 0 ? allPuDetails?.filter((booking) =>
-                        keys?.some((key) => booking?.pick_up_details?.details[key].includes(query))
+                        keys?.some((key) => booking?.details[key].includes(query))
                     ).map((booking) =>(
                 <React.Fragment key={booking.id}>
                     <div className='contact-wrapper'
@@ -550,10 +548,10 @@ export default function AddLocationOneContact({
 
                         }}
                     >
-                        <Avatar className='Enterprise-icon'>{booking.pick_up_details.details.puName.toUpperCase().substring(0,2)}</Avatar>
+                        <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
                         <div>
-                            <p>{booking.pick_up_details.details.puName}</p>
-                            <p>{booking.pick_up_details.details.puCompanyName}</p>
+                            <p>{booking.details.Name}</p>
+                            <p>{booking.details.CompanyName}</p>
                         </div>
                     </div>
                 </React.Fragment>

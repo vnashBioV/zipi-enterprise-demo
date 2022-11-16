@@ -32,6 +32,8 @@ export default function AllMyBookings({
     }
   }, [])
 
+  console.log("all booking", allBookings);
+
   return (
     <>
     {allBookings && allBookings.map((booking) => (

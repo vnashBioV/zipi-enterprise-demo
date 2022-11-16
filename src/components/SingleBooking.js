@@ -62,7 +62,7 @@ export default function SingleBooking({
       }}>
       <div>
         <h2>{booking.booking_ref}</h2>
-        <p>{booking.puDetails.puCityName} to {booking.doDetails.doCityName}</p>
+        <p>{booking.puDetails.CityName} to {booking.doDetails.CityName}</p>
       </div>
       <div>
         <p>{booking.date_created}</p>
