@@ -1,0 +1,351 @@
+ {doDetails ? puDetails.map((booking) =>(
+                    <ContactsDetails key={booking.id}>
+                        <div
+                            onClick={(event) => handleContactClick(event, booking)}
+                            className={contactBackground ? "" : "contact-no-background"}
+                        >
+                            <div>
+                                <i className={pickHomeIcon ? "fa-solid fa-house-chimney" : "fa-solid fa-house-chimney pick-house"}></i>
+                                <div> 
+                                    <p>{booking.bookingArray.puDetails.name}</p>
+                                    <p>{booking.bookingArray.puDetails.companyName}</p>
+                                    <p>{booking.bookingArray.puDetails.email}</p>
+                                </div>
+                            </div>
+                            
+                            <div className='delete-contact'>
+                                <p 
+                                    className={!trackLocation ? "hide-location-icon" : "location-icon"} 
+                                    style={{fontSize:"12px", fontWeight:"normal"}} 
+                                    onClick={() => {
+                                        // setReasonLocation(true)
+                                        // console.log("The reason for the address",reasonLocation)
+
+                                    }}
+                                >
+                                    <i class="fa-solid fa-location-dot location-icon"></i>
+                                </p>
+                                <p className={!changeContact ? "change-contact" : "no-change-contact"}><i class="fa-solid fa-pen"></i> Change</p>
+                                {/* <Default>
+                                    <span className={pickDefault ? "not-active-class" : "set-default"}>Set as default</span>
+                                </Default> */}
+                                <p className={contactDate ? "" : "hide-date"}>{((booking.date).toString()).substring(0,10)}</p>
+                            </div>
+                        </div>
+                    </ContactsDetails>
+                    ))
+                    
+                    : <div className='no-contact-added'>
+                        <h1 className='add-contacts'>Currently there are no pick up contacts please click the plus button to add contacts</h1>
+                    </div>
+                } 
+
+<div className='cargo'>
+                <h1>Cargo</h1>
+                <p>Choose the cargo you would like to transport below.</p>
+                <div className='search-container'>
+                    <span className='search-wrapper'>
+                        <input type="text" placeholder='Search' className='pick-search'/>
+                        <img src={searchIcon} alt="" />
+                    </span> 
+                    <button><img src={ellipse} alt="" onClick={openModalThree}/></button>
+                </div>
+                <ReactModalthree
+                    isOpen={modalIsOpenThree}
+                    onRequestClose={closeModalThree}
+                    style={customCargoStyles}
+                    contentLabel="Modal"  
+                >
+                    <div className='inner-cargo'>
+                        <h1>New Cargo</h1>
+                        <p>Add a new package by adding its information</p>
+                        <span className='address-input cargo-product' style={{marginTop:"15px"}}>
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='Product Name'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            productName:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                        
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='SKU/ Product Number'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            productNumber:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                    </span>
+                    <hr className='contact-line cargo-seperator'/>
+                    <p className='packaging-title'>Packaging</p>
+                    <span className='address-input cargo-product' style={{marginTop:"0px"}}>
+                            <select 
+
+                                style={{width: "49%"}}
+                                className='select-option'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            packageType:e.target.value
+                                        } 
+                                    }))
+                                }
+                            >
+                                <option value="">Packaging Type</option>
+                                <option value="pallet">Pallet</option>
+                                <option value="box">Box</option>
+                                <option value="crate">Crate</option>
+                                <option value="carton">Carton</option>
+                                <option value="case">Case</option>
+                                <option value="drum">Drum</option>
+                                <option value="bucket">Bucket</option>
+                                <option value="bag">Bag</option>
+                                <option value="shrinkwrap">Shrinkwrap</option>
+                            </select>
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='Length (cm)'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            cargoLength:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                    </span>
+
+                    <span className='address-input cargo-product' style={{marginTop:"0px"}}>
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder="Volume (m3)"
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            volume:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                        
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='Breadth (cm)'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            breadth:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                    </span>
+
+                    <span className='address-input cargo-product' style={{marginTop:"0px"}}>
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder="Weight"
+                                onChange={e =>setBookingTwo((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            weight:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                        
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='Height (cm)'
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            height:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+
+
+                    </span>
+                        <input 
+                            type="radio" 
+                            value="fragile"
+                            onChange={e =>setBookingThree((prevState) => ({
+                                    ...prevState,
+                                    cargoInformation:{
+                                        ...prevState.cargoInformation,
+                                        cargoCondition:e.target.value
+                                    } 
+                                }))
+                            }
+                        />
+                        &nbsp;
+                        <label htmlFor="fragile" className='radioSelect'>Fragile</label> <br />
+
+                        <input 
+                            type="radio" 
+                            value="temperature control"
+                            onChange={e =>setBookingThree((prevState) => ({
+                                    ...prevState,
+                                    cargoInformation:{
+                                        ...prevState.cargoInformation,
+                                        cargoCondition:e.target.value
+                                    } 
+                                }))
+                            }
+                        />
+                        &nbsp;
+                        <label htmlFor="temperature" className='radioSelect'>Temperature Control (C)</label> 
+
+                        <span className='address-input min-max'style={{marginTop:"18px"}}>
+                            <input 
+                                    type="text"
+                                    className='text-inputs-sides' 
+                                    placeholder='Min'
+                                    onChange={e =>setBookingThree((prevState) => ({
+                                            ...prevState,
+                                            cargoInformation:{
+                                                ...prevState.cargoInformation,
+                                                min:e.target.value
+                                            } 
+                                        }))
+                                    }
+                                />
+                            <input 
+                                type="text"
+                                className='text-inputs-sides' 
+                                placeholder='Max'
+                                onChange={e =>setBookingTwo((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            max:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                        </span>
+                        
+                        <input 
+                            type="radio" 
+                            value="harzardous"
+                            onChange={e =>setBookingThree((prevState) => ({
+                                    ...prevState,
+                                    cargoInformation:{
+                                        ...prevState.cargoInformation,
+                                        cargoCondition:e.target.value
+                                    } 
+                                }))
+                            }
+                        />
+                        &nbsp;
+                        <label htmlFor="harzardous" className='radioSelect'>Harzardous</label> <br />
+
+                        <span className='upload'style={{marginTop:"15px"}}>
+                            <input 
+                                    type="text"
+                                    className='imo-sides' 
+                                    placeholder='IMO Class'
+                                    onChange={e =>setBookingThree((prevState) => ({
+                                            ...prevState,
+                                            cargoInformation:{
+                                                ...prevState.cargoInformation,
+                                                imoClass:e.target.value
+                                            } 
+                                        }))
+                                    }
+                                />
+                            <input 
+                                type="text"
+                                className='imo-sides' 
+                                placeholder='UN Number'
+                                style={{}}
+                                onChange={e =>setBookingThree((prevState) => ({
+                                        ...prevState,
+                                        cargoInformation:{
+                                            ...prevState.cargoInformation,
+                                            unNumber:e.target.value
+                                        } 
+                                    }))
+                                }
+                            />
+                             {/* <div className='upload-file-container'>
+                                <button className='upload-btn-btn'><i class="fa-solid fa-upload"></i></button>
+                                <input type="file" placeholder='Upload SDS'/>
+                            </div>                           */}
+                        </span>
+                        <span>
+                            <button className='add-contact-btn' onClick={saveTolocalThree}>Save</button>
+                        </span>
+                    </div>
+                </ReactModalthree>
+                <div className='cargo-container'>
+                <p style={{fontSize:"14px", marginBottom:"14px"}}>Please select products that are suitable to be in the same vehicle together.</p>
+                    {!VarBookingArrayThree.length < 1 ? VarBookingArrayThree.map((cargo, i) =>(
+                        <React.Fragment key={i}>
+                                <div className='pill-container' ref={pillContainer} onClick={(e) => {
+                                        const CargSelected = bookingArrayThree.filter((b) => cargo.id == b.id );
+                                        setSelectedBookingThree([...selectedbookingThree, CargSelected])
+                                        e.target.style.cssText="background:rgb(212, 212, 212)"
+                                        toast("Cargo successfully added");
+                                    }}>
+                                    <div ref={pillLeftSection}>
+                                        <span><i class="fa-solid fa-cube"></i></span>
+                                    </div>
+                                    <div className='cargo-for' ref={pillRightSection}>
+                                        <h1>{cargo.bookingThree.cargoInformation.productName}</h1>
+                                        <p>USK: {cargo.bookingThree.cargoInformation.productNumber}</p>
+                                        <p>Package: {cargo.bookingThree.cargoInformation.packageType}</p>
+                                        <p>Dimensions: {cargo.bookingThree.cargoInformation.height}</p>
+                                        {/* <p onClick={openModalFour}>Read more</p> */}
+                                    </div>
+                                    <ReactModalFour
+                                        isOpen={modalIsOpenFour}
+                                        onRequestClose={closeModalFour}
+                                        style={customCargoStyles}
+                                        contentLabel="Modal" 
+                                    >
+
+                                    </ReactModalFour>
+                                </div>
+                        </React.Fragment>
+                            
+                        ))
+                        : 
+                        <div className='cargo-unavailable'>
+                            <h1 className='add-contacts' style={{marginTop:"10px"}}>Currently there is no cargo please click the plus button to add cargo</h1>
+                        </div>
+                    }
+                </div> 
+                <div className='cargo-next'>
+                    {/* <button ref={cargoNextBtn} onClick={() => {
+                        VarBookingArrayThree = selectedbookingThree 
+                    }}>
+                        Next <i class="fa-solid fa-chevron-right"></i>
+                    </button> */}
+                </div>
+            </div>

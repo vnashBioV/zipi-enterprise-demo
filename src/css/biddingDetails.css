@@ -1,0 +1,89 @@
+.title-summary-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.title-summary-head > h1{
+    font-weight: normal;
+}
+.summary-wrap{
+    display: flex;
+    justify-content: space-between;
+}
+.summary-wrap > div:nth-child(1){
+    width: 18%;
+}
+.summary-wrap > div:nth-child(2){
+    width: 82%;
+}
+.left-border-sum{
+    border-left: 2px dashed #9a9a9a;
+    padding: 0 10px;
+    position: relative;
+}
+.the-first::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: -1%;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    background: grey;
+}
+.the-second::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: -1%;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border: 1px solid;
+    border-radius: 100%;
+}
+.the-last::after{
+    content: "";
+    position: absolute;
+    right: 0;
+    left: -7px;
+    bottom: -10px;
+    width: 1px;
+    height: 8px;
+    background: transparent;
+    border-right: solid 6px transparent;
+    border-left: solid 6px transparent;
+    border-top: solid 6px grey;
+}
+.cargo-bid > p{
+    color: grey;
+}
+.sds-view-doc{
+    text-decoration: none;
+    background: #c8c8c8;
+    padding: 4px 16px;
+    font-size: 14px;
+    color: black;
+    border-radius: 5px;
+}
+.prerequi{
+    border-left:1px solid grey;
+    padding:10px;
+    margin-bottom:10px;
+    margin-top: 15px;
+}
+.start-dates-end{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.start-dates-end > div{
+    width: calc(100%/3);
+}
+.start-dates-end > div > h1{
+    font-weight: normal;
+}

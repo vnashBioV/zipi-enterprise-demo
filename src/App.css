@@ -1,6 +1,59 @@
-.App {
-  text-align: center;
+body{
+  background: #F2F2F2;
 }
+.app {
+  background: #F2F2F2;
+}
+/* *{
+  transition: all 500ms ease-in-out
+} */
+
+/* input[type="time"]::-webkit-calendar-picker-indicator {
+  background: none;
+} */
+
+input[type="radio"], input[type="checkbox"]{
+  margin-right: 10px;
+}
+
+label{
+  margin-right: 10px;
+}
+
+/* input[type="time"]{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+} */
+
+/* Global styles */
+h1, h2, h3, h4{
+  font-size: 14px;
+  padding: 0;
+  margin: 3px 0;
+}
+p{
+  margin: 0;
+  padding: 0;
+  font-size: 12.5px;
+  margin-bottom: 3px;
+  line-height: 16px;
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline-width: 0;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -36,3 +89,303 @@
     transform: rotate(360deg);
   }
 }
+
+@media screen and (max-width:768px){
+  .side-section{
+    display: none !important;
+  }
+  .login-form{
+    width: 100% !important;
+  }
+  .enterprise-booking-page{
+    width: 100% !important;
+    max-width: unset !important;
+  }
+  .search, 
+  .search-container, 
+  .search-wrapper, 
+  .pill-container{
+    width: 100% !important;
+  }
+  .search-wrapper{
+    width:95% !important;
+  }
+  .search-container > button{
+    width: 45px !important;
+    margin-left: 10px;
+  }
+  .box-icon > span > i{
+    margin-left: unset !important;
+  }
+  .pill-container > div:nth-child(2) {
+    width: 48% !important;
+  }
+  .pill-container > div:nth-child(3) {
+    width: 32% !important;
+  }
+  .distribution-vehicle > div {
+    width: 100% !important;
+    flex-wrap: wrap;
+    margin-bottom: 11px;
+  }
+  .distribution-vehicle{
+    flex-wrap: wrap;
+  }
+  .distribution-vehicle > div > div > img {
+    width: fit-content !important;
+  } 
+  .profile{
+    display: none !important;
+  }
+  .fa-bars{
+    display: block !important;
+    color: #fff;
+    font-size: 19px;
+  }
+  .fa-xmark{
+    color: #fff;
+    font-size: 19px;
+  }
+  .nav{
+    align-items: center !important;
+    width: 93% !important;
+  }
+  .mobile-dropdown-show{
+    visibility: visible !important;
+    opacity: 1 !important;
+    right: 0 !important;
+    display: block !important;
+  }
+  .modal, .modal-summary{
+    width: 83% !important;
+  }
+  .summary-wrapper > div:nth-child(1) > div, .summary-wrapper > div:nth-child(2) > div{
+    height: unset !important;
+  }
+  .continue-btn-container{
+    width: 91% !important;
+  }
+  .summary-wrapper{
+    flex-wrap: wrap;
+  }
+  .summary-wrapper > div:nth-child(1){
+    display: none !important;
+  }
+  .schedule-sum, .schedule-sum{
+    flex-wrap: wrap !important;
+  }
+  .schedule-page, .add-contacts-wrapper > div > input, .text-area-wrap > textarea{
+    width: 100% !important;
+    margin: auto;
+    padding: 8px 20px !important;
+    max-width: 100% !important;
+  }
+  .add-contacts-wrapper > div > select{
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div{
+    margin-left: 12px !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(2)::before{
+    left: -2.5% !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(3)::before,
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(4)::before,
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(5)::before{
+    left: -1.5% !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(2), .schedule-sum > div:nth-child(1){
+    width: 100% !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(1) > div > p, .schedule-sum > div:nth-child(1) > div:nth-child(1){
+    display: none !important;
+  }
+  .schedule-sum > div:nth-child(2){
+    width: 100% !important;
+  }
+  .cargo-sum-sched > div:not(.cargo-sum-sched > div:nth-child(1)), .vehicle > div, 
+  .hazardous-wrapper{
+    flex-direction: column !important;
+  }
+  .tracking-child{
+    flex-direction: column-reverse !important;
+  }
+  .quantity-plus-info, .hazardous-second-child, .tracking-child > div:nth-child(1){
+    width: 94% !important;
+  }
+  .quantity-plus-info:nth-child(2) > div:last-of-type, .quantity-plus-info:nth-child(2) > div:first-of-type, 
+  .hazardous-second-child > div, .temperature-controlled > div{
+    text-align: start !important;
+    margin-top: 10px;
+  }
+  .tracking, .bidding, .deals > div:nth-child(2){
+    width: 95% !important;
+    max-width: 95% !important;
+  }
+  .load-shipping{
+    flex-wrap: wrap;
+  }
+  .load-shipping > div, .tracking-child > div:nth-child(2){
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+  /* .print-block{
+    flex-direction: column;
+  } */
+  .tracking-child > div.left-tracking-info > div.print-block > span > span > p{
+    font-size: 12.5px !important;
+  }
+  .deals,  .loads-offered{
+    flex-wrap: wrap !important;
+  }
+  .deals > div.trip-deals > div.offer-indication > div:nth-child(1){
+    flex-direction: column !important;
+  }
+  .trip-deals > div.offer-indication > div:nth-child(1) > div{
+    margin-bottom: 10px;
+  }
+  .deals > div.trip-deals > div.offer-indication > div:nth-child(1){
+    align-items: start;
+  }
+  .deals > div.trip-deals > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div{
+    margin:10px 0;
+  }
+  .add-contacts{
+    width: 100% !important;
+  }
+  .enterprise-booking-page > div > div > div > img{
+    width: 21% !important;
+  }
+  .add-contacts-wrapper{
+    width: 100% !important;
+    flex-direction: column;
+  }
+  .add-contacts-wrapper > div:nth-child(1){
+    width: 100% !important;
+  }
+  .btn-address-type, .double-inputs > input, .deactivate{
+    padding: 8px 20px !important;
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+  .add-contacts-wrapper > div:nth-child(1) > div.address-type > label:nth-child(2){
+    margin-bottom: unset !important;
+  }
+  .add-to-contact > button{
+    width: 100% !important;
+    height: 32px !important;
+  }
+  .modal-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal{
+    position: unset !important;
+    top: unset !important;
+    left: unset !important;
+    transform: unset !important;
+  }
+  .cargo-modal > div > input, .cargo-modal > div > select{
+    width: 48.8% !important;
+  }
+  .cargo-modal > select{
+    width: 100% !important; 
+  }
+  .cargo-modal > div.un-number > input[type=text], .upload-file-label{
+    margin-bottom: 10px;
+    width: 100% !important;
+  }
+  .un-number{
+    flex-direction: column;
+  }
+  .cargo-modal > div:nth-child(7) > select{
+    width: 48% !important;
+  }
+  .modal-summary{
+    padding-bottom: 96px !important;
+  }
+  .summary-wrapper > div:nth-child(2) > div:nth-child(5) > div > label,
+ .summary-wrapper > div:nth-child(2) > div:nth-child(5) > div > label{
+    margin-bottom: 10px;
+  }
+  .address-type, .double-inputs{
+    width: 99% !important;
+    margin: auto;
+    flex-wrap: wrap !important;
+  }
+  /* .text-area-wrap > textarea{
+    margin-left: 4px;
+  } */
+  .cancel-add-btn{
+    width: 100% !important;
+  }
+  .contacts-details > div > div:nth-child(1){
+    padding-left: unset;
+  }
+  .contacts-details > div > div > i{
+    margin-right: 10px !important;
+  }
+  .location-icon{
+    margin-right: 4px !important;
+  }
+  .change-contact{
+    font-size: 9px !important;
+    padding: 6px 5px !important;
+  }
+  .max-min{
+    width: 54% !important;
+  }
+  .deals > div:nth-child(1){
+    width: 100% !important;
+  }
+  .operating-hours{
+    padding-left: 6px !important;
+    width: 90% !important;
+  }
+  .time-pill{
+    width: 84%;
+  }
+  .alert-container{
+    height: 150% !important;
+  }
+  .add-contacts-wrapper > div:nth-child(1) > div:nth-child(16), .add-contacts-wrapper > div:nth-child(1) > select{
+    margin-top: unset !important;
+  }
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(2),
+  .schedule-sum > div:nth-child(1) > div:nth-child(2) > div:nth-child(4){
+    display: none !important;
+  }
+  .search-container > button > img {
+    width: 104% !important;
+}
+}
+@media screen and (max-width:1024px){
+  .pill-container>div:nth-child(3) {
+    width: 40% !important;
+  } 
+  .cargo-quantity{
+    width: 67% !important; 
+  }
+  .pill-container{
+    width: 68% !important;
+  }
+}
+@media screen and (max-width:425px){
+  .pill-container {
+    width: 100% !important;
+  }
+  .change-contact {
+    width: 21% !important;
+  }
+}
+@media screen and (max-width:1366px){
+  .pill-container > div:nth-child(3) {
+    width: 28% !important;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+ /* delivery agent to fleet owners */

@@ -1,0 +1,89 @@
+.cargo-modal > div > input, .cargo-modal > div > select{
+    margin-top: 10px;
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: transparent;
+    background: #e8e8e8;
+    width: 48.8%;
+    font-size: 13.5px;
+}
+.cargo-modal > div > select{
+    padding: 8px 15px;
+    width: 48.8%;
+}
+.cargo-modal > div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cargo-modal > input, .cargo-modal > select{
+    margin-top: 10px;
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: transparent;
+    background: #e8e8e8;
+    font-size: 13.5px;
+}
+.cargo-modal > select{
+    width: 100%;
+    font-size: 13.5px;
+    margin-bottom: 7px;
+}
+.un-number{
+    margin-top: 10px;
+}
+.cargo-modal{
+    display: flex;
+    flex-direction: column;
+}
+.horizontal-line > hr{
+    width: 100%;
+}
+.horizontal-line{
+    padding: 0px 15px;
+}
+.cargo-modal >label{
+    margin-top: 8px;
+    font-size: 13px;
+}
+.max-min{
+    width: 30%;
+}
+.max-min > input{
+    padding: 8px 10px !important;
+    width: 46% !important;
+    text-align: center;
+}
+.un-number > input{
+    padding: 10px 10px !important;
+    width: 109px !important;
+    text-align: center;
+    margin-top: 0 !important;
+}
+input[type="file"]{
+    display: none;
+}
+.upload-file-label{
+    height: 41px;
+    padding: 3px 10px;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: grey;
+    cursor: pointer;
+    font-size: 13.5px;
+}
+.upload-file-label > i{
+    margin-right: 10px;
+}
+.cargo-alertt{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;;
+}
+.opacity-upload{
+    opacity: 0.2;
+}
