@@ -29,6 +29,8 @@
     padding: 10px;
     border-radius: 100%;
     background: #fce303;
+    width: 39px;
+    height: 39px;
   }
   .search-container > button > img{
     width: 80%;

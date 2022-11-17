@@ -667,6 +667,10 @@ export default function Cargo({
                         </div>
                     } */}
                 </div>
+                <div className='cancel-add-btn' style={{width:"100%", margin:"unset",dispplay:"flex", justifyContent:"end"}}>
+                    {/* <button onClick={() => setOpenCargoModal(false)}>Cancel</button> */}
+                    <button onClick={HandleSaveCargo} style={{background:"#f9dd07", boxShadow:"none"}}>Add cargo</button>
+                </div>
             </div> 
             <div className="left-cargo-secti">
                 <h2 style={{marginBottom:"17px"}}>Cargos</h2>
@@ -718,7 +722,7 @@ export default function Cargo({
                 }
                 <div className='cancel-add-btn' style={{width:"100%", margin:"unset", position:"absolute",bottom:0}}>
                     <button onClick={() => setOpenCargoModal(false)}>Cancel</button>
-                    <button onClick={HandleSaveCargo}>Save</button>
+                    <button onClick={() => setOpenCargoModal(false)}>Save</button>
                 </div>     
             </div>
            

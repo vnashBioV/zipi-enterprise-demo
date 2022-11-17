@@ -868,7 +868,7 @@ export default function Enterprise() {
                                     <input type="text" placeholder='Search' className='pick-search' onChange={e => onSearchChangeThree(e.target.value)} value={queryThree}  />
                                     {/* <img src={searchIcon} alt="" /> */}
                                 </span> 
-                                <button className='duration-500 ease-in-out' onClick={() => setOpenCargoModal(true)}><img className='duration-500 ease-in-out' style={{width:"18px",height:"18px"}}  src={ellipse} alt=""/></button>
+                                <button className='duration-500 ease-in-out' onClick={() => setOpenCargoModal(true)}><i class="fa-sharp fa-solid fa-square-plus"></i></button>
                             </div>
                         </Search>
                         : <></>
