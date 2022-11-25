@@ -6,7 +6,9 @@ import Alert from '../components/Alerts/Alert';
 
 export default function Summary({ 
     openPreSix, 
-    setOpenPreSix
+    setOpenPreSix,
+    alertQuantity,
+    setAlertQuantity
 }) {
     const {id} = useParams();
 
@@ -23,33 +25,41 @@ export default function Summary({
     const navigate = useNavigate();
 
     const handleContinue = () =>{
-        setPrerequisites({
-            vehicleEquipment:vehicleEquipment,
-            adHocServices:adHocServices,
-            documentation:documentation,
-            personalProtective:personalProtective,
-            goodsInTransit:goodsInTransit,
-            prerequisites:prerequisites,
-            vehicle_type:vehicleType
-        })
-
-        const selectPrerequis = [{prerequisites:{
-                    vehicle_equipment:vehicleEquipment,
-                    ad_hoc_services:adHocServices,
+        if(localStorage.getItem("cargoSelectd")){
+            const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+            if(!selectedCargoDetails.details.quantity){
+                setAlertQuantity(true);
+                setOpenPreSix(false);
+            }else{
+                setPrerequisites({
+                    vehicleEquipment:vehicleEquipment,
+                    adHocServices:adHocServices,
                     documentation:documentation,
-                    personal_protective:personalProtective,
-                    goods_in_transit:goodsInTransit,
+                    personalProtective:personalProtective,
+                    goodsInTransit:goodsInTransit,
+                    prerequisites:prerequisites,
                     vehicle_type:vehicleType
-                },
-                date:new Date()
-        }]
-
-        localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
-        setOpenSpinner(true)
-        setTimeout(() => {
-            setOpenSpinner(false)
-        },1000)
-        navigate('/schedule')
+                })
+        
+                const selectPrerequis = [{prerequisites:{
+                            vehicle_equipment:vehicleEquipment,
+                            ad_hoc_services:adHocServices,
+                            documentation:documentation,
+                            personal_protective:personalProtective,
+                            goods_in_transit:goodsInTransit,
+                            vehicle_type:vehicleType
+                        },
+                        date:new Date()
+                }]
+        
+                localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
+                setOpenSpinner(true)
+                setTimeout(() => {
+                    setOpenSpinner(false)
+                },1000)
+                navigate('/schedule')
+            }
+        }
     }
 
     useEffect(() => {

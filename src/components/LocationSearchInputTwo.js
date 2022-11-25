@@ -11,24 +11,24 @@ export default function LocationSearchInputTwo({
   const handleChange = (value) => {
     setBookingArrayTwo((prevState) => ({
       ...prevState,
-      doDetails:{
-          ...prevState.doDetails,
-          doAddress:value
+      details:{
+          ...prevState.details,
+          Address:value
       } 
     }))
   }
   const handleSelect = (value) => {
     setBookingArrayTwo((prevState) => ({
       ...prevState,
-      doDetails:{
-          ...prevState.doDetails,
-          doAddress:value
+      details:{
+          ...prevState.details,
+          Address:value
       } 
     }))
   }
   return (
     <div>
-      <PlacesAutocomplete value={bookingArrayTwo.doDetails?.doAddress ? bookingArrayTwo.doDetails?.doAddress: ""} onChange={handleChange} onSelect={handleSelect}>
+      <PlacesAutocomplete value={bookingArrayTwo.details?.Address ? bookingArrayTwo.details?.Address: ""} onChange={handleChange} onSelect={handleSelect}>
           {({getInputProps, suggestions, getSuggestionItemProps, loading})=>(
             <div>
               <input {...getInputProps({

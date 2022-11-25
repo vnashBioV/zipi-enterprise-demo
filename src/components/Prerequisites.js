@@ -6,7 +6,9 @@ import '../css/prerequisites.css'
 export default function Summary({
     // vehicleType,
     openPre, 
-    setOpenPre
+    setOpenPre,
+    alertQuantity,
+    setAlertQuantity
 }) {
     const {id} = useParams();
     const [vehicleEquipmentArray, setVehicleEquipment] = useState([])
@@ -31,26 +33,35 @@ export default function Summary({
     console.log("goods In Transit", goodsInTransit);
 
     const handleContinue = ()=>{
-        setPrerequisites({
-            prerequisites:{
-                vehicle_equipment:vehicleEquipmentArray,
-                goods_in_transit:goodsInTransit,
-                vehicle_type:vehicleType
+        if(localStorage.getItem("cargoSelectd")){
+            const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+            if(!selectedCargoDetails.details.quantity){
+                setAlertQuantity(true);
+                setOpenPre(false);
+            }else{
+                setPrerequisites({
+                    prerequisites:{
+                        vehicle_equipment:vehicleEquipmentArray,
+                        goods_in_transit:goodsInTransit,
+                        vehicle_type:vehicleType
+                    }
+                })
+                const selectPrerequis = [{prerequisites:{
+                    vehicle_equipment:vehicleEquipmentArray,
+                    ad_hoc_services:["Not selected"],
+                    documentation:["Not selected"],
+                    personal_protective:["Not selected"],
+                    goods_in_transit:goodsInTransit,
+                    vehicle_type:vehicleType
+                },
+                date:new Date()
+                }]
+
+                setOpenPre(prev => !prev)
+                localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
+                navigate('/schedule')
             }
-        })
-        const selectPrerequis = [{prerequisites:{
-            vehicle_equipment:vehicleEquipmentArray,
-            ad_hoc_services:["Not selected"],
-            documentation:["Not selected"],
-            personal_protective:["Not selected"],
-            goods_in_transit:goodsInTransit,
-            vehicle_type:vehicleType
-        },
-        date:new Date()
-}]
-        setOpenPre(prev => !prev)
-        localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
-        navigate('/schedule')
+        }
     }
 
     // const handleContinue = () => {

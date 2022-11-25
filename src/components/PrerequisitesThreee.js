@@ -5,7 +5,9 @@ import { useParams, Link, useNavigate  } from 'react-router-dom'
 export default function Summary({
     // vehicleType,
     openPreThree, 
-    setOpenPreThree
+    setOpenPreThree,
+    alertQuantity,
+    setAlertQuantity
 }) {
 
     const {id} = useParams();
@@ -22,35 +24,43 @@ export default function Summary({
     const goodsInTransitFnc =(e)=>{
         setGoodsInTransit(parseInt(e.target.value))
     }
-    
+
     const handleContinue = () =>{
-        setPrerequisites({
-            vehicleEquipment:["Not selected"],
-            adHocServices:["Not selected"],
-            documentation:["Not selected"],
-            personalProtective:["Not selected"],
-            goodsInTransit:goodsInTransit,
-            prerequisites:["Not selected"],
-            vehicle_type:vehicleType
-        })
-
-        const selectPrerequis = [{prerequisites:{
-                    vehicle_equipment:["Not selected"],
-                    ad_hoc_services:["Not selected"],
-                    documentation:["Not selected"],
-                    personal_protective:["Not selected"],
-                    goods_in_transit:goodsInTransit,
+        if(localStorage.getItem("cargoSelectd")){
+            const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+            if(!selectedCargoDetails.details.quantity){
+                setAlertQuantity(true);
+                setOpenPreThree(false);
+            }else{
+                setPrerequisites({
+                    vehicleEquipment:vehicleEquipment,
+                    adHocServices:adHocServices,
+                    documentation:documentation,
+                    personalProtective:personalProtective,
+                    goodsInTransit:goodsInTransit,
+                    prerequisites:prerequisites,
                     vehicle_type:vehicleType
-                },
-                date:new Date()
-        }]
-
-        localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
-        setOpenSpinner(true)
-        setTimeout(() => {
-            setOpenSpinner(false)
-        },1000)
-        navigate('/schedule')
+                })
+        
+                const selectPrerequis = [{prerequisites:{
+                            vehicle_equipment:vehicleEquipment,
+                            ad_hoc_services:adHocServices,
+                            documentation:documentation,
+                            personal_protective:personalProtective,
+                            goods_in_transit:goodsInTransit,
+                            vehicle_type:vehicleType
+                        },
+                        date:new Date()
+                }]
+        
+                localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
+                setOpenSpinner(true)
+                setTimeout(() => {
+                    setOpenSpinner(false)
+                },1000)
+                navigate('/schedule')
+            }
+        }
     }
 
     console.log("goods In Transit", goodsInTransit)

@@ -1,12 +1,13 @@
 .progress-bar-comp{
     height: 10px;
-    background: rgb(181, 181, 181);
+    background: #ffe22b;
     border-radius: 10px;
     margin-top: 10px;
+    overflow: hidden;
+    transform: rotate(180deg);
 }
 .progress-perc{
     height: 100%;
     width: 0;
-    background: #ffe22b;
-    border-radius: 10px;
+    background: rgb(181, 181, 181);
 }

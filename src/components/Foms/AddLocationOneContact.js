@@ -32,8 +32,10 @@ export default function AddLocationOneContact({
         setChangeContact,
         setNextBtn,
         setlocationTwo,
-        setAllPuDetails,
-        allPuDetails
+        // setAllPuDetails,
+        // allPuDetails
+        setAllContacts,
+        allContacts
     }) {
 
     const iconName = ("Jane").substring(0,2);
@@ -52,8 +54,8 @@ export default function AddLocationOneContact({
     //=========END STATE ARRAY======================================================================
 
     //========CONSOLE LOGS==========================================================================
-    console.log(bookingArray)
-    console.log("booking working array",allPuDetails)
+    // console.log(bookingArray)
+    console.log("booking working array",allContacts)
     //========END CONSOLE LOGS======================================================================
 
     //==========FUNCTIONS===========================================================================
@@ -64,9 +66,9 @@ export default function AddLocationOneContact({
     const onSearchChange = (query) =>{
         let matches = []
         if (query.length>0){
-            matches = allPuDetails.filter(booking =>{
+            matches = allContacts.filter(booking =>{
                 const regex = new RegExp(`${query}`, "i");
-                return booking.details.CompanyName.match(regex);
+                return booking.details?.CompanyName?.match(regex);
             })
         }
         console.log('matches', matches)
@@ -121,6 +123,7 @@ export default function AddLocationOneContact({
                 </label>
             </div>
             <input 
+                // style={{position: 'relative'}}
                 type="text" 
                 placeholder='Company Name'
                 onChange={e =>{setBookingArray((prevState) => ({
@@ -133,9 +136,50 @@ export default function AddLocationOneContact({
                     onSearchChange(e.target.value) 
                     }
                 }
-            value={query}
+                value={query}
             />
-            
+            {query.length>0 ? 
+                <div className='search-results-pick' style={{cursor:"pointer"}}>
+                    {suggestions?.length > 0 ? suggestions?.filter((booking) =>
+                        keys?.some((key) => booking?.details[key].includes(query))
+                    ).map((booking) => (
+                        <div
+                            onClick={() => {
+                                const selected = ([booking])
+                                setDefaultPick(selected)
+                                setPickHomeIcon(true)
+                                setPickDefault(false)
+                                setPickSelected([booking])
+                                // setPuDetails(selected)
+                                setTrackLocation(true)
+                                setContactDate(false)
+                                setLocationtitle(false)
+                                setSearchLocationOne(false)
+                                setContactBackground(false)
+                                setLocationOneWrapper(true)
+                                setChangeContact(false)
+                                setNextBtn(false)
+                                setlocationTwo(true)
+                                localStorage.setItem("pickSelectd", JSON.stringify(selected));
+                                // console.log("Block clicked");
+                                setIsLoading(true)
+                                setTimeout(() =>{
+                                    setIsLoading(false);
+                                    closeLocationModal()
+                                }, 1000)
+                            }}
+                        >
+                            <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                            <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
+                            <hr />
+                        </div>
+                        // <div>hey</div>
+                    )): <></>}
+                </div>
+                : <></>
+            }
+
+
             <Autocomplete bookingArray={bookingArray} setBookingArray={setBookingArray}/>
             
             <input 
@@ -356,7 +400,7 @@ export default function AddLocationOneContact({
                                 details:{
                                     ...prevState.details,
                                     PublicHoliday:{
-                                        ...prevState.puDetails.PublicHoliday,
+                                        ...prevState.details.PublicHoliday,
                                             open:e.target.value
                                     }
                                 } 
@@ -517,10 +561,10 @@ export default function AddLocationOneContact({
         </div>
         <div>
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
-            {allPuDetails?.length > 0 ? allPuDetails?.filter((booking) =>
-                        keys?.some((key) => booking?.details[key].includes(query))
+            {allContacts?.length > 0 ? allContacts?.filter((booking) =>
+                        keys?.some((key) => booking?.details[key]?.includes(query))
                     ).map((booking) =>(
-                <React.Fragment key={booking.id}>
+                <React.Fragment key={booking.details.Address}>
                     <div className='contact-wrapper'
                         onClick={() => {
                             const selected = ([booking])
@@ -528,6 +572,9 @@ export default function AddLocationOneContact({
                             setPickHomeIcon(true)
                             setPickDefault(false)
                             setPickSelected([booking])
+                            const acceptThisOne = allContacts.filter((b) => booking.details.Address !== b.details.Address )
+                            setAllContacts(acceptThisOne)
+                            console.log("accept this one", acceptThisOne);
                             // setPuDetails(selected)
                             setTrackLocation(true)
                             setContactDate(false)
@@ -550,8 +597,8 @@ export default function AddLocationOneContact({
                     >
                         <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
                         <div>
-                            <p>{booking.details.Name}</p>
-                            <p>{booking.details.CompanyName}</p>
+                            <p>{booking.details?.Name}</p>
+                            <p>{booking.details?.CompanyName}</p>
                         </div>
                     </div>
                 </React.Fragment>

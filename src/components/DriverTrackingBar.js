@@ -5,22 +5,18 @@ import { v4 as uuidv4 } from 'uuid';
 import '../css/progressbar.css'
 
 function DriverTrackingBar({
-  fleet,
+  driver,
   fleetName,
   booking,
   progValue,
   setProgValue,
-  actualLoads
+  actualLoads,
+  vehicle
 }) {
     const [wholeValue, setWholeValue] = useState(101);
     const [decValue, setDecValue] = useState(101);
     console.log("the progress value", wholeValue);
-    useEffect(() => {
-       const progress = [20, 40, 60,80,100]
-        for (var i = 0; i < actualLoads; i++){
-           console.log("This is the decreasing prog", i - decValue)
-        }
-    },[])
+    console.log("actual loads", actualLoads);
   return (
         <div className='driver-tracking-bar-container'>
             <div className='driver-profile'>
@@ -34,12 +30,11 @@ function DriverTrackingBar({
                     </div>
                 </div>
                 <div>
-                    <p>vehicle type</p>
+                    <p>{vehicle}</p>
                 </div>
             </div>
             <div className='progress-bar-comp'>
-              <div className='progress-perc' style={{width:`${actualLoads}%`}}>
-
+              <div className='progress-perc' style={{width:`${actualLoads}`}}>
               </div>
             </div>
         </div>

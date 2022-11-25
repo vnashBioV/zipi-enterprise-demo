@@ -128,9 +128,12 @@ export default function Enterprise() {
     const [quantity, setQuantity] = useState(0)
     const [defaultPick, setDefaultPick] = useState([])
     const [defaultDrop, setDefaultDrop] = useState([])
-    const [allPuDetails,setAllPuDetails] = useState([]);
-    const [allDoDetails,setAllDuDetails] = useState([]);
+    // const [allPuDetails,setAllPuDetails] = useState([]);
+    // const [allDoDetails,setAllDuDetails] = useState([]);
+    const [allContacts,setAllContacts] = useState([]);
+    const [allContactsTwo,setAllContactsTwo] = useState([]);
     const [defaultCargo,setDefaultCargo] = useState([]);
+    const [alertQuantity, setAlertQuantity] = useState(false)
 
 
     //=======END ARRAY STATES======================================================================
@@ -150,7 +153,7 @@ export default function Enterprise() {
     const onSearchChange = (query) =>{
         let matches = []
         if (query.length>0){
-            matches = allPuDetails.filter(booking =>{
+            matches = allContacts.filter(booking =>{
                 const regex = new RegExp(`${query}`, "gi");
                 return booking.details.Name.match(regex);
             })
@@ -163,7 +166,7 @@ export default function Enterprise() {
     const onSearchChangeTwo = (queryTwo) =>{
         let matches = []
         if (queryTwo.length>0){
-            matches = allDoDetails.filter(booking =>{
+            matches = allContacts.filter(booking =>{
                 const regex = new RegExp(`${queryTwo}`, "i");
                 return booking.details.Name.match(regex);
             })
@@ -207,9 +210,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArray((prevState) => ({
                 ...prevState,
-                puDetails:{
-                    ...prevState.puDetails,
-                    puBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }else if(residenceType === true){
@@ -218,9 +221,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArray((prevState) => ({
                 ...prevState,
-                puDetails:{
-                    ...prevState.puDetails,
-                    puBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }
@@ -232,9 +235,9 @@ export default function Enterprise() {
         const value = e.target.textContent
         setBookingArrayTwo((prevState) => ({
             ...prevState,
-            doDetails:{
-                ...prevState.doDetails,
-                doBusinessType:value
+            details:{
+                ...prevState.details,
+                BusinessType:value
             } 
         }))
     }else if(residenceTypeTwo === true){
@@ -243,9 +246,9 @@ export default function Enterprise() {
         const value = e.target.textContent
         setBookingArray((prevState) => ({
             ...prevState,
-            doDetails:{
-                ...prevState.doDetails,
-                doBusinessType:value
+            details:{
+                ...prevState.details,
+                BusinessType:value
             } 
         }))
     }
@@ -257,9 +260,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArray((prevState) => ({
                 ...prevState,
-                puDetails:{
-                    ...prevState.puDetails,
-                    puBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }else if(businessType === true){
@@ -268,9 +271,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArray((prevState) => ({
                 ...prevState,
-                puDetails:{
-                    ...prevState.puDetails,
-                    puBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }
@@ -282,9 +285,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArrayTwo((prevState) => ({
                 ...prevState,
-                doDetails:{
-                    ...prevState.doDetails,
-                    doBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }else if(businessTypeTwo === true){
@@ -293,9 +296,9 @@ export default function Enterprise() {
             const value = e.target.textContent
             setBookingArrayTwo((prevState) => ({
                 ...prevState,
-                doDetails:{
-                    ...prevState.doDetails,
-                    doBusinessType:value
+                details:{
+                    ...prevState.details,
+                    BusinessType:value
                 } 
             }))
         }
@@ -380,12 +383,6 @@ export default function Enterprise() {
         };
     }, []);
 
-    // useEffect(() => {
-    //     if(puDetails){
-    //         setDoDetails([puDetails[0]])
-    //     }
-    // }, [])
-
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -399,31 +396,15 @@ export default function Enterprise() {
                     localStorage.setItem("userInformation", JSON.stringify(userInfo));
                     setCompany(company)
                 });
-                // firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
-                //     setPuDetails(Object?.values(snapshot.val()).filter((b) =>  b?.pick_up_details));
-                //     // console.log("testing this fucker", Object.values(snapshot.val()).filter((b) =>  b.pick_up_details))
-                // });
-
-
-                // firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
-                //     setAllDuDetails(Object?.values(snapshot.val()).filter((b) =>  b?.drop_of_details));
-                // });
 
                 firebase.database().ref('/booking_party/' + uid).child("contacts").on('value', (snapshot) => {
                     if(snapshot.exists()){
-                        setAllPuDetails(Object?.values(snapshot.val()));
-                        setAllDuDetails(Object?.values(snapshot.val()));
+                        setAllContacts(Object?.values(snapshot.val()));
                     }
-                    // console.log("this is the pick up", snapshot.val())
                 });
-                // firebase.database().ref('contacts/').child(uid).on('value', (snapshot) => {
-                //     setDoDetails(Object?.values(snapshot.val()).filter((b) =>  b?.drop_of_details));
-                // });
+
                 firebase.database().ref('/booking_party/' + uid).child("cargo_details").on('value', (snapshot) => {
-                    // if(snapshot.exists()){
                         setBookingArrayThree(Object?.values(snapshot.val()));
-                    //     console.log("booking cargo", Object?.values(snapshot.val()))
-                    // }
                     console.log("this is the cargo", Object?.values(snapshot.val()));
                 });
               // ...
@@ -450,23 +431,12 @@ export default function Enterprise() {
             }, 2000)
         }
     },[])
+
+    // useEffect(() => {
+    // },[])
+
     //===========END USE EFFECFS==========================================================================
 
-    //===========CONSOLE LOGS=============================================================================
-    // console.log(bookingArray);
-    // console.log("after contact has been selected", pickSelected)
-    // console.log("cargo details", bookingArrayThree)
-    // console.log("company", company)
-    // console.log("cargo details array", cargoDetailsArray)
-    // console.log("contact pick up details added to state", puDetails)
-    // console.log("contact drop off details added to state", doDetails)
-    // //Selected Information 
-    // console.log("selected pick up", pickSelected)
-    // console.log("selected drop off", dropSelected)
-    // console.log("selected cargo", selectedbookingThree)
-    // console.log("location one search", allPuDetails)
-    // console.log("location two search", suggestionsTwo)
-    //============END CONSOLE LOGS========================================================================
 
   return (
     <div>
@@ -563,20 +533,6 @@ export default function Enterprise() {
                                 </div>
                                 
                                 <div className='delete-contact'>
-                                    {/* <p 
-                                        className={!trackLocation ? "hide-location-icon" : "location-icon"} 
-                                        style={{fontSize:"12px", fontWeight:"normal"}} 
-                                        onClick={() => {
-                                            // setReasonLocation(true)
-                                            // console.log("The reason for the address",reasonLocation)
-                                        }}
-                                    >
-                                        <i class="fa-solid fa-location-dot location-icon"></i>
-                                    </p> */}
-                                    
-                                    {/* <Default>
-                                        <span className={pickDefault ? "not-active-class" : "set-default"}>Set as default</span>
-                                    </Default> */}
                                     <p className={contactDate ? "" : "hide-date"}>{booking.date}</p>
                                 </div>
                             </div>
@@ -596,16 +552,11 @@ export default function Enterprise() {
                                 // pickUpContainer.current.classList.remove("contacts-unselect")
                                 // setChangeContact(false)
                                 setAddLocationOne(true)
-                            }}><i class="fa-solid fa-pen"></i> Change</p>
+                            }}><i class="fa-solid fa-pen pen-dir"></i> Change</p>
                         </ContactsDetails>
                         ))
-                        
                         : <div style={{height:"10px"}}></div>
                     } 
-{/* 
-                    {isLoading  &&
-                        <EnterpriseLoader/>
-                    }  */}
                      
                 </div>
 
@@ -624,7 +575,6 @@ export default function Enterprise() {
                             onClick={() => setAlert(false)}
                             >X</p>
                             <h1 style={{fontSize:"14px", fontWeight:"normal"}}>Contact Selected, please add second location</h1>
-                            
                         </div>
                     </Alert>
                 }  
@@ -640,8 +590,10 @@ export default function Enterprise() {
                             handleResidence={handleResidence}
                             closeLocationModal={closeLocationModal}
                             bookingArray={bookingArray}
-                            puDetails={puDetails}
-                            setPuDetails={setPuDetails}
+                            // puDetails={puDetails}
+                            // setPuDetails={setPuDetails}
+                            setAllContacts={setAllContacts}
+                            allContacts={allContacts}
                             setDefaultPick={setDefaultPick}
                             setPickHomeIcon={setPickHomeIcon}
                             setPickDefault={setPickDefault}
@@ -658,8 +610,8 @@ export default function Enterprise() {
                             setlocationTwo={setlocationTwo}
                             // address={address}
                             // setAddress={setAddress}
-                            setAllPuDetails={setAllPuDetails}
-                            allPuDetails={allPuDetails}
+                            // setAllPuDetails={setAllPuDetails}
+                            // allPuDetails={allPuDetails}
                         />
                     : <></>
                 }
@@ -703,6 +655,8 @@ export default function Enterprise() {
                                                     const selected = ([booking])
                                                     setDefaultDrop(selected)
                                                     setDoDetails(selected)
+                                                    setAllContacts(selected)
+                                                    // allContacts={allContacts}
                                                     setTrackLocationTwo(true)
                                                     setContactDateTwo(false)
                                                     setLocationtitleTwo(false)
@@ -782,7 +736,7 @@ export default function Enterprise() {
                                     // setChangeContact()
                                     // dropOffContainer.current.classList.remove("contacts-unselect")
                                     setAddLocationTwo(true)
-                                }}><i class="fa-solid fa-pen"></i> Change</p>
+                                }}><i class="fa-solid fa-pen pen-dir"></i> Change</p>
                             </ContactsDetails>
                             ))
                             
@@ -823,10 +777,12 @@ export default function Enterprise() {
                                 handleResidenceTwo={handleResidenceTwo}
                                 closeLocationModalTwo={closeLocationModalTwo}
                                 bookingArrayTwo={bookingArrayTwo}
-                                doDetails={doDetails}
-                                setDoDetails={setDoDetails}
+                                // doDetails={doDetails}
+                                // setDoDetails={setDoDetails}
                                 setDefaultDrop={setDefaultDrop}
                                 defaultDrop={defaultDrop}
+                                setAllContacts={setAllContacts}
+                                allContacts={allContacts}
                                 setPickHomeIconTwo={setPickHomeIconTwo}
                                 setPickDefaultTwo={setPickDefaultTwo}
                                 setTrackLocationTwo={setTrackLocationTwo}
@@ -838,9 +794,10 @@ export default function Enterprise() {
                                 setChangeContactTwo={setChangeContactTwo}
                                 setNextBtnTwo={setNextBtnTwo}
                                 setCargoShow={setCargoShow}
-                                setAllDuDetails={setAllDuDetails}
-                                allDoDetails={allDoDetails}
-
+                                setDropSelected={setDropSelected}
+                                dropSelected={dropSelected}
+                                // setAllDuDetails={setAllDuDetails}
+                                // allDoDetails={allDoDetails}
                             />
                         : <></>
                     }
@@ -947,6 +904,8 @@ export default function Enterprise() {
                             setSearchLocationThree={setSearchLocationThree}
                             setLocationtitleThree={setLocationtitleThree}
                             setSelectedBookingThree={setSelectedBookingThree}
+                            alertQuantity={alertQuantity}
+                            setAlertQuantity={setAlertQuantity}
                         />
                         : <></>
                     }
@@ -960,7 +919,7 @@ export default function Enterprise() {
                 <div style={{marginBottom:"25px"}} className={`duration-500 ease-in-out ${isPageLoaded ? 'scale-1' : 'scale-0'}`}>
                     <h2>Vehicle</h2>
                     <p>Choose a vehicle to transport your goods</p>
-                    <p>Distribution (0 - 3.5 Tons)</p>
+                    {/* <p>Distribution (0 - 3.5 Tons)</p> */}
     {/* ============================================================================================================================================== */}
                     
                     <p style={{marginTop:"10px"}}>Long Haul  (34 Tons)</p>
@@ -1037,24 +996,30 @@ export default function Enterprise() {
         </div>
 
         {/* Vehicle modals */}
-        <Prerequisites openPre={openPre} setOpenPre={setOpenPre} addLocationOne={addLocationOne}/>
+        <Prerequisites openPre={openPre} setOpenPre={setOpenPre} addLocationOne={addLocationOne} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         {openPreTwo &&
-            <PrerequisitesTwo openPre={openPreTwo} setOpenPreTwo={setOpenPreTwo}/>
+            <PrerequisitesTwo openPre={openPreTwo} setOpenPreTwo={setOpenPreTwo} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }
 
          {openPreThree &&
-            <PrerequisitesThreee openPreThree={openPreThree} setOpenPreThree={setOpenPreThree}/>
+            <PrerequisitesThreee openPreThree={openPreThree} setOpenPreThree={setOpenPreThree} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }
 
         {openPreFour &&
-            <PrerequisitesFour openPreFour={openPreFour} setOpenPreFour={setOpenPreFour} />
+            <PrerequisitesFour openPreFour={openPreFour} setOpenPreFour={setOpenPreFour} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }
         {openPreFive &&
-            <PrerequisitesFive openPreFive={openPreFive} setOpenPreFive={setOpenPreFive} />
+            <PrerequisitesFive openPreFive={openPreFive} setOpenPreFive={setOpenPreFive} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }
         {openPreSix &&
-            <PrerequisitesSix openPreSix={openPreSix} setOpenPreSix={setOpenPreSix} />
+            <PrerequisitesSix openPreSix={openPreSix} setOpenPreSix={setOpenPreSix} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }
+        {alertQuantity &&
+            <div className='login-alert cargo-alertt' style={{border:"1px solid #c3c3c3"}}>
+                <p style={{fontSize:"13.5px"}}>Please enter cargo quantity then select vehicle</p>
+                <button className='alert-btnn' onClick={() => setAlertQuantity(false) }>Ok</button>
+            </div>
+        } 
         
     </div>
   )

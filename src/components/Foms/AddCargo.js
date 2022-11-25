@@ -6,6 +6,7 @@ import firebase from '../../firebase-config'
 import Spinner from '../Spinner';
 import Alert from '../Alerts/Alert';
 import LoginAlert from '../Alerts/LoginAlert';
+import Loader from '../../components/loader/Loader'
 
 export default function Cargo({
         setOpenCargoModal,
@@ -19,7 +20,9 @@ export default function Cargo({
         setDefaultCargo,
         setSearchLocationThree,
         setLocationtitleThree,
-        setSelectedBookingThree
+        setSelectedBookingThree,
+        alertQuantity, 
+        setAlertQuantity
     }) {
 
     const iconName = ("Jane").substring(0,2);
@@ -43,6 +46,7 @@ export default function Cargo({
     const [queryThree, setQueryThree] = useState("");
     const keysThree = ["productName", "productCode"];
     const [suggestionsThree, setSuggestionsThree] = useState([])
+    const [isLoading , setIsLoading] = useState(false);
     const lengthRef = useRef();
     const volumeRef = useRef();
     const heightRef = useRef();
@@ -243,7 +247,7 @@ export default function Cargo({
                     console.log("cargo_details", cargoDetails);
                     console.log("contact_Uid", contact_Uid);
                 });
-                setOpenCargoModal(false)
+                // setOpenCargoModal(false)
             }else{
                 setOpenAlertFinal(true);
             }
@@ -532,8 +536,8 @@ export default function Cargo({
                     <input 
                         type="text" 
                         placeholder='Min'
-                        disabled = {checkedTwo ? "disabled" : ""}
-                        className={`${checkedTwo && "disabled:opacity-25"}`}
+                        disabled = {!checkedTwo ? "disabled" : ""}
+                        className={`${!checkedTwo && "disabled:opacity-25"}`}
                         onChange={e =>setCargoDetails((prevState) => ({
                             ...prevState,
                             cargoDetails:{
@@ -550,8 +554,8 @@ export default function Cargo({
                     <input 
                         type="text" 
                         placeholder='Max'
-                        disabled = {checkedTwo ? "disabled" : ""}
-                        className={`${checkedTwo && "disabled:opacity-25"}`}
+                        disabled = {!checkedTwo ? "disabled" : ""}
+                        className={`${!checkedTwo && "disabled:opacity-25"}`}
                         onChange={e =>setCargoDetails((prevState) => ({
                                 ...prevState,
                                 cargoDetails:{
@@ -574,8 +578,8 @@ export default function Cargo({
                     Hazardous
                 </label>
                 <input type="text" placeholder='IMDG Number' 
-                    disabled = {checkedThree ? "disabled" : ""}
-                    className={`${checkedThree && "disabled:opacity-25"}`}
+                    disabled = {!checkedThree ? "disabled" : ""}
+                    className={`${!checkedThree && "disabled:opacity-25"}`}
                     onChange={e =>setCargoDetails((prevState) => ({
                             ...prevState,
                             cargoDetails:{
@@ -591,8 +595,8 @@ export default function Cargo({
                 />
                 <div className='un-number'>
                     <input 
-                        disabled = {checkedThree ? "disabled" : ""}
-                        className={`${checkedThree && "disabled:opacity-25"}`}
+                        disabled = {!checkedThree ? "disabled" : ""}
+                        className={`${!checkedThree && "disabled:opacity-25"}`}
                         type="text" 
                         placeholder='IMO Class'
                         onChange={e =>setCargoDetails((prevState) => ({
@@ -605,8 +609,8 @@ export default function Cargo({
                         }
                     />
                     <input 
-                        disabled = {checkedThree ? "disabled" : ""}
-                        className={`${checkedThree && "disabled:opacity-25"}`}
+                        disabled = {!checkedThree ? "disabled" : ""}
+                        className={`${!checkedThree && "disabled:opacity-25"}`}
                         type="text" 
                         placeholder='UN Number'
                         onChange={e =>setCargoDetails((prevState) => ({
@@ -618,16 +622,16 @@ export default function Cargo({
                         }))
                     }
                     />
-                    <label htmlFor="file" className={`upload-file-label ${checkedThree && "opacity-upload"}`}
+                    <label htmlFor="file" className={`upload-file-label ${!checkedThree && "opacity-upload"}`}
                         disabled = {selectHazardous ? "disabled" : ""}
                     >
                         <input type="file" id='file' accept='image/*' 
-                            disabled = {checkedThree ? "disabled" : ""}
-                            className={`${checkedThree && "disabled:opacity-25"}`}
+                            disabled = {!checkedThree ? "disabled" : ""}
+                            className={`${!checkedThree && "disabled:opacity-25"}`}
                             onChange={(e) => {setFileUpload(e.target.files[0])}}
                             // onClick={handleUpload}
                         />
-                        <i className={`fa-solid fa-upload ${checkedThree && "disabled:opacity-25"}`}></i>
+                        <i className={`fa-solid fa-upload ${!checkedThree && "disabled:opacity-25"}`}></i>
                         upload SDS
                         <button style={{
                             border:"none",
@@ -686,12 +690,21 @@ export default function Cargo({
                                 setBookingArrayThree(cargselected)
                                 setSelectedBookingThree(cargselected)
                                 setDefaultCargo(cargselected)
-                                setOpenCargoModal(false)
-                                // e.target.style.cssText="background:rgb(212, 212, 212)"
-                                // e.target.style.cssText="pointer-events:none"
-                                // e.target.lastChild.style.cssText="pointer-events:auto"
+                                setIsLoading(true)
+
+                                setTimeout(() =>{
+                                    setIsLoading(false);
+                                    setOpenCargoModal(false)
+                                }, 1000)
 
                                 localStorage.setItem("cargoSelectd", JSON.stringify(cargo));
+
+                                if(localStorage.getItem("cargoSelectd")){
+                                    const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+                                    if(!selectedCargoDetails.details.quantity){
+                                        setAlertQuantity(true);
+                                    }
+                                }
 
                             }}
                         >
@@ -723,7 +736,8 @@ export default function Cargo({
                 <div className='cancel-add-btn' style={{width:"100%", margin:"unset", position:"absolute",bottom:0}}>
                     <button onClick={() => setOpenCargoModal(false)}>Cancel</button>
                     <button onClick={() => setOpenCargoModal(false)}>Save</button>
-                </div>     
+                </div>   
+                 
             </div>
            
         </div>
@@ -739,6 +753,9 @@ export default function Cargo({
                     <p>It is important that you provide the dimentions of the cargo &#40;height, weight, breadth, length&#41;</p>
                     <button className='alert-btnn' onClick={() => {setOpenAlertFinal(false)} }>Ok</button>
                 </div>
+            }
+            {isLoading  &&
+                <Loader/>
             }
     </div>
 

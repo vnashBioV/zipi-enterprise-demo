@@ -135,7 +135,7 @@ font-size: 11px;
 .trip-deals > div > div{
     align-items: center;
 }
-.trip-deals > div > div:nth-child(2) >span{
+.cancel-ex{
     margin-right: 10px;
     border-radius: 100%;
     padding: 10px;
@@ -209,6 +209,9 @@ font-size: 11px;
     padding-left: 35px;
     position: relative;
     margin-bottom: 10px;
+    cursor: unset !important;
+    display: block !important;
+    align-items: unset !important;
 }
 /* .actual-offers>div{
     width:20%;
@@ -285,6 +288,7 @@ font-size: 11px;
     border: transparent;
     background: #FFE200;
     cursor: pointer;
+    font-size: 12px;
 }
 .accept-deactivated{
     padding: 4px 15px;
@@ -350,7 +354,7 @@ font-size: 11px;
     display: flex;
     height: 26px;
     justify-content: center;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     padding: 10px;
     width: 26px;
 }

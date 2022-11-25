@@ -93,27 +93,28 @@ function BiddingPageTwo() {
         // console.log(fleetId)
         firebase.database().ref('/fleets/' + fleet).child("booking_bids").child(bookingId).update({ 
               accepted: true
-        }).then(() => {
-          var fleet = 'Fundo'
-          var xhr = new XMLHttpRequest();
-          xhr.addEventListener('lod', () => {
-              console.log(xhr.responseText);
-          })
-          xhr.open('GET', 'https://developer.zipi.co.za/acceptRequestBookingParty.php?sendto=' + userEmail + 
-              '&name=' + fleet + 
-              '&date=' + new Date().toISOString().substring(0,10) 
-          )
-          xhr.send();
-        });
+        })
+        // .then(() => {
+        //   var fleet = 'Fundo'
+        //   var xhr = new XMLHttpRequest();
+        //   xhr.addEventListener('lod', () => {
+        //       console.log(xhr.responseText);
+        //   })
+        //   xhr.open('GET', 'https://developer.zipi.co.za/acceptRequestBookingParty.php?sendto=' + userEmail + 
+        //       '&name=' + fleet + 
+        //       '&date=' + new Date().toISOString().substring(0,10) 
+        //   )
+        //   xhr.send();
+        // });
       }
 
-      // console.log("selected booking context", allPricesValue)
+      console.log("selected booking context", 778*0.14)
 
   return (
     <div className={`duration-500 ease-in-out ${isBiddingLoaded ? 'open-bidding' : 'bidding'}`}>
         <EnterpriseNav name={company}/>
         <div  style={{display:"flex", alignItems:"center", marginBottom:"17px"}}>
-            <Link to='/schedule' style={{textDecoration:"none"}}><i className="fa-solid fa-chevron-left"></i></Link>
+            <Link to='/schedule' style={{textDecoration:"none"}}><i className="fa-solid fa-chevron-left" style={{marginRight:"10px"}}></i></Link>
             <span className='bidding-navigation'>
                 <p>Requests</p>
             </span>
@@ -154,7 +155,7 @@ function BiddingPageTwo() {
                         })
                       }
                   }}>
-                      <span>X</span>
+                      <span className='cancel-ex'>X</span>
                       <p>Cancel Request</p>
                   </div>
               </div>
@@ -202,16 +203,16 @@ function BiddingPageTwo() {
                     console.log("data", fleet);
                     return(
                     <div className='actual-offers' key={key}>
-                      {!accepted ?
+                      {!accepted && selectedValue.booking_bids_fleet_id ?
                         <span className={backColor ? 'yellowBidding' : 'blueBidding'} ></span>
                         : <span className="backGreen"></span>
                       }
                       <h2 style={{fontWeight:"400", fontSize:"14px", marginBottom:"7px"}}>{selectedValue.booking_ref}</h2>
                       <div className='loads-offered'>
-                        {!accepted ?
+                        {!accepted && selectedValue.booking_bids_fleet_id ?
                           <div>
                             <p>{selectedValue?.loads_required} loads offered</p>
-                            {allPricesValue?.length > 0 ?
+                            {allPricesValue ?
                               <p>Transporter Quotation: R{allPricesValue[0]}</p>
                               : <p>Transporter Quotation: R00</p>
                             }
@@ -226,9 +227,9 @@ function BiddingPageTwo() {
                           </div> 
                           : <div>
                                <p>10 loads booked</p>
-                               <p>Confirmed Net Rate: R{allPricesValue[2]}</p>
-                               <p>Value Added Tax: R{(allPricesValue[2])*(14/100)}</p>
-                               <p>Total: R{selectedTotalValue}</p>
+                               <p>Confirmed Net Rate: R{allPricesValue[2] ? allPricesValue[2] : allPricesValue[1]}</p>
+                               <p>Value Added Tax: R{allPricesValue[2] ? (allPricesValue[2]*0.14).toFixed(0) : (allPricesValue[1]*0.14).toFixed(0)}</p>
+                               <p>Total: R{allPricesValue[2] ? (allPricesValue[2] + (allPricesValue[2]*0.14)).toFixed(0) : (allPricesValue[1] + (allPricesValue[1]*0.14)).toFixed(0) }</p>
                             </div>
                         }
             
@@ -244,7 +245,7 @@ function BiddingPageTwo() {
             
                         {!counterOffer && !accepted ?
                             <div>
-                              <button className={!deactivateAccept ? 'accept-offer' : 'accept-deactivated'} onClick={handleAccept}>Accept</button>
+                              <button className={!deactivateAccept ? 'accept-offer' : 'accept-deactivated'} onClick={handleAccept(selectedValue.booking_id, fleet)}>Accept</button>
                             </div>
                           : <></>
                         }
@@ -267,8 +268,6 @@ function BiddingPageTwo() {
                         
                       </div>
                   </div> 
-
-
 
                     // <div className="fleets-offers" key={key}> 
                     //   <SelectedBooking

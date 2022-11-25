@@ -31,12 +31,11 @@ export default function AddLocationOneContact({
         setNextBtnTwo,
         setCargoShow,
         setDefaultDrop,
-        allDoDetails,
-        setAllDuDetails
+        allContacts,
+        setAllContacts
     }) {
 
     const iconName = ("Jane").substring(0,2);
-    // var bookingWorkingArray = []
 
     //=========STATES ARRAY=========================================================================
     const [bookingArrayTwoInst, setBookingArrayTwoInst] = useState([])
@@ -45,19 +44,36 @@ export default function AddLocationOneContact({
     const [userUid, setUserUid] = useState("");
     const [isLoading , setIsLoading] = useState(false);
     const [isAddTwo, setIsaddTwo] = useState(false);
-    // const [allDoDetails,setAllDuDetails] = useState([]);
+    const [queryTwo, setQueryTwo] = useState("");
+    const [suggestionsTwo, setSuggestionsTwo] = useState([])
+    const keysTwo = ["Name", "CompanyName","Surname"];
+    const [isLoadingTwo , setIsLoadingTwo] = useState(false);
 
+    // const [allDoDetails,setAllDuDetails] = useState([]);
 
     //=========END STATE ARRAY======================================================================
 
     //========CONSOLE LOGS==========================================================================
     console.log(bookingArrayTwo)
-    console.log("booking working array",allDoDetails)
+    console.log("booking working array",allContacts)
     //========END CONSOLE LOGS======================================================================
 
     //==========FUNCTIONS===========================================================================
     const saveDropContactFnc = async ()=>{
         return  await firebase.database().ref().push()
+    }
+
+    const onSearchChangeTwo = (queryTwo) =>{
+        let matches = []
+        if (queryTwo.length>0){
+            matches = allContacts.filter(booking =>{
+                const regex = new RegExp(`${queryTwo}`, "i");
+                return booking.details.CompanyName.match(regex);
+            })
+        }
+        console.log('matches', matches)
+        setSuggestionsTwo(matches)
+        setQueryTwo(queryTwo)
     }
     //==========END FUNCTIONS=======================================================================
 
@@ -107,30 +123,59 @@ export default function AddLocationOneContact({
             <input 
                 type="text" 
                 placeholder='Company Name'
-                onChange={e =>setBookingArrayTwo((prevState) => ({
+                onChange={e =>{setBookingArrayTwo((prevState) => ({
                     ...prevState,
                     details:{
                         ...prevState.details,
                         CompanyName:e.target.value
                     } 
                 }))
+                onSearchChangeTwo(e.target.value) 
+                }
             }
             />
-            {/* <input 
-                type="text" 
-                placeholder='Physical Address'
-                onChange={e =>setBookingArrayTwo((prevState) => ({
-                    ...prevState,
-                    doDetails:{
-                        ...prevState.doDetails,
-                        doAddress:e.target.value
-                    } 
-                    }))
-                }
-            /> */}
+
+            {queryTwo.length>0 ? 
+                <div className='search-results-drop' style={{cursor:"pointer"}}>
+                    {suggestionsTwo?.length > 0 ? suggestionsTwo?.filter((booking) =>
+                        keysTwo?.some((key) => booking?.details[key].includes(queryTwo))
+                    ).map((booking) => (
+                        <div
+                        onClick={() => {
+                            setPickHomeIconTwo(true)
+                            setPickDefaultTwo(false)
+                            setDropSelected([booking])
+                            const selected = ([booking])
+                            setDefaultDrop(selected)
+                            // setDoDetails(selected)
+                            setTrackLocationTwo(true)
+                            setContactDateTwo(false)
+                            setLocationtitleTwo(false)
+                            setSearchLocationTwo(false)
+                            setContactBackgroundTwo(false)
+                            setLocationTwoWrapper(true)
+                            setChangeContactTwo(false)
+                            setNextBtnTwo(false)
+                            setCargoShow(true)
+                            setIsLoading(true)
+                            localStorage.setItem("dropSelectd", JSON.stringify(selected));
+                            setTimeout(() =>{
+                                setIsLoading(false);
+                                closeLocationModalTwo()
+                            }, 1000)
+                        }}
+                        >
+                            <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                            <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
+                            <hr />
+                        </div>
+                        // <div>hey</div>
+                    )): <></>}
+                </div>
+                : <></>
+            }
 
             <Autocomplete bookingArrayTwo={bookingArrayTwo} setBookingArrayTwo={setBookingArrayTwo}/>
-
 
             <input 
                 type="text" 
@@ -349,8 +394,8 @@ export default function AddLocationOneContact({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
-                                    PublicHolidays:{
-                                        ...prevState.details.operatingHours,
+                                    PublicHoliday:{
+                                        ...prevState.details.operatingHour,
                                             open:e.target.value
                                     }
                                 } 
@@ -507,16 +552,16 @@ export default function AddLocationOneContact({
         </div>
         <div>
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
-            {allDoDetails.length > 0 ? allDoDetails.map((booking) =>(
+            {allContacts.length > 0 ? allContacts.map((booking) =>(
                 <React.Fragment key={booking.id}>
                     <div className='contact-wrapper'
                         onClick={() => {
                             setPickHomeIconTwo(true)
                             setPickDefaultTwo(false)
-                            // setDropSelected([booking])
+                            setDropSelected([booking])
                             const selected = ([booking])
                             setDefaultDrop(selected)
-                            setDoDetails(selected)
+                            // setDoDetails(selected)
                             setTrackLocationTwo(true)
                             setContactDateTwo(false)
                             setLocationtitleTwo(false)
@@ -534,7 +579,7 @@ export default function AddLocationOneContact({
                             }, 1000)
                         }}
                     >
-                        <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
+                        <Avatar className='Enterprise-icon'>{booking.details?.Name.toUpperCase().substring(0,2)}</Avatar>
                         <div>
                             <p>{booking.details.Name}</p>
                             <p>{booking.details.CompanyName}</p>

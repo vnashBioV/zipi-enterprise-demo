@@ -14,9 +14,9 @@ export default function BiddingDetails({
             const storedList = JSON.parse(localStorage.getItem("selectedItemBidding"))
             setData([storedList]);
         }
-      }, []) 
+    }, []) 
 
-      console.log("This is the data", data)
+    console.log("This is the data", data)
 
   return (
     <>{ openDetails ? (

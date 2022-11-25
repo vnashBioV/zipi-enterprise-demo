@@ -7,10 +7,10 @@ export default function BookingTrackingBar({
     booking,
     setSingleBook,
     singleBook,
-    actualLoads
-
+    actualLoads,
+    getDriverDataFnc
 }) {
-    const [fleetForBooking, setFleetForBooking] = useState(booking.booking_bids_fleet_id);
+    const [fleetForBooking, setFleetForBooking] = useState(booking.drivers);
     const [showTrackBar, setShowTrackBar] = useState(false);
     const [showArrow, setShowArrow] = useState(false);
     const [progValue, setProgValue] = useState();
@@ -33,28 +33,36 @@ export default function BookingTrackingBar({
                 }else{  
                     setShowTrackBar(true)
                     setShowArrow(true)
+                    // getDriverDataFnc(booking)
                 }
             }}>
                 <i className={!showArrow ? "fa-solid fa-angle-down" : "fa-solid fa-angle-up"}></i>
             </div>
         </div>
         <div>
-            {fleetForBooking ? fleetForBooking.map((fleet, id) => {
+            {fleetForBooking ? fleetForBooking.map((driver, id) => {
                     var name = []
-                    firebase.database().ref('/fleets/' + fleet).on('value', (snapshot) => {
-                        name.push(snapshot.val().fleet_name)
+                    var vehicle = []
+                    firebase.database().ref('/drivers/' + driver).on('value', (snapshot) => {
+                        name.push(snapshot.val().name)
+                        const horseId = snapshot.val().horse_id
+                        const fleetId = snapshot.val().fleet
+                        firebase.database().ref('/fleets/' + fleetId).child("horses").child(horseId).on('value', snapshot =>{
+                            vehicle.push(snapshot.val().vehicle_type)
+                        })
                     })
                     return(
                         <>
                         {showTrackBar ? 
                             <DriverTrackingBar
-                                fleet={fleet}
+                                driver={driver}
                                 key={uuidv4()}
                                 fleetName={name}
                                 booking={booking}
                                 progValue={progValue}
                                 setProgValue={setProgValue}
                                 actualLoads={actualLoads}
+                                vehicle={vehicle}
                             />
                             :<></>
                         }

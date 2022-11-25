@@ -153,8 +153,11 @@ export default function SchedulingPage() {
         return  await firebase.database().ref().push()
     }
 
+    console.log("final pick", finalPick);
+    console.log("final drop", finalDrop);
+
     // console.log("Selected pick up details", pickUpDetails);
-    console.log("Selected drop off details", dropDetails);
+    // console.log("Selected drop off details", dropDetails);
     // console.log("This is is is prerequisites", prerequisites);
     // console.log("start date", startDate)
     // console.log("end date", endDate)
@@ -689,9 +692,9 @@ export default function SchedulingPage() {
                             const startDateString = startDate.toISOString().substring(0,10)
                             const endDateString = endDate.toISOString().substring(0,10)
                             const cargo = cargoDetails[0].details
-                            const cargoSds = cargoDetails[0]?.sds_url
-                            const starting_location = finalPick.puAddress
-                            const destination = finalDrop.doAddress
+                            const cargoSds = cargoDetails[0] ? cargoDetails[0].sds_url : null
+                            const starting_location = finalPick.Address
+                            const destination = finalDrop.Address
                             const start_date = startDateString
                             const due_date = endDateString
                             const total_loads = parseInt(parseInt((cargo.quantity)/34).toFixed(0))
@@ -704,8 +707,40 @@ export default function SchedulingPage() {
                                const bookingref = booking_id.substring(1,7)
                                const cargoquantity = cargoDetails[0].details.quantity
                                firebase.database().ref('/booking/' + booking_id).update({
-                                puDetails: finalPick,
-                                doDetails: finalDrop,
+                                puDetails:{
+                                    puCityName: finalPick.CityName,
+                                    puCompanyName: finalPick.CompanyName,
+                                    puComplexBuilding: finalPick.ComplexBuilding,
+                                    puEmail: finalPick.Email,
+                                    puGateInGateOut: finalPick.GateInGateOut,
+                                    puLoadingBays: finalPick.LoadingBays,
+                                    puName: finalPick.Name,
+                                    puNotificationType: finalPick.NotificationType,
+                                    puOperatingHours: finalPick.OperatingHours,
+                                    puPhone: finalPick.Phone,
+                                    puPublicHoliday: finalPick.PublicHoliday,
+                                    puSpecialInstructions: finalPick.SpecialInstructions,
+                                    puSurname: finalPick.Surname,
+                                    puTelephone: finalPick.Telephone,
+                                    puAddress: finalPick.Address
+                                },
+                                doDetails:{
+                                    doCityName: finalDrop.CityName,
+                                    doCompanyName: finalDrop.CompanyName,
+                                    doComplexBuilding: finalDrop.ComplexBuilding,
+                                    doEmail: finalPick.Email,
+                                    doGateInGateOut: finalDrop.GateInGateOut,
+                                    doLoadingBays: finalDrop.LoadingBays,
+                                    doName: finalDrop.Name,
+                                    doNotificationType: finalDrop.NotificationType,
+                                    doOperatingHours: finalDrop.OperatingHours,
+                                    doPhone: finalDrop.Phone,
+                                    doPublicHoliday: finalDrop.PublicHoliday,                                   
+                                    doSpecialInstructions: finalDrop.SpecialInstructions,
+                                    doSurname: finalDrop.Surname,
+                                    doTelephone: finalDrop.Telephone,
+                                    doAddress: finalDrop.Address,
+                                },
                                 prerequisites:prerequisites[0].prerequisites,
                                 dates_time_selection: {
                                     start_date_string: startDateString,
@@ -720,13 +755,13 @@ export default function SchedulingPage() {
                                 gate_in_gate_out_duration: gateInOutDuration,
                                 "cargoInformation":
                                     {...cargo
-                                        ,sdsUrl: cargoSds,
+                                        ,sdsUrl: cargoSds === undefined ? "" : cargoSds,
                                     },
                                 
                                 booking_ref: booking_id.substring(1,7),
                                 booking_id: booking_id,
                                 loads_per_day: !testVar === "" ? testVar.toFixed(0) : moreloadCal,
-                                actual_loads_for_cargo: parseInt(parseInt((cargo.quantity)/34).toFixed(0))
+                                actual_loads_for_cargo: parseInt(parseInt((cargo?.quantity)/34).toFixed(0)) ? parseInt(parseInt((cargo?.quantity)/34).toFixed(0)) : 0
                             }).then(() => {
                                 var message = 'hello world'
                                 var xhr = new XMLHttpRequest();

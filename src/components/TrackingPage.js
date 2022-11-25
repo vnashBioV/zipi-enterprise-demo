@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DriverTrackingBar from '../components/DriverTrackingBar'
 import BookingTrackingBar from './BookingTrackingBar';
 import ReactToPdf from 'react-to-pdf';
+
 // import PdfComponent from './PdfComponent'
 
 function TrackingPage() {
@@ -29,6 +30,7 @@ function TrackingPage() {
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [documentComp, setDocumentComp] = useState(false);
+    const [clickOnRight, setClickOnRight] = useState(false);
 
     var bookingArray = [];
 
@@ -94,11 +96,16 @@ function TrackingPage() {
         });
       }
 
+      useEffect(() => {
+        setClickOnRight(true);
+      }, [])
+
     console.log("all the booking", allBookingarr);
     console.log("the booking driver", bookingDriver);
     console.log("user information", userArray);
     console.log("The selected single booking", singleBook)
     console.log("user", user)
+    console.log("driver data", driverData)
     // console.log("selected booking side", selectedDriverBook)
 
     return (
@@ -176,10 +183,6 @@ function TrackingPage() {
                                        <p>{single.cargoInformation.weight}t</p>
                                    </div>
                                </div>
-                               {/* <p style={{marginTop:"10px"}}>
-                                   This cargo is fragile, must be contained in temperatures between -20°C 
-                                   and 0°C and is hazardous.
-                               </p> */}
                                <a href={single.sdsUrl} className="btn-download">Download SDS <span><img src={downIcon} alt="" /></span></a>
                            </div>
                         </div>
@@ -206,10 +209,6 @@ function TrackingPage() {
                                         <p>32t</p>
                                     </div>
                                 </div>
-                                {/* <p style={{marginTop:"10px"}}>
-                                    This cargo is fragile, must be contained in temperatures between -20°C 
-                                    and 0°C and is hazardous.
-                                </p> */}
                                 <button className="btn-download">Download SDS <span><img src={downIcon} alt="" /></span></button>
                             </div>
                         </div>
@@ -243,24 +242,15 @@ function TrackingPage() {
             </div>
             <div>
                 <h1>Overview</h1>
-                <div className='bound-btns'>
-                    <button>
-                        Inbound
-                    </button>
-                    <button style={{background:"#fff"}}>
-                        Outbound
-                    </button>
-                </div>
                 <div className='tracking-pannel'>
                     <h1>Tracking</h1>
                     <div className='search-panel'>
                         <input type="text" placeholder='Advanced search' onChange={e => onSearchChange(e.target.value)}/>
-                        <div><img src={filterIcon} alt="" /></div>
+                        {/* <div><img src={filterIcon} alt="" /></div> */}
                     </div>
 
                     {allBookingarr.length > 0 ? allBookingarr.map((booking) => {
-                        // getDriverDataFnc(booking)
-                        const actualLoads = booking.actual_loads_for_cargo
+                        const actualLoads = booking.undelivered_loads ? booking.undelivered_loads + "px" : '300px'
                         return(
                             <>
                                  <BookingTrackingBar
@@ -269,68 +259,27 @@ function TrackingPage() {
                                     setSingleBook={setSingleBook}
                                     singleBook={singleBook}
                                     actualLoads={actualLoads}
+                                    getDriverDataFnc={getDriverDataFnc}
+                                    setDriverData={setDriverData}
+                                    driverData={driverData}
                                  />
                             </>
                         )
                         })
                         : <></>
                     }
-
-                    {/* {allBookingArray.length > 0 ? allBookingArray.filter(item => item.booking_bids_fleet_id).map((booking) =>{
-                        fetchDriverDataFnc(booking)
-                        return (
-                            <div key={uuidv4()} className="driver-container" onClick={() => {
-                                setSelectedDriverBook([booking])
-                            }}>
-                                <div className='driver-profile'>
-                                    <div>
-                                        <div>
-                                            {bookingDriver.length > 0 ? bookingDriver.map((driver) => (
-                                                <Avatar className='Enterprise-icon'>{driver.fleet_name.toUpperCase().substring(0,2)}</Avatar>
-                                            ))
-                                            :  <Avatar className='Enterprise-icon'>DR</Avatar>   
-                                            
-                                            }
-                                            
-                                        </div>
-                                            {bookingDriver.length > 0 ? bookingDriver.map((driver) => (
-                                                <div>
-                                                    <h1>{driver.fleet_name}</h1>
-                                                    <p>Trip ID: {booking.booking_ref}</p>
-                                                </div>
-                                                
-                                            ))
-                                            :  
-                                                <div>
-                                                    <h1>Fleet Name</h1>
-                                                    <p>Trip ID: </p>
-                                                </div>
-                                            }
-                                                                                        
-                                    </div>
-                                    <div>
-                                        <p>{booking.cargoInformation.vehicle_type}</p>
-                                    </div>
-                                </div>
-                                <div className='progress-bar'>
-                                    <progress 
-                                        value={10} 
-                                        max={100} 
-                                        className="progress-bars"
-                                    />
-                                </div>
-                            </div>
-                        )
-                    })
-                      : <></>
-                    } */}
-                    
                 </div>
             </div>
         </div>
         {/* {documentComp && 
             <PdfComponent singleBook={singleBook} setDocumentComp={setDocumentComp}/>
         } */}
+         {clickOnRight &&
+            <div className='login-alert cargo-alertt' style={{border:"1px solid #c3c3c3"}}>
+                <p style={{fontSize:"13.5px"}}>Please click on right section to see the booking information</p>
+                <button className='alert-btnn' onClick={() => setClickOnRight(false) }>Ok</button>
+            </div>
+        } 
     </div>
   )
 }

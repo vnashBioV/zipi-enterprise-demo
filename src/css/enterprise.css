@@ -267,8 +267,17 @@
   font-size: 12px;
   color: #5d5d5d;
 }
+
 .change-contact{
-  display: block;
+  
+}
+
+.pen-dir{
+  margin-right: 7px;
+}
+
+.change-contact{
+  /* display: block; */
   padding: 3px 10px;
   border: 1px solid;
   border-radius: 14px;
@@ -277,6 +286,10 @@
   pointer-events: auto;
   cursor: pointer;
   width: 9%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
 .pill-container{
   width: 49.3%;

@@ -2,6 +2,7 @@
     width: 73%;
     max-width: 73%;
     margin: auto;
+    position: relative;
 }
 .tracking-child{
     display: flex;
@@ -52,10 +53,11 @@
 }
 .search-panel > input{
     padding: 11px 10px;
-    width: 72%;
+    width: 100%;
     border-radius: 10px;
     border: transparent;
     background: #e1e1e1;
+    font-size: 13px
 }
 .search-panel > div{
     padding: 11px 10px;
@@ -105,7 +107,7 @@
     justify-content: space-between;
 }
 .load-shipping > div{
-    width: calc(100%/3 - 4%);
+    width: calc(100%/3 - 1.5%);
     background: #fff;
     /* border: 1px solid; */
     border-radius: 10px;
@@ -137,7 +139,7 @@
     color: #fff;
     height: 29px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     cursor: pointer;
     width: 175px;
@@ -183,7 +185,7 @@
 }
 .print-block{
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
 }
 .get-pdf-btn{
     padding: 10px;
@@ -209,6 +211,10 @@
     justify-content: center;
     align-items: center;
     border-radius: 100%;
+}
+.print-block > div > span.chat-ico > img{
+    display: block;
+    max-width: unset;
 }
 .driver-container{
     cursor: pointer;
@@ -247,8 +253,7 @@
 }
 .this-booking > div > h2{
     font-weight: normal;
-    font-size: 16px;
-    margin-bottom: 7px;
+    font-size: 14px;
 }
 .arrow-block{
     display: flex;
