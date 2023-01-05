@@ -162,7 +162,7 @@
 
 .schedule-sum > div:nth-child(2){
   width: 30%;
-  background: #E2E2E2;
+  background: #d3d3d3;
   border-radius: 0px 10px 10px 0px;
   max-height: 665px;
   overflow: scroll;
@@ -423,7 +423,7 @@
   border: transparent;
   font-size: 13px;
   height: 29px;
-  background: #fff;
+  background: #e8e8e8;
 }
 .bay-container{
   margin-top: 20px;

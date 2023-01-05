@@ -8,7 +8,7 @@ import firebase from '../firebase-config';
 
 export default function EnterpriseNav({name}) {
     // const name = "Jane Doe";
-    const iconName = name.substring(0,2);
+    const iconName = name?.substring(0,2);
     const navigate = useNavigate();
     const [mobNav, setMobNav] = useState(false);
 
@@ -16,7 +16,7 @@ export default function EnterpriseNav({name}) {
     <div className='nav-container duration-500 ease-in-out'>
         <div className='nav duration-500 ease-in-out'>
             <div className='logo'>
-                <Link to={'/'}><img src={logo} alt="" /></Link>
+                <Link to={'/enterprise'}><img src={logo} alt="" /></Link>
                 <p>enterprise</p>
             </div>
             {!mobNav ? 
@@ -42,6 +42,7 @@ export default function EnterpriseNav({name}) {
                     <li><Link to="/tracking"><i className="fa-solid fa-location-arrow"></i>Tracking</Link></li>
                     <li><Link to="/schedule"><i className="fa-solid fa-calendar"></i>Schedule</Link></li>
                     <li><Link to="/bidding"><i className="fa-solid fa-clipboard-list"></i>Requets</Link></li>
+                    <li><Link to="/dashboard"><i class="fa-solid fa-table-columns"></i>Dashboard</Link></li>
                     <li><Link to="" onClick={()=> {
                         firebase.auth().signOut().then(() => {
                             navigate('/')
@@ -58,6 +59,7 @@ export default function EnterpriseNav({name}) {
                     <li><Link to="/tracking"><i className="fa-solid fa-location-arrow"></i>Tracking</Link></li>
                     <li><Link to="/schedule"><i className="fa-solid fa-calendar"></i>Schedule</Link></li>
                     <li><Link to="/bidding"><i className="fa-solid fa-clipboard-list"></i>Requets</Link></li>
+                    <li><Link to="/dashboard"><i class="fa-solid fa-table-columns"></i>Dashboard</Link></li>
                     <li><Link to="" onClick={()=> {
                         firebase.auth().signOut().then(() => {
                             navigate('/Login')

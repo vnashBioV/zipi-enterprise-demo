@@ -296,7 +296,7 @@ export default function Cargo({
 
   return (
     <div className={`modal-container duration-500 ease-in-out ${isCargo ? 'opacity-1' : 'opacity-0'}`}>
-        <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{width:"423px", margin:"9rem 0"}}>
+        <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{ margin:"9rem 0"}}>
             <div className='cargo-modal'>
                 <h1>New Product</h1>  
                 <p>Add a new package by adding its information</p>

@@ -708,21 +708,21 @@ export default function SchedulingPage() {
                                const cargoquantity = cargoDetails[0].details.quantity
                                firebase.database().ref('/booking/' + booking_id).update({
                                 puDetails:{
-                                    puCityName: finalPick.CityName,
-                                    puCompanyName: finalPick.CompanyName,
-                                    puComplexBuilding: finalPick.ComplexBuilding,
+                                    puCityName: finalPick?.CityName,
+                                    puCompanyName: finalPick?.CompanyName,
+                                    puComplexBuilding: finalPick?.ComplexBuilding,
                                     puEmail: finalPick.Email,
-                                    puGateInGateOut: finalPick.GateInGateOut,
-                                    puLoadingBays: finalPick.LoadingBays,
-                                    puName: finalPick.Name,
-                                    puNotificationType: finalPick.NotificationType,
-                                    puOperatingHours: finalPick.OperatingHours,
-                                    puPhone: finalPick.Phone,
-                                    puPublicHoliday: finalPick.PublicHoliday,
-                                    puSpecialInstructions: finalPick.SpecialInstructions,
-                                    puSurname: finalPick.Surname,
-                                    puTelephone: finalPick.Telephone,
-                                    puAddress: finalPick.Address
+                                    puGateInGateOut: finalPick?.GateInGateOut,
+                                    puLoadingBays: finalPick?.LoadingBays,
+                                    puName: finalPick?.Name,
+                                    puNotificationType: finalPick?.NotificationType,
+                                    puOperatingHours: finalPick?.OperatingHours,
+                                    puPhone: finalPick?.Phone,
+                                    puPublicHoliday: finalPick?.PublicHoliday,
+                                    puSpecialInstructions: finalPick?.SpecialInstructions,
+                                    puSurname: finalPick?.Surname,
+                                    puTelephone: finalPick?.Telephone,
+                                    puAddress: finalPick?.Address
                                 },
                                 doDetails:{
                                     doCityName: finalDrop.CityName,

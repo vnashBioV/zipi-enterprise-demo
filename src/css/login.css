@@ -11,6 +11,10 @@
     background: #fff;
     transition: .5s all;
 }
+.form{
+  width: 100%;
+  margin: auto;
+}
 .login-form > input{
     width: 100%;
     max-width: 100%;
@@ -131,10 +135,10 @@
     margin-bottom: 15px;
 }
 /* .register > div > div > select{
-    width: 104% !important;
+    width: 104% ;
 } */
 .register > div > div > label > input{
-    margin-bottom: 0 !important;
+    margin-bottom: 0 ;
 }
 .register > div > div > label{
     /* padding: 9px 10px;
@@ -185,7 +189,7 @@
 }
 
 .register > div > div:nth-child(1) >  label, .register > div > div:nth-child(2) >  label{
-    font-weight: normal !important;
+    font-weight: normal ;
     margin-top: 10px;
     font-size: 12px;
 }
@@ -194,21 +198,21 @@
     flex-direction: column;
 }
 .partner{
-    padding: 0 !important;
-    width: 100% !important;
+    padding: 0 ;
+    width: 100% ;
     display: flex;
     flex-direction: row;
 }
 .partner > input, .partner > select{
-    width: 25% !important;
-    border: 1px solid #c1c1c1 !important;
-    border-radius: 0px !important;
-    padding: 5px !important;
-    margin-bottom: 0 !important;
+    width: 25% ;
+    border: 1px solid #c1c1c1 ;
+    border-radius: 0px ;
+    padding: 5px ;
+    margin-bottom: 0 ;
 }
 .partner > select{
-    padding: 6px !important;
-    background: #ffe200 !important;
+    padding: 6px ;
+    background: #ffe200 ;
 }
 .register > div:nth-child(3){
     display: flex;
@@ -226,14 +230,14 @@
 }
 .sa-province{
     display: flex;
-    padding: 11px 0 !important;
+    padding: 11px 0 ;
 }
 .sa-province > div:nth-child(1) > p, .sa-province > div:nth-child(2) > p{
     font-size: 14px;
     margin-bottom: 9px;
 }
 .sa-province > div:nth-child(1) > label, .sa-province > div:nth-child(2) > label, .vehicle-type > div > label{
-    font-weight: normal !important;
+    font-weight: normal ;
     font-size: 13px;
     padding: 0;
     margin: 0;
@@ -253,14 +257,14 @@
 .vehicle-type{
     display: flex;
     /* flex-direction: column; */
-    padding: 2px 0 0 0 !important;
+    padding: 2px 0 0 0 ;
 }
 .vehicle-type > div > p{
-    font-size: 14px !important;
-    margin-left: 0px !important;
+    font-size: 14px ;
+    margin-left: 0px ;
 }
 .add-director{
-    width: 100% !important;
+    width: 100% ;
     display: flex;
     align-items: center;
     justify-content: end;
@@ -337,3 +341,680 @@
     color:#474747;
     cursor:pointer;
 }
+/* ======================================================================== */
+* {
+    /* padding: 0 ;
+    margin: 0 ;
+    font-family: Arial, Helvetica, sans-serif ; */
+    transition: 0.3s ease-in-out ;
+  }
+  .theBackground {
+    width: 100vw ;
+    height: 100vh ;
+    background: url("bg.jpg") ;
+    background-size: cover ;
+    background-repeat: no-repeat ;
+    /* display: flex ;
+    flex-direction: row ;
+    justify-content: space-around ;
+    align-items: center ; */
+  }
+  .theBackground::-webkit-scrollbar{
+    display: none;
+  }
+
+  #informatics {
+    max-width: 450px ;
+    width: fit-content ;
+    color: white ;
+  }
+  #informatics h2 {
+    font-weight: bolder ;
+    margin-top: 13px;
+    margin-bottom: 4px ;
+    font-size: 21px;
+  }
+  #informatics p {
+    font-size: 0.98rem;
+  }
+  #absolutely {
+    max-width: 390px;
+    height: -moz-fit-content ;
+    height: fit-content ;
+    padding: 27px ;
+    padding-bottom: 109px;
+    background: white ;
+    border-radius: 20px ;
+    position: relative ;
+    display: flex;
+    width: 390px;
+  }
+  #absolutelyReg {
+    height: -moz-fit-content;
+    height: fit-content;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    position: relative;
+    display: none;
+    width: 394px;
+    max-width: 394px;     
+  }
+  #step1 > div > button.btnTertiary,
+  #step3 > div.btnHolder > button.btnTertiary{
+    color: #000;
+    font-size: 13.5px;
+  }
+
+  #step4 > div:nth-child(3) > label > input,
+  #step4 > div:nth-child(4) > label > input{
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  #step1 > p, 
+  #step2 > p, 
+  #step3 > p{
+    margin: 9px 0px;
+  }
+
+  .loginInput {
+    padding: 6px 20px;
+    background: #e8e8e8;
+    border-radius: 100px;
+    border: 0;
+    width: 100%;
+    margin: auto auto 9px auto;
+    font-size: 12px;
+    color: #000;
+  }
+  .theBackground h1 {
+    margin-bottom: 56px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  #step4 > h1{
+    margin: 0;
+    font-size: 17px;
+  }
+  #step4 > p{
+    margin: 8px 0 18px 0px;
+  }
+  #step4 > div > label{
+    color: #000;
+  }
+  .theBackground p {
+    margin: 20px 0 ;
+  }
+  .cont {
+    width: fit-content ;
+    padding: 10px 10px ;
+  }
+  .follow {
+    width: 100% ;
+    height: 10px ;
+    background: red ;
+  }
+  .signup,
+  .signupOuter {
+    width: 100% ;
+    height: 70px ;
+    background: #efefef ;
+    position: absolute ;
+    bottom: 0 ;
+    left: 0 ;
+    border-bottom-right-radius: 20px ;
+    border-bottom-left-radius: 20px ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    padding: 0 ;
+  }
+  .signupOuter {
+    display: none ;
+  }
+  .signupOuter #floatingP {
+    position: absolute ;
+    top: -9px ;
+  }
+  #floatingP {
+    position: absolute ;
+    top: -29px ;
+  }
+  .btnHolder {
+    margin-top: 22px;
+    display: flex ;
+    flex-direction: row ;
+    justify-content: space-between ;
+  }
+.theBackground button {
+    font-size: 0.77rem ;
+    font-weight: 600 ;
+  }
+  .theBackground button:hover {
+    cursor: pointer ;
+  }
+  .btnPrimary {
+    padding: 6px 21px;
+    background: #ffe200;
+    border: 0;
+    border-radius: 100px;
+    font-size: 0.87rem !important;
+  }
+  .btnTertiary {
+    background: transparent ;
+    border: 0 ;
+    color: blue ;
+  }
+  .logoArea {
+    padding: 3px 20px;
+    background: linear-gradient(105deg, #ffe200 20%, #ffe20000 62%);
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  #logo {
+    height: 52px ;
+    object-fit: contain;
+    width: 75px;
+  }
+  #step2,
+  #step3,
+  .formFinish {
+    display: none ;
+  }
+  @media screen and (max-width: 1024px) {
+    #informatics {
+      display: none ;
+    }
+    @media screen and (max-width: 500px) {
+      #absolutely,
+      #absolutelyReg {
+        width: 100% ;
+        padding: 40px 20px ;
+        max-width: unset ;
+        min-width: unset ;
+        border-radius: 0 ;
+        transform: translateY(35%) ;
+      }
+      .signupOuter {
+        display: flex ;
+        animation: fadeIn 0.3s ease-out ;
+      }
+      .signup {
+        /* display: none ; */
+        background: unset !important;
+        border-radius: 0 !important;
+        position: relative !important;
+        margin-top: 34px;
+      }
+      .theBackground {
+        width: 100vw ;
+        height: 100vh ;
+        background: white ;
+      }
+      .top-board-child{
+        display: none;
+      }
+    }
+    @media screen and (max-height: 850px) {
+      #absolutely {
+        transform: translateY(10%) ;
+      }
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .top-board-child{
+      display: none !important;
+    }
+    .on-boarding > div.error-login-message{
+      width: 43% !important;
+    }
+    .inner-log-container{
+      width: 100% !important;
+    }
+    .bottom-board-child > div{
+      width: 100% !important;
+      height: 100% !important;
+      padding-bottom: 83px !important;
+    }
+    .board-child{
+      width: 100%!important;
+    }
+    .bottom-board-child > div > div:nth-child(2){
+      flex-wrap: wrap !important;
+      overflow: scroll;
+      height: fit-content;
+    }
+    .bottom-board-child > div > div:nth-child(2) > div{
+      width: 100% !important;
+    }
+    .bottom-board-child > div > div:nth-child(2) > div{
+        /* margin-bottom: 48px; */
+    }
+    .bottom-board-child > div > div:nth-child(3){
+      height:unset !important;
+    }
+    .inner-log-container{
+      height: fit-content !important;
+      margin: unset !important;
+    }
+    .theBackground{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  /*the container must be positioned relative:*/
+  .custom-select {
+    position: relative;
+    font-family: Arial;
+    margin-top: 20px;
+  }
+
+  .custom-select select {
+    overflow-y: auto ;
+    display: none ; /*hide original SELECT element:*/
+  }
+
+  .select-selected {
+    background-color: #f2f2f2 ;
+    border-radius: 100px ;
+  }
+
+  /*style the arrow inside the select element:*/
+  .select-selected:after {
+    position: absolute ;
+    content: "" ;
+    top: 24px ;
+    right: 20px ;
+    width: 0 ;
+    height: 0 ;
+    border: 6px solid transparent ;
+    border-color: black transparent transparent transparent ;
+  }
+
+  /*point the arrow upwards when the select box is open (active):*/
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent #333 transparent ;
+    top: 15px ;
+  }
+
+  /*style the items (options), including the selected item:*/
+  .select-items div,
+  .select-selected {
+    color: black ;
+    padding: 15px 20px ;
+    /* border-radius: 100px; */
+    /* margin-top: 20px; */
+    cursor: pointer ;
+    user-select: none ;
+  }
+
+  /*style items (options):*/
+  .select-items {
+    position: absolute ;
+    background-color: #f2f2f2 ;
+    top: 100% ;
+    left: 0 ;
+    right: 0 ;
+    z-index: 99 ;
+    overflow-y: auto ;
+    max-height: 200px ;
+  }
+
+  /*hide the items when the select box is closed:*/
+  .select-hide {
+    display: none ;
+  }
+
+  .select-items div:hover,
+  .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1) ;
+  }
+
+  /* This is the checkmark */
+  .checkContainer {
+    font-size: 12px;
+    color: #9f9f9f;
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox[type=checkbox] {
+    visibility: hidden;
+}
+
+  /* Hide the browser's default checkbox */
+  .checkContainer input {
+    width: 18px;
+    height: 17px;
+  }
+
+  #informatics > div.textArea > p{
+    margin: 5px 0 ;
+  }
+
+  /* Create a custom checkbox */
+  /* .checkmark {
+  } */
+  .checker{
+    margin-top: 4px;
+    margin-bottom: 11px;
+    margin-left: 19px;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .checkContainer:hover input ~ .checkmark {
+    background-color: #f2f2f2 ;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .checkContainer input:checked ~ .checkmark {
+    background-color: #ffe200 ;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute ;
+    display: none ;
+  }
+
+  /* Show the checkmark when checked */
+  /* .checkContainer input:checked ~ .checkmark:after {
+    display: block ;
+  } */
+
+  /* Style the checkmark/indicator */
+  .checkContainer .checkmark:after {
+    left: 9px ;
+    top: 5px ;
+    width: 5px ;
+    height: 10px ;
+    border: solid #333 ;
+    border-width: 0 3px 3px 0 ;
+    -webkit-transform: rotate(45deg) ;
+    -ms-transform: rotate(45deg) ;
+    transform: rotate(45deg) ;
+  }
+
+  .progressBar-container {
+    width: 100% ;
+    height: 8px ;
+    background: #e8e8e8 ;
+    border-radius: 10px ;
+    overflow: hidden ;
+  }
+  .progressBar-container > #barology {
+    height: 100% ;
+    width: 0% ;
+    background: #ffe200 ;
+  }
+  .steps {
+    color: #9a9a9a ;
+    margin-bottom: 9px;
+    font-size: 12px;
+  }
+
+  .theBackground a {
+    color: blue ;
+  }
+
+  .skip-button{ 
+    position: absolute ;
+    right: 40px ;
+    top: 40px ;
+    padding: 10px 0 ;
+    border: 0 ;
+    background: transparent ;
+  }
+  .inner-log-container{
+    display: flex ;
+    flex-direction: row ;
+    justify-content: space-around ;
+    align-items: center ;
+    width: 80vw ;
+    height: 100vh ;
+    margin: auto;
+    position: relative;
+  }
+  #absolutely > div > p{
+    font-size: 11.6px;
+    margin-bottom: 17px;
+    line-height: 15px;;
+  }#absolutely > div > div.btnHolder > button.btnTertiary{
+    font-size: 0.7rem;
+    font-weight: normal;
+  }
+  .on-boarding{
+    width: 100vw;
+    /* height: 100vh; */
+    display: none;
+    position: relative;
+  }
+  .board-child{
+    width: 73%;
+    margin: auto;
+  }
+  .top-board-child{
+    display: flex;
+    align-items: end;
+  }
+  .boarding-img{
+    object-fit: cover;
+    width: 77px;
+  }
+  .top-board-child > p{
+    padding-left: 13px;
+    font-size: 19px;
+    font-weight: bold;
+    color: #323232;
+  }
+  .bottom-board-child{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 27px;
+  }
+  .bottom-board-child > div{
+    width: 581px;
+    height: 521px;
+    background-color: #fff;
+    border-radius: 13px;
+    padding-bottom: 10px;
+  }
+  .bottom-board-child > div > div:nth-child(1){
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding: 27px 28px;
+    font-weight: bold;
+  }
+  .bottom-board-child > div > div:nth-child(1) > p{
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0 !important;
+    padding: 0!important;
+    color: #494949;
+  }
+  .bottom-board-child > div > div:nth-child(2){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  .bottom-board-child > div > div:nth-child(2) > h2{
+    font-weight: bold;
+    color: #494949;
+    font-size: 18.3px;
+  }
+  .bottom-board-child > div > div:nth-child(2) > div{
+    width: 183px;
+    height: 116px;
+    margin-top: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .bottom-board-child > div > div:nth-child(2) > div > img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .bottom-board-child > div > div:nth-child(3){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12%;
+    flex-direction: column;
+    padding: 0 27px;
+    height: 91px;
+  }
+  .bottom-board-child > div > div:nth-child(3) > p:nth-child(1){
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #494949;
+    text-align: center;
+  }
+  .bottom-board-child > div > div:nth-child(3) > p:nth-child(2){
+   text-align: center;
+   color: #494949;
+  }
+  .indicators{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 25px !important;
+    flex-direction: row !important;;
+  }
+  .indicators > div:not(.indicators > div:last-of-type){
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    margin-left: 10px;
+    background: #d9d9d9;
+  }
+ .indicators > div:last-of-type{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-left: 10px;
+    background: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .indicators > div{
+    cursor: pointer;
+  }
+  .last-block{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 43px !important;
+    flex-direction: column !important;
+    padding-bottom: 0 !important;
+  }
+  .last-block > h2{
+    text-align: center;
+    font-size: 17px;
+    color: #494949;
+    padding-bottom: 39px !important;
+  }
+  .last-block > p{
+    text-align: center;
+    font-size: 13px !important;
+    font-weight: normal;
+  }
+  .board-options{
+    display: flex !important;
+    justify-content: end !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    width: 149px !important;
+    height: 149px !important;
+    background: #f2f2f2;
+    border-radius: 13px;
+    cursor: pointer;
+  }
+  .options-container{
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    padding: 0 7%;
+  }
+  .board-options > div{
+    width: 51px;
+    height: 52px;
+  }
+  .board-options > div > img{
+    display: block;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+  .board-options > p{
+    font-weight: bold !important; 
+    color: #494949;
+  }
+  #step2 > div.btnHolder > button.btnTertiary{
+    color: #000;
+    font-size: 13px;
+  }
+  .error-login-message{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 50%;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0px -1px 5px 0px;
+    padding: 24px;
+    width: 86%;
+    height: 44%;
+    border-radius: 11px;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+  }
+  .error-login-message > p{
+    text-align: center;
+  }
+  .error-login-message > button{
+    width: 69px;
+    padding: 6px;
+    border: none;
+    background: #ffe22b;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 375px) {
+    .bottom-board-child > div{
+      margin-top: 200px !important;
+    } 
+  }
+ 
+  /* #absolutely > div > p */

@@ -21,7 +21,7 @@ export default function BiddingDetails({
   return (
     <>{ openDetails ? (
         <div className='modal-container'>
-            <div className='modal' style={{width: "702px", maxHeight:"668px", overflow:"scroll"}}>
+            <div className='modal' style={{width: "702px", maxHeight:"668px", height:"668px", overflow:"scroll", padding:"20px"}}>
                 <div className='title-summary-head'>
                     <h1>Summary</h1>
                     <p style={{cursor:"pointer", fontWeight:"bold", fontSize:"20px"}} onClick={() => setOpenDetails((prev) => !prev)}>X</p>
@@ -266,8 +266,8 @@ export default function BiddingDetails({
                                                     <p>Max</p>
                                                 </div>
                                                 <div className='cargo-bid' >
-                                                    <p>: {booking[0].cargoInformation.hazard.min_temp}&#8451;</p>
-                                                    <p>: {booking[0].cargoInformation.hazard.max_temp}&#8451;</p>
+                                                    <p>: {booking[0]?.cargoInformation?.hazard?.min_temp}&#8451;</p>
+                                                    <p>: {booking[0]?.cargoInformation?.hazard?.max_temp}&#8451;</p>
                                                 </div>
                                         </div>
                             

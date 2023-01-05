@@ -1,8 +1,11 @@
 body{
-  background: #F2F2F2;
+  background: #e3e3e3;
 }
 .app {
-  background: #F2F2F2;
+  background: #e3e3e3;
+}
+.app::-webkit-scrollbar{
+  display: none;
 }
 /* *{
   transition: all 500ms ease-in-out
@@ -94,12 +97,36 @@ input:focus, textarea:focus, select:focus {
   .side-section{
     display: none !important;
   }
+  .animate-addcontact-one{
+    width: 93% !important;
+  }
+  .cargo-modal-wrap{
+    flex-direction: column !important;
+    width: 83%!important;
+  }
   .login-form{
     width: 100% !important;
+  }
+  .cargo-modal, .left-cargo-secti{
+    width: 100%!important;
+  }
+  .left-cargo-secti{
+    height: 220px !important;
+    overflow: scroll !important;
+  }
+  .operating-hours > div > div{
+    width: calc(100%) !important;
+  }
+  .add-contacts-wrapper > div:nth-child(2){
+    padding-left: unset !important;
+  }
+  .cancel-add-btn{
+    justify-content: space-between !important;
   }
   .enterprise-booking-page{
     width: 100% !important;
     max-width: unset !important;
+    padding: 0 15px;
   }
   .search, 
   .search-container, 
@@ -113,6 +140,7 @@ input:focus, textarea:focus, select:focus {
   .search-container > button{
     width: 45px !important;
     margin-left: 10px;
+    height: 45px !important;
   }
   .box-icon > span > i{
     margin-left: unset !important;
@@ -155,15 +183,20 @@ input:focus, textarea:focus, select:focus {
     opacity: 1 !important;
     right: 0 !important;
     display: block !important;
+    height: fit-content !important;
   }
   .modal, .modal-summary{
-    width: 83% !important;
+    width: 93% !important;
   }
   .summary-wrapper > div:nth-child(1) > div, .summary-wrapper > div:nth-child(2) > div{
     height: unset !important;
   }
   .continue-btn-container{
     width: 91% !important;
+    justify-content: space-between !important;
+  }
+  .other{
+    margin-top: 20px ;
   }
   .summary-wrapper{
     flex-wrap: wrap;
@@ -304,7 +337,7 @@ input:focus, textarea:focus, select:focus {
     width: 48% !important;
   }
   .modal-summary{
-    padding-bottom: 96px !important;
+    padding-bottom: 15px !important;
   }
   .summary-wrapper > div:nth-child(2) > div:nth-child(5) > div > label,
  .summary-wrapper > div:nth-child(2) > div:nth-child(5) > div > label{
@@ -386,6 +419,13 @@ input:focus, textarea:focus, select:focus {
     display: flex;
     justify-content: end;
   }
+}
+@media screen and (max-width: 375px) {
+  .animate-addcontact-one{
+    margin-top: 46px !important;
+  }
+  .cargo-modal-wrap{
+    margin-top: 183% !important;  }
 }
 
  /* delivery agent to fleet owners */

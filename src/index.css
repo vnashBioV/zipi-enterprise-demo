@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   margin: 0;
   font-family: 'Calibri', sans-serif;
@@ -11,4 +12,7 @@ body {
 code {
   font-family: 'Calibri', 'Courier New',
     monospace;
+}
+img{
+  max-width: unset !important;
 }

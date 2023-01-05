@@ -439,7 +439,7 @@ export default function Enterprise() {
 
 
   return (
-    <div>
+    <div style={{background:"#e3e3e3"}}>
         <EnterpriseNav name={company}/>
         <div className='enterprise-booking-page duration-500 ease-in-out'>
 {/*==================================LOCATION ONE================================================================================================= */}

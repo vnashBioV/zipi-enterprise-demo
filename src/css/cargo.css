@@ -104,7 +104,7 @@ input[type="file"]{
     opacity: 0.2;
 }
 .cargo-modal-wrap{
-    width:790px !important;
+    width:790px;
     margin: 11rem 0px;
     display: flex;
 }
