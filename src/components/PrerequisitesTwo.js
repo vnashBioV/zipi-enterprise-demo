@@ -3,6 +3,7 @@ import EnterpriseNav from './EnterpriseNav'
 import { useParams, useNavigate } from 'react-router-dom'
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alerts/Alert';
+import { useStateContext } from '../context/DashboardStateContext'
 
 export default function Summary({
     // vehicleType,
@@ -22,7 +23,18 @@ export default function Summary({
     const [close, setclose] =useState(false);
     const [vehicleType, setVehicleType] = useState(["Container"])
     const navigate = useNavigate();
-
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+        setCargoLink,
+        cargoLink
+    } = useStateContext();
 
     console.log(vehicleEquipment);
     console.log(adHocServices);
@@ -64,7 +76,11 @@ export default function Summary({
                 setTimeout(() => {
                     setOpenSpinner(false)
                 },1000)
-                navigate('/schedule')
+                setIsShowSchedule(true);
+                setIsTracking(false);
+                setIsEnterprise(false);
+                setCargoLink(false);
+                setIsShowRequest(false);
             }
         }
     }

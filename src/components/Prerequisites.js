@@ -2,13 +2,14 @@ import React, {useState, useEffect} from 'react'
 import EnterpriseNav from './EnterpriseNav'
 import { useParams, Link, useNavigate  } from 'react-router-dom'
 import '../css/prerequisites.css'
+import { useStateContext } from '../context/DashboardStateContext'
 
 export default function Summary({
     // vehicleType,
     openPre, 
     setOpenPre,
     alertQuantity,
-    setAlertQuantity
+    setAlertQuantity,
 }) {
     const {id} = useParams();
     const [vehicleEquipmentArray, setVehicleEquipment] = useState([])
@@ -21,6 +22,18 @@ export default function Summary({
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadedPage, setIsLoadedPage] = useState(false);
     const navigate = useNavigate();
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+        setCargoLink,
+        cargoLink
+      } = useStateContext();
 
     const vehicleEquipment = (e) => {
         setVehicleEquipment([...vehicleEquipmentArray, e.target.textContent])
@@ -59,7 +72,11 @@ export default function Summary({
 
                 setOpenPre(prev => !prev)
                 localStorage.setItem("Prerequisites", JSON.stringify(selectPrerequis));
-                navigate('/schedule')
+                setIsShowSchedule(true);
+                setIsTracking(false);
+                setIsEnterprise(false);
+                setCargoLink(false);
+                setIsShowRequest(false);
             }
         }
     }

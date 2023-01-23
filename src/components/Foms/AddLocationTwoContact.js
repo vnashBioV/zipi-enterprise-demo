@@ -6,7 +6,7 @@ import Spinner from '../Spinner';
 import firebase from '../../firebase-config';
 import Autocomplete from '../LocationSearchInputTwo'
 import Loader from '../../components/loader/Loader'
-
+import { useStateContext } from '../../context/BookingAddressTwo'
 
 export default function AddLocationOneContact({
         setBookingArrayTwo, 
@@ -48,14 +48,23 @@ export default function AddLocationOneContact({
     const [suggestionsTwo, setSuggestionsTwo] = useState([])
     const keysTwo = ["Name", "CompanyName","Surname"];
     const [isLoadingTwo , setIsLoadingTwo] = useState(false);
+    const [validationOpsHours, setValidationOpsHours] = useState(false);
+    const [checkOpsHoursOpen, setCheckOpsHoursOpen] = useState(false);
+    const [checkOpsHoursClose, setCheckOpsHoursClose] = useState(false);
+
+    const { 
+        isAddressAuto,
+        setIsAddressAuto
+    } = useStateContext();
 
     // const [allDoDetails,setAllDuDetails] = useState([]);
 
     //=========END STATE ARRAY======================================================================
 
     //========CONSOLE LOGS==========================================================================
-    console.log(bookingArrayTwo)
-    console.log("booking working array",allContacts)
+    // console.log(bookingArrayTwo)
+    // console.log("booking working array",allContacts)
+    console.log("this is address two", isAddressAuto)
     //========END CONSOLE LOGS======================================================================
 
     //==========FUNCTIONS===========================================================================
@@ -139,8 +148,9 @@ export default function AddLocationOneContact({
                 <div className='search-results-drop' style={{cursor:"pointer"}}>
                     {suggestionsTwo?.length > 0 ? suggestionsTwo?.filter((booking) =>
                         keysTwo?.some((key) => booking?.details[key].includes(queryTwo))
-                    ).map((booking) => (
+                    ).map((booking, i) => (
                         <div
+                        key={i}
                         onClick={() => {
                             setPickHomeIconTwo(true)
                             setPickDefaultTwo(false)
@@ -175,7 +185,7 @@ export default function AddLocationOneContact({
                 : <></>
             }
 
-            <Autocomplete bookingArrayTwo={bookingArrayTwo} setBookingArrayTwo={setBookingArrayTwo}/>
+            <Autocomplete/>
 
             <input 
                 type="text" 
@@ -346,7 +356,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArrayTwo((prevState) => ({
+                            onChange={e =>{setBookingArrayTwo((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -356,6 +366,8 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                    setCheckOpsHoursOpen(true);
+                                }
                             }
                         />
                     </div>
@@ -364,7 +376,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArrayTwo((prevState) => ({
+                            onChange={e =>{setBookingArrayTwo((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -374,6 +386,8 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                    setCheckOpsHoursClose(true);
+                                }
                             }
                         />
                     </div>
@@ -509,22 +523,31 @@ export default function AddLocationOneContact({
             <div className='add-to-contact'>
                 <button 
                     onClick={() =>{
-                            // setBookingArrayTwoInst([bookingArrayTwo])
-                            var contact_Uid
-                            const drop_of_details = bookingArrayTwo.details
-                            saveDropContactFnc().then((data ) => {
-                                contact_Uid = data.key
-                                firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
-                                    details: drop_of_details,
-                                    date: new Date().toISOString().substring(0,10)
+                            if(
+                                checkOpsHoursClose && 
+                                checkOpsHoursOpen 
+                            ){
+                                var contact_Uid
+                                const drop_of_details = bookingArrayTwo.details
+                                saveDropContactFnc().then((data ) => {
+                                    contact_Uid = data.key
+                                    firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
+                                        details:{
+                                            ...drop_of_details,
+                                            Address: isAddressAuto
+                                        },
+                                        date: new Date().toISOString().substring(0,10)
+                                    });
+                                    console.log("drop_of_details", bookingArrayTwo);
+                                    console.log("contact_Uid", contact_Uid);
                                 });
-                                console.log("drop_of_details", bookingArrayTwo);
-                                console.log("contact_Uid", contact_Uid);
-                            });
-                            setIsLoading(true);
-                            setTimeout(() => {
-                                    setIsLoading(false);
-                            }, 2000)
+                                setIsLoading(true);
+                                setTimeout(() => {
+                                        setIsLoading(false);
+                                }, 2000)
+                            }else{
+                                setValidationOpsHours(true);
+                            }
                         }
                     }
                 >
@@ -552,8 +575,8 @@ export default function AddLocationOneContact({
         </div>
         <div>
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
-            {allContacts.length > 0 ? allContacts.map((booking) =>(
-                <React.Fragment key={booking.id}>
+            {allContacts.length > 0 ? allContacts.map((booking, i) =>(
+                <React.Fragment key={i}>
                     <div className='contact-wrapper'
                         onClick={() => {
                             setPickHomeIconTwo(true)
@@ -607,6 +630,14 @@ export default function AddLocationOneContact({
         </div>   
         {isLoading  &&
             <Loader/>
+        }
+        {validationOpsHours &&
+            <div className='ops-validation'>
+                <div>
+                    <p>Please fill in the operating hours</p>
+                    <button onClick={() => {setValidationOpsHours(false)} }>Ok</button>
+                </div>
+            </div>
         }
     </div>
 

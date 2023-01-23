@@ -17,13 +17,14 @@ import Spinner from '../components/Spinner'
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import DateRangePick from '../components/DateRangePick'
-// import 'rsuite/dist/styles/rsuite-default.css';
-// import { LicenseInfo } from '@mui/x-data-grid-pro';
+import { useStateContext } from '../context/DashboardStateContext'
+import { parseJSON } from 'date-fns/esm';
+import { database } from 'firebase';
+import { getNativeSelectUtilityClasses } from '@mui/material';
 
-
-
-
-export default function SchedulingPage() {
+export default function SchedulingPage({
+   
+}) {
     const [userEmail, setUserEmail] = useState("");
     const [userUid, setUserUid] = useState("");
     const [company, setCompany] = useState("");
@@ -54,9 +55,24 @@ export default function SchedulingPage() {
     const [testVar, setTestVar] = useState(0);
     const [isScheduleLoaded, setIsScheduleLoaded] = useState(false);
     const [actualLoad, setActualLoad] = useState();
+    const [dropOffData, setDropOffData] = useState(null)
+    const [pickUpData, setPickUpData] = useState(null)
+    const [isCoordinates, setIsCoordinates] = useState(getNativeSelectUtilityClasses)
+    const [askingPrice, setAskingPrice] = useState(false)
+    const [validationOpsHours, setValidationOpsHours] = useState(false);
+    const [selectDate, setSelectDate] = useState(false);
 
-    
-    // const [valueNewRange, setValueNewRange] = useState(new Date())
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+        setCargoLink
+    } = useStateContext();
 
     var loadcal = []
     var moreloadss = loadcal
@@ -69,6 +85,8 @@ export default function SchedulingPage() {
 
     const [openAlert, setAlert] = useState(false)
     const [openSpinner, setOpenSpinner] = useState(false);
+
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     const rangeRef = useRef()
 
@@ -111,15 +129,6 @@ export default function SchedulingPage() {
         }
     }, [])
 
-    // useEffect(() => {
-    //     return () => {
-    //         if(localStorage.getItem("vehicleType")){
-    //             const storedList = JSON.parse(localStorage.getItem("vehicleType"))
-    //             setVehicleType(storedList);
-    //         }
-    //       }
-    // }, [])
-
     useEffect(() => {
         if(localStorage.getItem("cargoSelectd")){
             const storedList = JSON.parse(localStorage.getItem("cargoSelectd"))
@@ -156,37 +165,12 @@ export default function SchedulingPage() {
     console.log("final pick", finalPick);
     console.log("final drop", finalDrop);
 
-    // console.log("Selected pick up details", pickUpDetails);
-    // console.log("Selected drop off details", dropDetails);
-    // console.log("This is is is prerequisites", prerequisites);
-    // console.log("start date", startDate)
-    // console.log("end date", endDate)
-    // console.log("cargo schedule", cargoSchedule)
-    // console.log("operation days", operationDays)
-    // console.log("rate indication", rateIndication)
-    // console.log("this is bays", bays)
-    // console.log("this is gate in out duration", gateInOutDuration)
-    // console.log("range value", rangeValue)
-    // console.log("prerequisites for testing", prerequisites[0].prerequisites.ad_hoc_services);
-
-    useEffect(() => {
-        document.body.style.cssText="margin-top:98px !important";
-    
-        return () => {
-            document.body.style.marginTop= "0px";
-        };
-    }, []);
-
     useEffect(() => {
         setTimeout(() =>{
             setIsScheduleLoaded(true);
         }, 800)
     },[])
 
-    // useEffect(() => {
-    //     setActualLoad((((parseFloat((cargoDetails??.details?.weight)))/32)).toFixed(3))
-    // },[])
-    
         //Calculate number of days from start date to end date
         const d1 = startDate,
         d2 = endDate,
@@ -201,24 +185,80 @@ export default function SchedulingPage() {
             return `${dateStr} ${weekdayStr}`
             }
         )
-            
-    // console.log("Dates between", dates);
-    // console.log("vehicle type", prerequisites)
-    // console.log("start date", startDate.toISOString().substring(8,10));
-    // console.log("end date", endDate.toISOString().substring(8,10));
-    // console.log("number of days", numberOfDays);
-    // console.log("numberChangeVal", numberChangeVal);
-    // console.log("the cargo", cargoDetails);
+    useEffect(() => {
+
+        const get_pick_coords = async () => {
+            return await axios.get(
+              'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+              `${finalPick.Address}` +
+                '&key=' +
+                'AIzaSyCDv9ViM5f03ZnI9i8vKz9xI_conVCyKx8&libraries=places',
+            ).then((result) => setPickUpData(result));
+        };
+
+        const get_drop_coords = async () => {
+            return await axios.get(
+              'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+              `${finalDrop.Address}` +
+                '&key=' +
+                'AIzaSyCDv9ViM5f03ZnI9i8vKz9xI_conVCyKx8&libraries=places',
+            ).then((result) => setDropOffData(result));
+        };
+
+        // const pu_coords = {
+        //     latitude: pickUpData?.data.results[0]?.geometry.location.lat,
+        //     longitude:pickUpData?.data.results[0]?.geometry.location.lng,
+        // };
+        
+        // const do_coords = {
+        //     latitude: dropOffData?.data.results[0]?.geometry.location.lat,
+        //     longitude: dropOffData?.data.results[0]?.geometry.location.lng,
+        // };
+
+        // setTimeout(() => {
+
+        // }, )
+
+        // var config = {
+        //     method: 'get',
+        //     url: `https://maps.googleapis.com/maps/api/distancematrix/json
+        //     &origins=Washington%2C%20DC
+        //     &units=imperial
+        //     &key=AIzaSyCDv9ViM5f03ZnI9i8vKz9xI_conVCyKx8`,
+        //     headers: { }
+        // };
+
+        // axios(config)
+        //     .then(function (response) {
+        //     setIsCoordinates(JSON.stringify(response.data));
+        // })
+
+        // setIsCoordinates(axios(config))
+
+        // setCoordinates(axios(
+        //         `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${pu_coords.latitude},${pu_coords.longitude}&origins=${do_coords.latitude},${do_coords.longitude}&key=AIzaSyCDv9ViM5f03ZnI9i8vKz9xI_conVCyKx8`,)
+        // )
+        get_pick_coords();
+        get_drop_coords();
+    }, [])
+
+    console.log("the pick coords", pickUpData);
+    // console.log("the date", );
 
   return (
-    <div className={`duration-500 ease-in-out ${isScheduleLoaded ? 'open-schedule' : 'schedule-page'}`}>
-         <EnterpriseNav 
-            name={company}
-        />
+    <div className={`duration-500 ease-in-out ${isScheduleLoaded ? 'open-schedule' : 'schedule-page'}`} style={{position:"relative"}}>
         <div  style={{display:"flex", alignItems:"center", marginBottom:"17px"}}>
-            <Link to='/' style={{textDecoration:"none"}}><i className="fa-solid fa-chevron-left"></i></Link>
             <span className='schedule-navigation'>
-                <p>Booking</p>
+                <p
+                    style={{cursor: "pointer"}}
+                    onClick={() => {
+                        setIsShowSchedule(false);
+                        setIsTracking(false);
+                        setIsEnterprise(true);
+                        setCargoLink(false);
+                        setIsShowRequest(false);
+                    }}
+                >Booking</p>
                 <p>/</p>
                 <p>Schedule</p>
             </span>
@@ -626,8 +666,8 @@ export default function SchedulingPage() {
                         <div>
                             {/* <p>Daily Load Capacity</p> */}
                             {pickUpDetails.length > 0 ? pickUpDetails.map((booking) =>{
-                                const Closehours = booking?.details.OperatingHours.close.substring(0,2)
-                                const Openhours =  booking?.details.OperatingHours.open.substring(0,2)
+                                const Closehours = booking?.details?.OperatingHours?.close.substring(0,2)
+                                const Openhours =  booking?.details?.OperatingHours?.open.substring(0,2)
                                 const OH = (Closehours - Openhours)*(60)
                                   loadcal.push(((OH)/(parseFloat(gateInOutDuration)))*(bays))
                                 console.log("loadsCount: ", loadcal);
@@ -687,61 +727,65 @@ export default function SchedulingPage() {
                     <h2 style={{fontSize:"11px", fontWeight:"normal", marginBottom:"10px"}}>Rate Indication per Truck</h2><i className="fa-solid fa-info"></i>
                 </span>
                 <span style={{display:"flex"}} className="book-btn-proceed">
-                    <input type="text" name="" placeholder='e.g 17 00' id="" onChange={(e) => setRateIndication(e.target.value)}/>
+                    <input type="text" name="" placeholder='e.g 17 00' id="" onChange={(e) => {
+                        setRateIndication(e.target.value)
+                        setAskingPrice(true)
+                    }}/>
                     <button onClick={() => {
-                            const startDateString = startDate.toISOString().substring(0,10)
-                            const endDateString = endDate.toISOString().substring(0,10)
-                            const cargo = cargoDetails[0].details
+                            const startDateString = startDate?.toISOString().substring(0,10)
+                            const endDateString = endDate?.toISOString().substring(0,10)
+                            const cargo = cargoDetails[0]?.details
                             const cargoSds = cargoDetails[0] ? cargoDetails[0].sds_url : null
-                            const starting_location = finalPick.Address
-                            const destination = finalDrop.Address
+                            const starting_location = finalPick?.Address
+                            const destination = finalDrop?.Address
                             const start_date = startDateString
                             const due_date = endDateString
                             const total_loads = parseInt(parseInt((cargo.quantity)/34).toFixed(0))
-                            const vehicle_type_required = prerequisites[0].prerequisites.vehicle_type[0]
+                            const vehicle_type_required = prerequisites[0].prerequisites?.vehicle_type[0]
                             const asking_rate = rateIndication
-                            var booking_id 
+                            if(askingPrice && endDate  !== new Date()){
+                                var booking_id 
                             
                             getBookingIFnc().then((data ) => {
-                               booking_id = data.key
-                               const bookingref = booking_id.substring(1,7)
-                               const cargoquantity = cargoDetails[0].details.quantity
+                               booking_id = data?.key
+                               const bookingref = booking_id?.substring(1,7)
+                               const cargoquantity = cargoDetails[0]?.details?.quantity
                                firebase.database().ref('/booking/' + booking_id).update({
                                 puDetails:{
                                     puCityName: finalPick?.CityName,
                                     puCompanyName: finalPick?.CompanyName,
-                                    puComplexBuilding: finalPick?.ComplexBuilding,
-                                    puEmail: finalPick.Email,
-                                    puGateInGateOut: finalPick?.GateInGateOut,
-                                    puLoadingBays: finalPick?.LoadingBays,
+                                    puComplexBuilding: finalPick.ComplexBuilding  !== undefined ? finalPick?.ComplexBuilding : "",
+                                    puEmail: finalPick?.Email,
+                                    puGateInGateOut: finalPick.GateInGateOut !== undefined ? finalPick?.GateInGateOut : "",
+                                    puLoadingBays: finalPick.LoadingBays !== undefined ? finalPick?.LoadingBays: "",
                                     puName: finalPick?.Name,
                                     puNotificationType: finalPick?.NotificationType,
-                                    puOperatingHours: finalPick?.OperatingHours,
+                                    puOperatingHours: finalPick.OperatingHours !== undefined ? finalPick?.OperatingHours : "",
                                     puPhone: finalPick?.Phone,
-                                    puPublicHoliday: finalPick?.PublicHoliday,
+                                    puPublicHoliday: finalPick.PublicHoliday !== undefined ? finalPick?.PublicHoliday : "",
                                     puSpecialInstructions: finalPick?.SpecialInstructions,
                                     puSurname: finalPick?.Surname,
                                     puTelephone: finalPick?.Telephone,
                                     puAddress: finalPick?.Address
                                 },
                                 doDetails:{
-                                    doCityName: finalDrop.CityName,
-                                    doCompanyName: finalDrop.CompanyName,
-                                    doComplexBuilding: finalDrop.ComplexBuilding,
-                                    doEmail: finalPick.Email,
-                                    doGateInGateOut: finalDrop.GateInGateOut,
-                                    doLoadingBays: finalDrop.LoadingBays,
-                                    doName: finalDrop.Name,
-                                    doNotificationType: finalDrop.NotificationType,
-                                    doOperatingHours: finalDrop.OperatingHours,
-                                    doPhone: finalDrop.Phone,
-                                    doPublicHoliday: finalDrop.PublicHoliday,                                   
-                                    doSpecialInstructions: finalDrop.SpecialInstructions,
-                                    doSurname: finalDrop.Surname,
-                                    doTelephone: finalDrop.Telephone,
-                                    doAddress: finalDrop.Address,
+                                    doCityName: finalDrop?.CityName,
+                                    doCompanyName: finalDrop?.CompanyName,
+                                    doComplexBuilding: finalDrop?.ComplexBuilding,
+                                    doEmail: finalPick?.Email,
+                                    doGateInGateOut: finalDrop.GateInGateOut !== undefined ? finalDrop?.GateInGateOut : "",
+                                    doLoadingBays: finalDrop.LoadingBays !== undefined ? finalDrop?.LoadingBays: "",
+                                    doName: finalDrop?.Name,
+                                    doNotificationType: finalDrop?.NotificationType,
+                                    doOperatingHours: finalDrop.OperatingHours !== undefined ? finalDrop?.OperatingHours: "",
+                                    doPhone: finalDrop?.Phone,
+                                    doPublicHoliday: finalDrop.PublicHoliday !== undefined ? finalDrop?.PublicHoliday : "",                                   
+                                    doSpecialInstructions: finalDrop?.SpecialInstructions,
+                                    doSurname: finalDrop?.Surname,
+                                    doTelephone: finalDrop?.Telephone,
+                                    doAddress: finalDrop?.Address,
                                 },
-                                prerequisites:prerequisites[0].prerequisites,
+                                prerequisites:prerequisites[0]?.prerequisites,
                                 dates_time_selection: {
                                     start_date_string: startDateString,
                                     end_date_string: endDateString,
@@ -749,18 +793,27 @@ export default function SchedulingPage() {
                                     include_holidays: includeHolidays,
                                     bays: bays
                                 },
+                                // data,
                                 rate_required: parseFloat(rateIndication),
                                 booking_party_uid: userUid,
                                 date_created: (new Date()).toISOString().substring(0,10),
+                                day_created: `${
+                                    (new Date()).getDay() === 1 && days[0] ||
+                                    (new Date()).getDay() === 2 && days[1] ||
+                                    (new Date()).getDay() === 3 && days[2] ||
+                                    (new Date()).getDay() === 4 && days[3] ||
+                                    (new Date()).getDay() === 5 && days[4] ||
+                                    (new Date()).getDay() === 6 && days[5] ||
+                                    (new Date()).getDay() === 7 && days[6]
+                                }`,
                                 gate_in_gate_out_duration: gateInOutDuration,
                                 "cargoInformation":
                                     {...cargo
                                         ,sdsUrl: cargoSds === undefined ? "" : cargoSds,
                                     },
-                                
                                 booking_ref: booking_id.substring(1,7),
                                 booking_id: booking_id,
-                                loads_per_day: !testVar === "" ? testVar.toFixed(0) : moreloadCal,
+                                loads_per_day: testVar !== "" ? testVar.toFixed(0) : moreloadCal,
                                 actual_loads_for_cargo: parseInt(parseInt((cargo?.quantity)/34).toFixed(0)) ? parseInt(parseInt((cargo?.quantity)/34).toFixed(0)) : 0
                             }).then(() => {
                                 var message = 'hello world'
@@ -783,26 +836,33 @@ export default function SchedulingPage() {
                                 )
                                 xhr.send()
                                 setTimeout(() => {
-                                    navigate('/bidding')
+                                    setIsShowSchedule(false);
+                                    setIsTracking(false);
+                                    setIsEnterprise(false);
+                                    setCargoLink(false);
+                                    setIsShowRequest(true);
                                 }, 3000); 
                             });
 
                             });
-                             
-                            // console.log("Final pick details", pickUpDetails);
-                            // console.log("Final drop details", dropDetails);
-                            // console.log("Final prerequisite", prerequisites);
-                            // console.log("Final start date", startDateString);
-                            // console.log("Final end", endDateString);
-                            // console.log("Final operation days", operationDays);
-                            // console.log("Final include holidays", includeHolidays);
-                            // console.log("Final rateIndication", rateIndication);
 
                             setPrerequisitesArray({prerequisites:prerequisites[0].prerequisites})
                             
-                    }}>Book Now <i className="fa-solid fa-chevron-right"></i></button>
+                        }else{
+                            setValidationOpsHours(true);
+                        }
+                            }
+                            }>Book Now <i className="fa-solid fa-chevron-right"></i></button>
                 </span>
             </div>
+            {validationOpsHours &&
+                <div className='ops-validation'>
+                    <div style={{width:"200px", textAlign:"center"}}>
+                        <p>Please make sure to input every field on this section</p>
+                        <button onClick={() => {setValidationOpsHours(false)} }>Ok</button>
+                    </div>
+                </div>
+            }
         </div>
         {openSpinner && <Spinner/>}
         {openAlert && 

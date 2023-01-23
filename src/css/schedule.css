@@ -8,10 +8,11 @@
 }
 .open-schedule{
   height: auto !important;
-  width: 73%;
-  max-width: 73%;
+  width: 90%;
+  max-width: 90%;
   margin: auto;
   margin-bottom: 3rem;
+  margin-top: 28px;
 }
 .schedule-page > div > a >i, .open-schedule > div > a >i{
   width: 26px;
@@ -31,7 +32,6 @@
 .schedule-page > div:nth-child(1), .open-schedule > div:nth-child(1){
   display: flex;
   align-items: center;
-  height: 78px;
   left: 0;
 }
 .schedule-page > div > span > p:nth-child(1), .open-schedule > div > span > p:nth-child(1){

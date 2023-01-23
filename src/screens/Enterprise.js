@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef} from 'react'
-import EnterpriseNav from '../components/EnterpriseNav'
 import LocationTitle from '../components/LocationTitle'
 import Search from '../components/Search'
 import searchIcon from '../icons/search-icon.png';
@@ -37,6 +36,9 @@ import { Link, useNavigate  } from 'react-router-dom'
 import Loader from '../components/loader/Loader'
 import EnterpriseLoader from '../components/LoaderEnterprise'
 import { motion } from 'framer-motion';
+import { useStateContext } from '../context/DashboardStateContext'
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default function Enterprise() {
     const [locationOneSearch, setLocationOneSearch] = useState(false);
@@ -109,6 +111,16 @@ export default function Enterprise() {
     const [isPageLoaded, setIsPageLoaded] = useState(false);
     const [isLoadingTwo , setIsLoadingTwo] = useState(false);
     const [isCargoDisabled,setIsCargoDisabled] = useState(false);
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+    } = useStateContext();
 
     //=======ARRAY STATES==========================================================================
     const [address, setAddress] = useState("");
@@ -128,25 +140,15 @@ export default function Enterprise() {
     const [quantity, setQuantity] = useState(0)
     const [defaultPick, setDefaultPick] = useState([])
     const [defaultDrop, setDefaultDrop] = useState([])
-    // const [allPuDetails,setAllPuDetails] = useState([]);
-    // const [allDoDetails,setAllDuDetails] = useState([]);
     const [allContacts,setAllContacts] = useState([]);
     const [allContactsTwo,setAllContactsTwo] = useState([]);
     const [defaultCargo,setDefaultCargo] = useState([]);
     const [alertQuantity, setAlertQuantity] = useState(false)
+    const [trackin, setTrackin] = useState(false);
 
-
-    //=======END ARRAY STATES======================================================================
-
-    //==========USE REF============================================================================
     const contactOneClick = useRef();
     const hOne = useRef(null);
-    // let enterprise = useRef(null);
-    // let blocks = useRef(null);
-    //==========END REF============================================================================
-    
-    //========FUNCTIONS============================================================================
-    
+        
     const pickUpContainer = useRef()
     const dropOffContainer = useRef()
 
@@ -373,15 +375,6 @@ export default function Enterprise() {
     }
 
     var VarBookingArrayThree = bookingArrayThree;
-    //========END FUNCTIONS===============================================================================
-
-    //=========USE EFFECTS================================================================================
-    useEffect(() => {
-        document.body.style.cssText="margin-top:117px !important";
-        return () => {
-            document.body.style.marginTop= "0px";
-        };
-    }, []);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
@@ -432,15 +425,10 @@ export default function Enterprise() {
         }
     },[])
 
-    // useEffect(() => {
-    // },[])
-
-    //===========END USE EFFECFS==========================================================================
-
 
   return (
     <div style={{background:"#e3e3e3"}}>
-        <EnterpriseNav name={company}/>
+        
         <div className='enterprise-booking-page duration-500 ease-in-out'>
 {/*==================================LOCATION ONE================================================================================================= */}
             <div className={`location-style duration-500 ease-in-out ${isPageLoaded ? 'scale-1' : 'scale-0'} ${locationTwo && "pick-padding"}`} ref={pickUpContainer}>
@@ -465,15 +453,15 @@ export default function Enterprise() {
                                     <div className='search-results'>
                                         {suggestions?.length > 0 ? suggestions?.filter((booking) =>
                                             keys?.some((key) => booking?.details[key].includes(query))
-                                        ).map((booking) => (
+                                        ).map((booking, i) => (
                                             <div
+                                                key={i}
                                                 onClick={() => {
                                                     const selected = ([booking])
                                                     setDefaultPick(selected)
                                                     setPickHomeIcon(true)
                                                     setPickDefault(false)
                                                     setPickSelected([booking])
-                                                    // setPuDetails(selected)
                                                     setTrackLocation(true)
                                                     setContactDate(false)
                                                     setLocationtitle(false)
@@ -484,7 +472,6 @@ export default function Enterprise() {
                                                     setNextBtn(false)
                                                     setlocationTwo(true)
                                                     localStorage.setItem("pickSelectd", JSON.stringify(selected));
-                                                    // console.log("Block clicked");
                                                     setIsLoading(true)
                                                     setTimeout(() =>{
                                                         setIsLoading(false);
@@ -496,7 +483,6 @@ export default function Enterprise() {
                                                 <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
                                                 <hr />
                                             </div>
-                                            // <div>hey</div>
                                         )): <></>}
                                     </div>
                                     : <></>
@@ -517,8 +503,8 @@ export default function Enterprise() {
                 <div className='pu-containing'>
                     {defaultPick?.length > 0 ? defaultPick?.filter((booking) =>
                         keys?.some((key) => booking?.details[key].includes(query))
-                    ).map((booking) =>(
-                        <ContactsDetails setContactDate={setContactDate} key={booking.date} >
+                    ).map((booking, i) =>(
+                        <ContactsDetails key={i} setContactDate={setContactDate} >
                             <div
                                 onClick={(event) => handleContactClick(event, booking)}
                                 className={contactBackground ? "" : "contact-no-background"}
@@ -537,20 +523,6 @@ export default function Enterprise() {
                                 </div>
                             </div>
                             <p className={!changeContact ? "change-contact" : "no-change-contact"} onClick={() => {
-                                // firebase.database().ref('contacts/').child(userUid).on('value', (snapshot) => {
-                                //     setPuDetails(Object.values(snapshot.val()).filter((b) =>  b.pick_up_details));
-                                // });
-                                // setPickHomeIcon(false);
-                                // setTrackLocation(false)
-                                // setContactDate(true)
-                                // setLocationtitle(true)
-                                // setSearchLocationOne(true)
-                                // setContactBackground(true)
-                                // setLocationOneWrapper(false)
-                                // setChangeContact(true)
-                                // setNextBtn(true)
-                                // pickUpContainer.current.classList.remove("contacts-unselect")
-                                // setChangeContact(false)
                                 setAddLocationOne(true)
                             }}><i class="fa-solid fa-pen pen-dir"></i> Change</p>
                         </ContactsDetails>
@@ -590,15 +562,12 @@ export default function Enterprise() {
                             handleResidence={handleResidence}
                             closeLocationModal={closeLocationModal}
                             bookingArray={bookingArray}
-                            // puDetails={puDetails}
-                            // setPuDetails={setPuDetails}
                             setAllContacts={setAllContacts}
                             allContacts={allContacts}
                             setDefaultPick={setDefaultPick}
                             setPickHomeIcon={setPickHomeIcon}
                             setPickDefault={setPickDefault}
                             setPickSelected={setPickSelected}
-                            // setPuDetails(selected)
                             setTrackLocation={setTrackLocation}
                             setContactDate={setContactDate}
                             setLocationtitle={setLocationtitle}
@@ -608,10 +577,6 @@ export default function Enterprise() {
                             setChangeContact={setChangeContact}
                             setNextBtn={setNextBtn}
                             setlocationTwo={setlocationTwo}
-                            // address={address}
-                            // setAddress={setAddress}
-                            // setAllPuDetails={setAllPuDetails}
-                            // allPuDetails={allPuDetails}
                         />
                     : <></>
                 }
@@ -646,17 +611,16 @@ export default function Enterprise() {
                                     <div className='search-results'>
                                         {suggestionsTwo?.length > 0 ? suggestionsTwo?.filter((booking) =>
                                             keysTwo?.some((key) => booking?.details[key].includes(queryTwo))
-                                        ).map((booking) => (
+                                        ).map((booking, i) => (
                                             <div
+                                                key={i}
                                                 onClick={() => {
                                                     setPickHomeIconTwo(true)
                                                     setPickDefaultTwo(false)
-                                                    // setDropSelected([booking])
                                                     const selected = ([booking])
                                                     setDefaultDrop(selected)
                                                     setDoDetails(selected)
                                                     setAllContacts(selected)
-                                                    // allContacts={allContacts}
                                                     setTrackLocationTwo(true)
                                                     setContactDateTwo(false)
                                                     setLocationtitleTwo(false)
@@ -677,7 +641,6 @@ export default function Enterprise() {
                                                 <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
                                                 <hr />
                                             </div>
-                                            // <div>hey</div>
                                         )): <></>}
                                     </div>
                                     : <></>
@@ -691,8 +654,8 @@ export default function Enterprise() {
                     <div className='do-containing duration-500 ease-in-out' ref={dropOffContainer}>
                         {defaultDrop?.length > 0 ? defaultDrop?.filter((booking) =>
                             keysTwo.some((key) => booking.details[key].includes(queryTwo))
-                        ).map((booking) =>(
-                            <ContactsDetails setContactDate={setContactDate} key={booking.date}>
+                        ).map((booking, i) =>(
+                            <ContactsDetails setContactDate={setContactDate} key={i}>
                                 <div
                                     onClick={(event) => handleContactClickTwo(event, booking)}
                                     className={contactBackgroundTwo ? "" : "contact-no-background"}
@@ -721,20 +684,6 @@ export default function Enterprise() {
                                     </div>
                                 </div>
                                 <p className={!changeContactTwo ? "change-contact" : "no-change-contact"}onClick={() => {
-                                    // firebase.database().ref('contacts/').child(userUid).on('value', (snapshot) => {
-                                    //     setDoDetails(Object.values(snapshot.val()).filter((b) =>  b.drop_of_details));
-                                    // });
-                                    // setPickHomeIconTwo(false)
-                                    // setTrackLocationTwo(false)
-                                    // setContactDateTwo(true)
-                                    // setLocationtitleTwo(true)
-                                    // setSearchLocationTwo(true)
-                                    // setContactBackgroundTwo(true)
-                                    // setLocationTwoWrapper(false)
-                                    // setChangeContactTwo(true)
-                                    // setNextBtnTwo(true)
-                                    // setChangeContact()
-                                    // dropOffContainer.current.classList.remove("contacts-unselect")
                                     setAddLocationTwo(true)
                                 }}><i class="fa-solid fa-pen pen-dir"></i> Change</p>
                             </ContactsDetails>
@@ -770,6 +719,7 @@ export default function Enterprise() {
                     {
                         addLocationTwo ?
                             <AddLocationTwoContact
+                                // key={uuidv4()}
                                 setBookingArrayTwo={setBookingArrayTwo}
                                 businessTypeTwo={businessTypeTwo}
                                 handleBusinessTwo={handleBusinessTwo}
@@ -796,8 +746,6 @@ export default function Enterprise() {
                                 setCargoShow={setCargoShow}
                                 setDropSelected={setDropSelected}
                                 dropSelected={dropSelected}
-                                // setAllDuDetails={setAllDuDetails}
-                                // allDoDetails={allDoDetails}
                             />
                         : <></>
                     }
@@ -996,7 +944,14 @@ export default function Enterprise() {
         </div>
 
         {/* Vehicle modals */}
-        <Prerequisites openPre={openPre} setOpenPre={setOpenPre} addLocationOne={addLocationOne} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+        <Prerequisites 
+            openPre={openPre} 
+            setOpenPre={setOpenPre} 
+            addLocationOne={addLocationOne} 
+            alertQuantity={alertQuantity} 
+            setAlertQuantity={setAlertQuantity}
+           
+        />
         {openPreTwo &&
             <PrerequisitesTwo openPre={openPreTwo} setOpenPreTwo={setOpenPreTwo} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
         }

@@ -1,12 +1,17 @@
 .tracking{
-    width: 73%;
-    max-width: 73%;
+    width: 100%;
     margin: auto;
     position: relative;
 }
 .tracking-child{
     display: flex;
     justify-content: space-between;
+    width: 90%;
+    margin: auto;
+}
+.tracking > h1{
+    font-weight: normal;
+    padding: 0 6%;
 }
 .tracking-child > div:nth-child(1){
     width: 70%; 
@@ -222,7 +227,7 @@
 .nav-tracking{
     display: flex;
     align-items: center;
-    margin-bottom: 17px;
+    padding: 1rem 4rem
     /* justify-content: center; */
 }
 .bidding-navigation{

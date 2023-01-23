@@ -11,6 +11,7 @@ import AllMyBookings from '../components/AllMyBookings';
 import {UserContext} from '../context/NewContext';
 import {AllPricesContext} from '../context/SelectAllPricesContext'
 import {SelectedTotal} from '../context/SelectedTotal'
+import { useStateContext } from '../context/DashboardStateContext'
 
 function BiddingPageTwo() {
     const [userEmail, setUserEmail] = useState("");
@@ -24,7 +25,17 @@ function BiddingPageTwo() {
     const {selectedValue, setSelectedValue}  = useContext(UserContext)
     const [isBiddingLoaded, setIsBiddingLoaded] = useState(false);
     const navigate = useNavigate();
-
+    const { 
+      isEnterprise,
+      setIsEnterprise,
+      isTracking,
+      setIsTracking,
+      isShowSchedule,
+      setIsShowSchedule,
+      setIsShowRequest,
+      isShowRequest,
+      setCargoLink
+    } = useStateContext();
 
   useEffect(() => {
     setTimeout(() =>{
@@ -51,12 +62,12 @@ function BiddingPageTwo() {
         });
     }, [])
 
-    useEffect(() => {
-        document.body.style.cssText="margin-top:98px !important";
-        return () => {
-            document.body.style.marginTop= "0px";
-        };
-    }, []);
+    // useEffect(() => {
+    //     document.body.style.cssText="margin-top:98px !important";
+    //     return () => {
+    //         document.body.style.marginTop= "0px";
+    //     };
+    // }, []);
 
       const [backColor, setBackColor] = useState(true);
       const [counterOffer, setCounterOffer] = useState(false);
@@ -112,11 +123,19 @@ function BiddingPageTwo() {
 
   return (
     <div className={`duration-500 ease-in-out ${isBiddingLoaded ? 'open-bidding' : 'bidding'}`}>
-        <EnterpriseNav name={company}/>
-        <div  style={{display:"flex", alignItems:"center", marginBottom:"17px"}}>
-            <Link to='/schedule' style={{textDecoration:"none"}}><i className="fa-solid fa-chevron-left" style={{marginRight:"10px"}}></i></Link>
+        <div  className='nav-tracking' style={{padding:"1rem 0"}}>
             <span className='bidding-navigation'>
-                <p>Requests</p>
+                <p 
+                    style={{color:"grey", cursor: "pointer"}}
+                    onClick={() => {
+                        setIsShowSchedule(false);
+                        setIsTracking(false);
+                        setIsEnterprise(true);
+                        setCargoLink(false);
+                        setIsShowRequest(false);
+                    }}
+                >Booking</p> 
+                <p>&nbsp;&nbsp;&nbsp;/&nbsp; Bidding Page</p> 
             </span>
         </div>
         <div className='deals'>

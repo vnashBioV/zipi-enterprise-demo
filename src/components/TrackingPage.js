@@ -13,10 +13,13 @@ import { v4 as uuidv4 } from 'uuid';
 import DriverTrackingBar from '../components/DriverTrackingBar'
 import BookingTrackingBar from './BookingTrackingBar';
 import ReactToPdf from 'react-to-pdf';
+import { useStateContext } from '../context/DashboardStateContext'
 
 // import PdfComponent from './PdfComponent'
 
-function TrackingPage() {
+function TrackingPage({
+    
+}) {
     const [userEmail, setUserEmail] = useState("");
     const [company, setCompany] = useState("")
     const [telephone, setTelephone] = useState("")
@@ -31,6 +34,17 @@ function TrackingPage() {
     const [suggestions, setSuggestions] = useState([]);
     const [documentComp, setDocumentComp] = useState(false);
     const [clickOnRight, setClickOnRight] = useState(false);
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+        setCargoLink
+    } = useStateContext();
 
     var bookingArray = [];
 
@@ -68,21 +82,16 @@ function TrackingPage() {
     }, [])
 
     useEffect(() => {
-        document.body.style.cssText="margin-top:98px !important";
-        return () => {
-            document.body.style.marginTop= "0px";
-        };
-    }, []);
-
-    useEffect(() => {
         if(localStorage.getItem("userUid")){
             const Uid = JSON.parse(localStorage.getItem("userUid"))
             const bookingRef = firebase.database().ref('booking').orderByChild('booking_party_uid').equalTo(Uid);
             var childrenArray = []
             bookingRef.once('value', (snapshot) => {
-              setAllBookingarr(Object.values(snapshot.val()));
-            //   setAllBookingarr(childrenArray.filter(filter => filter.booking_bids_fleet_id));
-              localStorage.setItem("AllMyBookings", JSON.stringify(childrenArray));
+              if(snapshot.exists()) {
+                setAllBookingarr(Object?.values(snapshot?.val()));
+                //   setAllBookingarr(childrenArray.filter(filter => filter.booking_bids_fleet_id));
+                  localStorage.setItem("AllMyBookings", JSON.stringify(childrenArray));
+              } 
            });
         }
       }, [])
@@ -110,11 +119,19 @@ function TrackingPage() {
 
     return (
     <div className='tracking'>
-        <EnterpriseNav name={company}/>
         <div  className='nav-tracking'>
-            <Link to='/bidding' style={{textDecoration:"none"}} className="nav-nav-link"><i className="fa-solid fa-chevron-left"></i></Link>&nbsp;&nbsp;
             <span className='bidding-navigation'>
-                <p style={{color:"grey"}}>Requests</p> <p>&nbsp;&nbsp;&nbsp;/&nbsp; Tracking Page</p> 
+                <p 
+                    style={{color:"grey", cursor: "pointer"}}
+                    onClick={() => {
+                        setIsShowSchedule(false);
+                        setIsTracking(false);
+                        setIsEnterprise(true);
+                        setCargoLink(false);
+                        setIsShowRequest(false);
+                    }}
+                >Booking</p> 
+                <p>&nbsp;&nbsp;&nbsp;/&nbsp; Tracking Page</p> 
             </span>
         </div>
         <h1 style={{fontWeight:"normal"}}>Load Summary</h1>

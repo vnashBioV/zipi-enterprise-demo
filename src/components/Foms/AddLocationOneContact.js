@@ -6,6 +6,7 @@ import Alert from '../Alerts/Alert';
 import Spinner from '../Spinner';
 import Autocomplete from '../LocationSearchInput'
 import Loader from '../../components/loader/Loader'
+import { useStateContext } from '../../context/BookingAddress'
 
 export default function AddLocationOneContact({
         setBookingArray, 
@@ -15,10 +16,6 @@ export default function AddLocationOneContact({
         handleResidence,
         closeLocationModal,
         bookingArray,
-        puDetails,
-        setPuDetails,
-        addLocationOne,
-        defaultPick,
         setDefaultPick,
         setPickHomeIcon,
         setPickDefault,
@@ -48,6 +45,21 @@ export default function AddLocationOneContact({
     const [query, setQuery] = useState("");
     const keys = ["Name", "CompanyName","Surname"];
     const [suggestions, setSuggestions] = useState([]);
+    const [validationOpsHours, setValidationOpsHours] = useState(false);
+    const [checkOpsHoursOpen, setCheckOpsHoursOpen] = useState(false);
+    const [checkOpsHoursClose, setCheckOpsHoursClose] = useState(false);
+  
+
+    const { 
+        isAddressAuto,
+        setIsAddressAuto
+    } = useStateContext();
+
+    // useEffect(() => {
+        
+    //     console.log("the address is right here", isAddressAuto);
+    // }, [])
+    
 
     //=========STATES ARRAY=========================================================================
     const [bookingArrayInst, setBookingArrayInst] = useState([])
@@ -62,7 +74,6 @@ export default function AddLocationOneContact({
     const savePickContactFnc = async ()=>{
         return await firebase.database().ref().push()
     }
-
     const onSearchChange = (query) =>{
         let matches = []
         if (query.length>0){
@@ -75,7 +86,6 @@ export default function AddLocationOneContact({
         setSuggestions(matches)
         setQuery(query)
     }
-
     //==========END FUNCTIONS=======================================================================
 
 
@@ -90,6 +100,11 @@ export default function AddLocationOneContact({
             }
         });
     }, [])
+
+    // useEffect(() => {
+    //   console.log("operating hours", bookingArray?.details?.OperatingHours?.open, bookingArray.details?.OperatingHours?.close)
+    // }, [])
+    
 
     useEffect(() => {
         setTimeout(() =>{
@@ -123,7 +138,6 @@ export default function AddLocationOneContact({
                 </label>
             </div>
             <input 
-                // style={{position: 'relative'}}
                 type="text" 
                 placeholder='Company Name'
                 onChange={e =>{setBookingArray((prevState) => ({
@@ -142,15 +156,15 @@ export default function AddLocationOneContact({
                 <div className='search-results-pick' style={{cursor:"pointer"}}>
                     {suggestions?.length > 0 ? suggestions?.filter((booking) =>
                         keys?.some((key) => booking?.details[key].includes(query))
-                    ).map((booking) => (
+                    ).map((booking, i) => (
                         <div
+                            key={i}
                             onClick={() => {
                                 const selected = ([booking])
                                 setDefaultPick(selected)
                                 setPickHomeIcon(true)
                                 setPickDefault(false)
                                 setPickSelected([booking])
-                                // setPuDetails(selected)
                                 setTrackLocation(true)
                                 setContactDate(false)
                                 setLocationtitle(false)
@@ -161,7 +175,6 @@ export default function AddLocationOneContact({
                                 setNextBtn(false)
                                 setlocationTwo(true)
                                 localStorage.setItem("pickSelectd", JSON.stringify(selected));
-                                // console.log("Block clicked");
                                 setIsLoading(true)
                                 setTimeout(() =>{
                                     setIsLoading(false);
@@ -173,14 +186,13 @@ export default function AddLocationOneContact({
                             <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
                             <hr />
                         </div>
-                        // <div>hey</div>
                     )): <></>}
                 </div>
                 : <></>
             }
 
 
-            <Autocomplete bookingArray={bookingArray} setBookingArray={setBookingArray}/>
+            <Autocomplete/>
             
             <input 
                 type="text" 
@@ -350,7 +362,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArray((prevState) => ({
+                            onChange={e =>{setBookingArray((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -360,6 +372,8 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                    setCheckOpsHoursOpen(true)
+                                }
                             }
                         />
                     </div>
@@ -368,7 +382,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArray((prevState) => ({
+                            onChange={e =>{setBookingArray((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -378,13 +392,12 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                    setCheckOpsHoursClose(true);
+                                }
                             }
                         />
                     </div>
-                    
                 </div>
-
-                
 
             </div>
             <div className='operating-hours'>
@@ -395,7 +408,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArray((prevState) => ({
+                            onChange={e =>{setBookingArray((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -405,6 +418,7 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                }
                             }
                         />
                     </div>
@@ -413,7 +427,7 @@ export default function AddLocationOneContact({
                             className='time-pill' 
                             type="time" 
                             placeholder=''
-                            onChange={e =>setBookingArray((prevState) => ({
+                            onChange={e =>{setBookingArray((prevState) => ({
                                 ...prevState,
                                 details:{
                                     ...prevState.details,
@@ -423,6 +437,7 @@ export default function AddLocationOneContact({
                                     }
                                 } 
                                 }))
+                                }
                             }
                         />
                     </div>
@@ -515,25 +530,31 @@ export default function AddLocationOneContact({
             <div className='add-to-contact'>
                 <button 
                     onClick={() =>{
-                            // setBookingArrayInst([bookingArray])
-                            // const newBooking = {date: new Date(), bookingArray}
-                            // console.log("newBooking", newBooking)
-                            // setPuDetails([...puDetails, newBooking])
+                        if(
+                            checkOpsHoursClose && 
+                            checkOpsHoursOpen 
+                        ){
                             var contact_Uid
                             const pick_up_details = bookingArray.details
                             savePickContactFnc().then((data ) => {
                                 contact_Uid = data.key
                                 firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
-                                    details: pick_up_details,
+                                    details: {
+                                        ...pick_up_details,
+                                        Address: isAddressAuto
+                                    },
                                     date: new Date().toISOString().substring(0,10)
                                 });
                                 console.log("pick_up_details", bookingArray);
                                 console.log("contact_Uid", contact_Uid);
                             });
-                           setIsLoading(true);
-                           setTimeout(() => {
-                                setIsLoading(false);
-                           }, 2000)
+                            setIsLoading(true);
+                            setTimeout(() => {
+                                    setIsLoading(false);
+                            }, 2000)
+                        }else{
+                            setValidationOpsHours(true);
+                        }
                         }
                     }
                 >
@@ -563,8 +584,8 @@ export default function AddLocationOneContact({
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
             {allContacts?.length > 0 ? allContacts?.filter((booking) =>
                         keys?.some((key) => booking?.details[key]?.includes(query))
-                    ).map((booking) =>(
-                <React.Fragment key={booking.details.Address}>
+                    ).map((booking, i) =>(
+                <React.Fragment key={i}>
                     <div className='contact-wrapper'
                         onClick={() => {
                             const selected = ([booking])
@@ -575,7 +596,6 @@ export default function AddLocationOneContact({
                             const acceptThisOne = allContacts.filter((b) => booking.details.Address !== b.details.Address )
                             setAllContacts(acceptThisOne)
                             console.log("accept this one", acceptThisOne);
-                            // setPuDetails(selected)
                             setTrackLocation(true)
                             setContactDate(false)
                             setLocationtitle(false)
@@ -586,7 +606,6 @@ export default function AddLocationOneContact({
                             setNextBtn(false)
                             setlocationTwo(true)
                             localStorage.setItem("pickSelectd", JSON.stringify(selected));
-                            // console.log("Block clicked");
                             setIsLoading(true)
                             setTimeout(() =>{
                                 setIsLoading(false);
@@ -624,6 +643,14 @@ export default function AddLocationOneContact({
 
         {isLoading  &&
             <Loader/>
+        }
+        {validationOpsHours &&
+            <div className='ops-validation'>
+                <div>
+                    <p>Please fill in the operating hours</p>
+                    <button onClick={() => {setValidationOpsHours(false)} }>Ok</button>
+                </div>
+            </div>
         }
     </div>
 

@@ -1,9 +1,111 @@
+@keyframes faderIn {
+    0% {
+        opacity: 0
+    }
+    100% {
+        opacity: 1
+    }
+}
+ 
+* {
+    animation: .3s faderIn ease-out
+}
+
+.trip-deals > div:nth-child(5) > div:nth-child(1) > div > div:nth-child(1){
+    width: 100%;
+}
+.monday-none{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ 
 .dashboard{
     display: flex;
     justify-content: space-between;
     width: 100%;
     background: #e3e3e3;
     position: relative;
+    height: 100vh
+}
+.moreOptions {
+    display: flex;
+    flex-direction: column;
+}
+.options {
+    margin-top: 15px;
+    border-radius: 50px;
+    width: fit-content;
+    padding: 0 10px;
+    font-size: clamp(12px, 1vw, 18px);
+    transition: .0s
+}
+.options:hover {
+    background: rgb(211, 211, 211);
+    cursor: pointer;
+}
+.options1 {
+    margin-top: 15px;
+    padding-left: 10px;
+    font-size: clamp(12px, 1vw, 18px)
+}
+.theIcon {
+    width: 36px;
+    padding: 10.5px;
+    background: #333;
+    border-radius: 50px;
+}
+.settings-menu {
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+}
+.settings-menu > p {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    transform: translateY(-10px);
+}
+.dashboard > div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.myLinks > div:nth-child(1) {
+    height: 30%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+@media screen and (max-height: 620px){
+    .myLinks > div:nth-child(1) {
+        height: 100px;
+        min-height: unset;
+    }
+}
+.myLinks > div:nth-child(2) {
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+ 
+.myLinks > div:nth-child(3) {
+    height: 107px;
+    position: relative;
+}
+ 
+.zipiicon {
+    width: 80px;
+}
+ 
+.dashboard > div:nth-child(2) {
+    height: 100%;
+    overflow-y: auto;
 }
 .MuiCircularProgress-root{
     width: 22px !important;
@@ -15,7 +117,7 @@
     color: #2cdd00 !important;
 }
 .account-menu{
-    margin-left: 15px;
+    padding-left: 15px;
     font-weight: normal !important;
     overflow: hidden;
     height: 0;
@@ -29,7 +131,7 @@
 .arrow-chev{
     position: absolute;
     right: 0;
-    top: 25%;
+    top: 10%;
 }
 .account-menu li a, .account-menu-open li a{
     font-weight: normal !important;
@@ -37,9 +139,8 @@
 .dashboard > div:nth-child(1){
     width: 19%;
     background: #fff;
-    /* height: 842px; */
 }
-
+ 
 .dashboard > div:nth-child(2){
     width: 81%;
 }
@@ -57,19 +158,16 @@
     height: 191px;
     object-fit: contain;
 }
-.left-dash > div{
-    padding-left: 16%;
-    padding-right: 14%;
+.myLinks > div{
+    padding-left: 50px;
+    padding-right: 50px;
 }
-/* .side-menu-section{
-
-} */
 .dash-link-icon{
     margin-right: 10px;
     font-size: 13px;
     color: #333333;
 }
-
+ 
 .right-top-section{
     width: 100%;
     height: 339px;
@@ -147,19 +245,19 @@
     font-size: 32px;
     font-weight: bold;
 }
-
+ 
 .dash-top-links{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
+ 
 .dash-act-links{
     display: flex;
     justify-content: flex-end;
     width: 60%;
 }
-
+ 
 .dash-act-links > li{
     margin-right:7%;
 }
@@ -175,6 +273,7 @@
     border-radius: 24px;
     font-weight: bold;
     font-size: 14px;
+    cursor: pointer;
 }
 .dash-act-links > li > a{
     font-size: 15px;
@@ -182,7 +281,7 @@
 .filter-select{
     margin-top: 14px;
     background: #222222;
-    padding: 5px 20px;
+    padding: 5px 43px 5px 20px;
     border-radius: 22px;
     width:fit-content;
     height: 42px;
@@ -193,7 +292,7 @@
     font-size: 14px;
     cursor: pointer;
 }
-
+ 
 .side-links li{
     font-size: 11.5px;
     font-weight: bold;
@@ -202,7 +301,7 @@
     color: #fff;
     position: absolute;
     top: 31%;
-    right: 6%;
+    right: 16%;
     font-size: 15px;
     pointer-events: none;
 }
@@ -236,6 +335,8 @@
     margin-top: 5%;
     padding: 13px 68px;
     overflow: scroll;
+    height: 365px;
+    max-height: 365px;
 }
 .dash-date::-webkit-scrollbar{
     display: none;
@@ -244,10 +345,10 @@
     width: 100%;
     background: #fff;
     margin-top: 11px;
+    height: 121px;
+    max-height: 121px;
+    overflow: scroll;
 }
-/* .booking-dash > div{
-   
-} */
 .book-name{
     display: flex;
     justify-content: space-between;
@@ -322,7 +423,7 @@
     position: relative;
     cursor: pointer;
 }
-
+ 
 .fleet-container{
     display: flex;
     justify-content: space-between;
@@ -330,11 +431,37 @@
     background: #e3e3e3;
     position: relative;
 }
-
+.fleet-container, .my-referals{
+    width: 100%;
+    text-align: center;
+    padding: 14%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.fleet-container > p, .my-referals > p{
+    font-size: 19px;
+    font-weight: bold;
+}
+ 
 @media screen and (max-width:768px){
     .dash-bars{
         display: block !important;
         font-size: 37px;
+    }
+    .loads-offered{
+        flex-direction: column !important;
+    }
+    .loads-offered > div:nth-child(2) > div > input{
+        width: 116px;
+    }
+    .trip-deals > div:nth-child(5) > div > div > div:nth-child(3){
+        width: 100% !important;
+    }
+    .accept-offer{
+        margin-top: 10px;
+        width: 100% !important;
     }
     .close-ex{
         width: 30px;
@@ -343,9 +470,14 @@
         cursor: pointer;
         visibility: visible;
     }
-    .left-dash > div:nth-child(1){
+    .myLinks > div:nth-child(1){
         padding: 25px !important;
+        display: flex;
+        justify-content: space-between;
     }
+    /* .myLinks > div:nth-child(2){
+        height: 0;
+    } */
     .side-menu-section{
         height: 0;
         overflow: hidden;
@@ -548,10 +680,15 @@
         line-height: 55px;
     }
 }
+@media screen and (max-width: 1300px) {
+    .myLinks > div{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
 @media screen and (max-width:1024px){
-    /* .right-top-section > div:nth-child(4){
-        width: 21%;
-    } */
+   
+ 
     .bids-i-p{
         width: 51% !important;
         font-size: 10px !important;
@@ -579,8 +716,3 @@
         width: 16%;
     }
 }
-/* @media screen and (max-width:1440px){
-    .dash-select-container{
-        width: 16%;
-    }
-} */

@@ -25,9 +25,11 @@ export default function AllMyBookings({
         const bookingRef = firebase.database().ref('booking'  ).orderByChild('booking_party_uid').equalTo(Uid);
         var childrenArray = []
         bookingRef.on('value', (snapshot) => {
-          setAllBooking(Object.values(snapshot.val()));
-          // setAllbookingsValue(Object.values(snapshot.val()))
-          localStorage.setItem("AllMyBookings", JSON.stringify(childrenArray));
+          if(snapshot.exists()){
+            setAllBooking(Object?.values(snapshot?.val()));
+            // setAllbookingsValue(Object.values(snapshot.val()))
+            localStorage.setItem("AllMyBookings", JSON.stringify(childrenArray));
+          }
         });
     }
   }, [])

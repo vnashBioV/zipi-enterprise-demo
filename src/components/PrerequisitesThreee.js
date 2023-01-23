@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import EnterpriseNav from './EnterpriseNav'
 import { useParams, Link, useNavigate  } from 'react-router-dom'
+import { useStateContext } from '../context/DashboardStateContext'
 
 export default function Summary({
     // vehicleType,
@@ -20,7 +21,18 @@ export default function Summary({
     const [openSpinner, setOpenSpinner] = useState(false)
     const [vehicleType, setVehicleType] = useState(["Refrigerated"])
     const navigate = useNavigate();
-
+    const { 
+        isEnterprise,
+        setIsEnterprise,
+        isTracking,
+        setIsTracking,
+        isShowSchedule,
+        setIsShowSchedule,
+        setIsShowRequest,
+        isShowRequest,
+        setCargoLink,
+        cargoLink
+    } = useStateContext();
     const goodsInTransitFnc =(e)=>{
         setGoodsInTransit(parseInt(e.target.value))
     }
@@ -58,7 +70,11 @@ export default function Summary({
                 setTimeout(() => {
                     setOpenSpinner(false)
                 },1000)
-                navigate('/schedule')
+                setIsShowSchedule(true);
+                setIsTracking(false);
+                setIsEnterprise(false);
+                setCargoLink(false);
+                setIsShowRequest(false);
             }
         }
     }

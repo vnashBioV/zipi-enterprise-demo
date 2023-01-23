@@ -1,34 +1,30 @@
 import React, {useState, useEffect} from 'react'
 import PlacesAutocomplete from 'react-places-autocomplete';
 import '../css/locationAuto.css';
-
+import { useStateContext } from '../context/BookingAddressTwo'
 
 export default function LocationSearchInputTwo({
   setBookingArrayTwo,
   bookingArrayTwo
 }) {
+
+  const { 
+    isAddressAuto,
+    setIsAddressAuto
+  } = useStateContext();
+
   // const [address, setAddress] = useState("");
   const handleChange = (value) => {
-    setBookingArrayTwo((prevState) => ({
-      ...prevState,
-      details:{
-          ...prevState.details,
-          Address:value
-      } 
-    }))
+    setIsAddressAuto(value);
+    console.log("this the value", value);
   }
   const handleSelect = (value) => {
-    setBookingArrayTwo((prevState) => ({
-      ...prevState,
-      details:{
-          ...prevState.details,
-          Address:value
-      } 
-    }))
+    setIsAddressAuto(value);
+    console.log("this the value selected", value);
   }
   return (
     <div>
-      <PlacesAutocomplete value={bookingArrayTwo.details?.Address ? bookingArrayTwo.details?.Address: ""} onChange={handleChange} onSelect={handleSelect}>
+      <PlacesAutocomplete value={isAddressAuto} onChange={handleChange} onSelect={handleSelect}>
           {({getInputProps, suggestions, getSuggestionItemProps, loading})=>(
             <div>
               <input {...getInputProps({
