@@ -9,20 +9,20 @@ import LoginAlert from '../Alerts/LoginAlert';
 import Loader from '../../components/loader/Loader'
 
 export default function Cargo({
-        setOpenCargoModal,
-        cargoDetails,
-        setCargoDetails,
-        fileUrl,
-        setFileUrl,
-        bookingArrayThree,
-        setBookingArrayThree,
-        defaultCargo,
-        setDefaultCargo,
-        setSearchLocationThree,
-        setLocationtitleThree,
-        setSelectedBookingThree,
-        alertQuantity, 
-        setAlertQuantity
+    setOpenCargoModal,
+    cargoDetails,
+    setCargoDetails,
+    fileUrl,
+    setFileUrl,
+    bookingArrayThree,
+    setBookingArrayThree,
+    defaultCargo,
+    setDefaultCargo,
+    setSearchLocationThree,
+    setLocationtitleThree,
+    setSelectedBookingThree,
+    alertQuantity, 
+    setAlertQuantity
     }) {
 
     const iconName = ("Jane").substring(0,2);
@@ -51,249 +51,201 @@ export default function Cargo({
     const volumeRef = useRef();
     const heightRef = useRef();
     const breadthRef = useRef();
-
-    //=========STATES ARRAY=========================================================================
-    //=========END STATE ARRAY======================================================================
-
-    //========CONSOLE LOGS==========================================================================
-        console.log("file upload", fileUpload);
-        console.log("file url", fileUrl);
-        console.log("cargoDetails", cargoDetails)
-        console.log("book array three", bookingArrayThree)
-
-    //========END CONSOLE LOGS======================================================================
     
-    //==========FUNCTIONS===========================================================================
-        const setLengthTrueFnc = (event)=>{
-            setLengthTrue(true);
-            setCargoDetails((prevState) => ({
-                ...prevState,
-                cargoDetails:{
-                    ...prevState.cargoDetails,
-                    lengthValue:event.target.value
-                } 
+    const setLengthTrueFnc = (event)=>{
+        setLengthTrue(true);
+        setCargoDetails((prevState) => ({
+            ...prevState,
+            cargoDetails:{
+                ...prevState.cargoDetails,
+                lengthValue:event.target.value
+            } 
+        }))
+    }
+
+    const onSearchChangeThree = (queryThree) =>{
+        let matches = []
+        if (queryThree.length>0){
+            matches = bookingArrayThree.filter(booking =>{
+                const regex = new RegExp(`${queryThree}`, "i");
+                return booking.details.productName.match(regex);
+            })
+        }
+        console.log('matches', matches)
+        setSuggestionsThree(matches)
+        setQueryThree(queryThree)
+    }
+
+    const setBreadthTrueFnc = (event)=>{
+        setBreadthTrue(true);
+        setCargoDetails((prevState) => ({
+            ...prevState,
+            cargoDetails:{
+                ...prevState.cargoDetails,
+                breadth:event.target.value
+            } 
             }))
-        }
+    }
 
-        const onSearchChangeThree = (queryThree) =>{
-            let matches = []
-            if (queryThree.length>0){
-                matches = bookingArrayThree.filter(booking =>{
-                    const regex = new RegExp(`${queryThree}`, "i");
-                    return booking.details.productName.match(regex);
-                })
-            }
-            console.log('matches', matches)
-            setSuggestionsThree(matches)
-            setQueryThree(queryThree)
-        }
+    const setWeightTrueFnc = (event)=>{
+        setWeightTrue(true);
+        setCargoDetails((prevState) => ({
+            ...prevState,
+            cargoDetails:{
+                ...prevState.cargoDetails,
+                weight:event.target.value
+            } 
+        }))
+    }
 
-        const setBreadthTrueFnc = (event)=>{
-            setBreadthTrue(true);
-            setCargoDetails((prevState) => ({
-                ...prevState,
-                cargoDetails:{
-                    ...prevState.cargoDetails,
-                    breadth:event.target.value
-                } 
-                }))
-        }
+    const setHeightTrueFnc = (event)=>{
+        setHeightTrue(true);
+        setCargoDetails((prevState) => ({
+            ...prevState,
+            cargoDetails:{
+                ...prevState.cargoDetails,
+                height:event.target.value
+            } 
+        }))
+    }
 
-        const setWeightTrueFnc = (event)=>{
-            setWeightTrue(true);
-            setCargoDetails((prevState) => ({
-                ...prevState,
-                cargoDetails:{
-                    ...prevState.cargoDetails,
-                    weight:event.target.value
-                } 
-            }))
-        }
-
-        const setHeightTrueFnc = (event)=>{
-            setHeightTrue(true);
-            setCargoDetails((prevState) => ({
-                ...prevState,
-                cargoDetails:{
-                    ...prevState.cargoDetails,
-                    height:event.target.value
-                } 
-            }))
-        }
-
-       const handleUpload = (e) => {
-            e.preventDefault()
-            const storage = firebase.storage()
-            if(fileUpload === null) return
-            const fileRef = storage.ref(`sds-file/${fileUpload.name}`)
-            fileRef.put(fileUpload).then((snapshot) => {
-                const fileUrl = fileRef.getDownloadURL()
-                .then((url) => {                
-                    setFileUrl(url)
-                })
-                  .catch((error) => {
-                    // Handle any errors
-                  });
-              });
-            setOpenSdsAlert(true) 
-            setTimeout(() =>{
-                setOpenSdsAlert(false)  
-            }, 2000);
-        }
-
-        const handleChangeFragile = () => { 
-            setChecked(!checked);
-            console.log(checked);
-            if(checked){
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        fragile:"false"
-                    } 
-                }));
-                console.log('false me');
-            }else{
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        fragile:"true"
-                    } 
-                }));
-                console.log('true me');
-            }
-        };
-
-        const handleChangeHazard = () => { 
-            setCheckedThree(!checkedThree);
-            console.log(checkedThree);
-            if(checkedThree){
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        hazard:{
-                            ...prevState.cargoDetails.hazard, 
-                            hazard_rating:"none"
-                        }
-                    } 
-                }));
-                console.log('true me');
-                setselectHazardous(true);
-            }else{
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        hazard:{
-                            ...prevState.cargoDetails?.hazard, 
-                            hazard_rating:"Hazardous"
-                        }
-                    } 
-                }));
-                setselectHazardous(false);
-                // console.log("false me");
-            }
-        };
-
-        const handleChangeTemparature = () => { 
-            setCheckedTwo(!checkedTwo);
-            // console.log(checkedTwo);
-            if(checkedTwo){
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        temperature_controlled:"false"
-                    } 
-                }));
-            }else{
-                setCargoDetails((prevState) => ({
-                    ...prevState,
-                    cargoDetails:{
-                        ...prevState.cargoDetails,
-                        // cargoCondition:e.target.value
-                        temperature_controlled:"true"
-                    } 
-                }));
-            }
-        };
-
-        const saveCargoContactFnc = async ()=>{
-            return  await firebase.database().ref().push()
-        }
-
-        const HandleSaveCargo = () =>{
-            var contact_Uid
-            if(cargoDetails.cargoDetails.lengthValue &&
-                cargoDetails.cargoDetails.breadth &&
-                cargoDetails.cargoDetails.weight &&
-                cargoDetails.cargoDetails.height !== undefined){
-                // console.log("the file url",fileUrl)
-                const cargo_details = cargoDetails.cargoDetails
-                saveCargoContactFnc().then((data ) => {
-                    contact_Uid = data.key
-                    firebase.database().ref('/booking_party/' + userUid).child("cargo_details").push({
-                        details: cargo_details,
-                        date: new Date().toISOString().substring(0,10),
-                        sds_url: fileUrl
-                    });
-                    console.log("cargo_details", cargoDetails);
-                    console.log("contact_Uid", contact_Uid);
+    const handleUpload = (e) => {
+        e.preventDefault()
+        const storage = firebase.storage()
+        if(fileUpload === null) return
+        const fileRef = storage.ref(`sds-file/${fileUpload.name}`)
+        fileRef.put(fileUpload).then((snapshot) => {
+            const fileUrl = fileRef.getDownloadURL()
+            .then((url) => {                
+                setFileUrl(url)
+            })
+                .catch((error) => {
                 });
-                // setOpenCargoModal(false)
-            }else{
-                setOpenAlertFinal(true);
-            }
-        }
-        
-        
-    //==========END FUNCTIONS=======================================================================
-
-
-    //=========USE EFFECTS==========================================================================
-        // useEffect(() => {
-        //     setCargoDetails((prevState) => ({
-        //         ...prevState,
-        //         cargoDetails:{
-        //             ...prevState.cargoDetails,
-        //             sdsFileUrl:fileUrl
-        //         } 
-        //     }))
-        // }, [])
-        
-        
-        useEffect(() => {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                  setUserUid(user.uid);
-                  var uid = user.uid
-                  // ...
-                } else {
-                }
             });
-        }, [])
-        useEffect(() => {
-            setTimeout(() =>{
-                setIsCargo(true);
-            }, 300)
-        }, [])
+        setOpenSdsAlert(true) 
+        setTimeout(() =>{
+            setOpenSdsAlert(false)  
+        }, 2000);
+    }
 
-        // useEffect(() => {
-        //     if(lengthTrue === true){
-        //         volumeRef.current.disabled = false;
-        //     }   
-        // }, [])
-        
-        
-    //===========END USE EFFECFS====================================================================
+    const handleChangeFragile = () => { 
+        setChecked(!checked);
+        console.log(checked);
+        if(checked){
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    fragile:"false"
+                } 
+            }));
+            console.log('false me');
+        }else{
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    fragile:"true"
+                } 
+            }));
+            console.log('true me');
+        }
+    };
 
+    const handleChangeHazard = () => { 
+        setCheckedThree(!checkedThree);
+        console.log(checkedThree);
+        if(checkedThree){
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    hazard:{
+                        ...prevState.cargoDetails.hazard, 
+                        hazard_rating:"none"
+                    }
+                } 
+            }));
+            console.log('true me');
+            setselectHazardous(true);
+        }else{
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    hazard:{
+                        ...prevState.cargoDetails?.hazard, 
+                        hazard_rating:"Hazardous"
+                    }
+                } 
+            }));
+            setselectHazardous(false);
+        }
+    };
+
+    const handleChangeTemparature = () => { 
+        setCheckedTwo(!checkedTwo);
+        if(checkedTwo){
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    temperature_controlled:"false"
+                } 
+            }));
+        }else{
+            setCargoDetails((prevState) => ({
+                ...prevState,
+                cargoDetails:{
+                    ...prevState.cargoDetails,
+                    temperature_controlled:"true"
+                } 
+            }));
+        }
+    };
+
+    const saveCargoContactFnc = async ()=>{
+        return  await firebase.database().ref().push()
+    }
+
+    const HandleSaveCargo = () =>{
+        var contact_Uid
+        if(cargoDetails.cargoDetails.lengthValue &&
+            cargoDetails.cargoDetails.breadth &&
+            cargoDetails.cargoDetails.weight &&
+            cargoDetails.cargoDetails.height !== undefined){
+            const cargo_details = cargoDetails.cargoDetails
+            saveCargoContactFnc().then((data ) => {
+                contact_Uid = data.key
+                firebase.database().ref('/booking_party/' + userUid).child("cargo_details").push({
+                    details: cargo_details,
+                    date: new Date().toISOString().substring(0,10),
+                    sds_url: fileUrl
+                });
+                console.log("cargo_details", cargoDetails);
+                console.log("contact_Uid", contact_Uid);
+            });
+        }else{
+            setOpenAlertFinal(true);
+        }
+    }
+        
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                setUserUid(user.uid);
+                var uid = user.uid
+                // ...
+            } else {
+            }
+        });
+    }, [])
+    useEffect(() => {
+        setTimeout(() =>{
+            setIsCargo(true);
+        }, 300)
+    }, [])
+        
   return (
     <div className={`modal-container duration-500 ease-in-out ${isCargo ? 'opacity-1' : 'opacity-0'}`}>
         <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{ margin:"9rem 0"}}>
@@ -389,7 +341,6 @@ export default function Cargo({
                             } 
                             }))
                         }
-                        // disabled = {lengthTrue || breadthTrue || weightTrue || heightTrue ? "disabled" : ""}
                     />
                     <input 
                         ref={breadthRef}
@@ -542,7 +493,6 @@ export default function Cargo({
                             ...prevState,
                             cargoDetails:{
                                 ...prevState.cargoDetails,
-                                // cargoCondition:e.target.value
                                 hazard:{
                                     ...prevState.cargoDetails.hazard, 
                                     min_temp:e.target.value
@@ -560,7 +510,6 @@ export default function Cargo({
                                 ...prevState,
                                 cargoDetails:{
                                     ...prevState.cargoDetails,
-                                    // cargoCondition:e.target.value
                                     hazard:{
                                         ...prevState.cargoDetails.hazard, 
                                         max_temp:e.target.value
@@ -584,7 +533,6 @@ export default function Cargo({
                             ...prevState,
                             cargoDetails:{
                                 ...prevState.cargoDetails,
-                                // cargoCondition:e.target.value
                                 hazard:{
                                     ...prevState.cargoDetails.hazard, 
                                     IMDG_number:e.target.value
@@ -629,7 +577,6 @@ export default function Cargo({
                             disabled = {!checkedThree ? "disabled" : ""}
                             className={`${!checkedThree && "disabled:opacity-25"}`}
                             onChange={(e) => {setFileUpload(e.target.files[0])}}
-                            // onClick={handleUpload}
                         />
                         <i className={`fa-solid fa-upload ${!checkedThree && "disabled:opacity-25"}`}></i>
                         upload SDS
@@ -758,7 +705,5 @@ export default function Cargo({
                 <Loader/>
             }
     </div>
-
-    
   )
 }

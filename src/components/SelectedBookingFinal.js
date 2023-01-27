@@ -9,11 +9,7 @@ import { set } from 'date-fns';
 import { setEmitFlags } from 'typescript';
 import { fi } from 'date-fns/locale';
 
-export default function SelectedBookingFinal({
-  // fleet,
-  // bookingId,
-  // bookingRef
-}) {
+export default function SelectedBookingFinal(){
     const [accepted, setAccepted] = useState(false);
     const [backColor, setBackColor] = useState(true);
     const [counterOffer, setCounterOffer] = useState(false);

@@ -4,8 +4,8 @@ import firebase from '../firebase-config';
 import { Link } from 'react-router-dom';
 import '../css/bidding.css'
 import { v4 as uuidv4 } from 'uuid';
-import {UserContext} from '../context/NewContext';
-import {AllPricesContext} from '../context/SelectAllPricesContext'
+import {useStateContextSingle} from '../context/SingleSelectedBooking';
+import {StateContextAllPrices} from '../context/SelectAllPricesContext'
 import {SelectedTotal} from '../context/SelectedTotal'
 
 // import BiddingDetails from '../components/BiddingDetails';
@@ -30,8 +30,8 @@ function SelectedBooking({
   const [fleetsAccepted, setFleetsAccepted] = useState(false);
   const [settleAmount, setSettleAmount] = useState();
   const [deactivateAccept, setDeactivateAccept] = useState(false);
-  const {selectedValue, setSelectedValue}  = useContext(UserContext)
-  const {allPricesValue, setAllPricesValue} = useContext(AllPricesContext)
+  const {selectedValue, setSelectedValue}  = useStateContextSingle()
+  const {allPricesValue, setAllPricesValue} = useContext(StateContextAllPrices)
   const {selectedTotalValue, setSelectedTotalValue} = useContext(SelectedTotal)
 
 

@@ -165,7 +165,7 @@
   color: #878787;
 }
 .operating-hours{
-  width: 83%;
+  width: 100%;
   font-size: 13px;
 }
 .operating-hours > div > div{
@@ -192,7 +192,7 @@
   align-items: center;
 }
 .time-pill{
-  width: 89%;
+  width: 100%;
   border: transparent;
   background: #e8e8e8;
   border-radius: 15px;
@@ -202,6 +202,7 @@
   color: grey;
   height: 27px;
   text-align: center;
+  margin-right: 10px;
 }
 .text-area-wrap{
   margin-top: 3px;

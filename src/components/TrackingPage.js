@@ -71,7 +71,7 @@ function TrackingPage({
               var uid = user.uid;
               setUserUid(uid)
               firebase.database().ref('/booking_party/' + uid).once('value', (snapshot) => {
-                    const company = snapshot.val().companyName
+                    const company = snapshot.val().firstName
                     setCompany(company)
                     setTelephone(snapshot.val().phoneNumber)
                 });
@@ -243,7 +243,7 @@ function TrackingPage({
                         </span>
 
                         <div style={{marginLeft:"10px", width:"60%", display:"flex", justifyContent:"end", alignItems:"center"}}>
-                            <Avatar className='Enterprise-icon'>{company.toUpperCase().substring(0,2)}</Avatar>
+                            <Avatar className='Enterprise-icon'>{company?.toUpperCase().substring(0,2)}</Avatar>
                             <span style={{
                                 display:"flex",
                                 flexDirection:"column",

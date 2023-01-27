@@ -435,11 +435,7 @@ export default function Enterprise() {
                 <h1 className='transform transition-all duration-1000 ease-out' ref={hOne}>Location 1</h1>
                 {locationtitle ? 
                     <LocationTitle>
-                        <p>Choose first location contact from the list below. This is a contact that you've previously 
-                            registered in your entry. Alternatively, you can opt to add a new contact by clicking 
-                            the "New contact" button.
-                        </p>
-                        {/* <p>Create your route by nominating addresses in the expected supply chain order.</p> */}
+                        <p>Search for a contact that is already existing and click on it to select it, if there is no contact please click the user icon to add new contact details</p>
                     </LocationTitle>
                     : <></>
                 }
@@ -593,10 +589,7 @@ export default function Enterprise() {
                     <h1 className='duration-500 ease-in-out'>Location 2</h1>
                     {locationtitleTwo ? 
                         <LocationTitle>
-                            <p className='duration-500 ease-in-out'>Choose second location contact from the list below. This is a contact that you've previously 
-                                registered in your entry. Alternatively, you can opt to add a new contact by clicking 
-                                the "New contact" button.
-                            </p>
+                            <p className='duration-500 ease-in-out'>Search for a contact that is already existing and click on it to select it, if there is no contact please click the user icon to add new contact details</p>
                             {/* <p>Create your route by nominating addresses in the expected supply chain order.</p> */}
                         </LocationTitle>
                         : <></>
@@ -764,7 +757,7 @@ export default function Enterprise() {
                     <h1>Cargo</h1>
                     
                     {locationtitleThree &&
-                        <p>Choose the cargo you would like to transport below.</p>
+                        <p>Search for a cargo that is already existing and click on it to select it, if there is no cargo please click the user icon to add new cargo details</p>
                     } 
                     {searchLocationThree ?
                         <Search>
@@ -780,9 +773,9 @@ export default function Enterprise() {
                     }
                     
                     <div className='cargo-container'>
-                    {locationtitleThree &&
-                        <p style={{fontSize:"12px", marginBottom:"14px", marginTop:"10px"}}>Please select products that are suitable to be in the same vehicle together.</p>
-                    } 
+                    {/* {locationtitleThree &&
+                        <p style={{fontSize:"12px", marginBottom:"14px", marginTop:"10px"}}></p>
+                    }  */}
                     </div> 
                     <div className='cargo-next'>
                     </div>

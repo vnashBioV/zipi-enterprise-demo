@@ -94,17 +94,17 @@ export default function EnterpriseNav({
                       setCargoLink(true);
                       setIsShowRequest(false);
                     }}className="nav-nav" to="/dashboard"><i class="fa-solid fa-table-columns nav-awe"></i>Dashboard</div></li>
-                    <li><div className="nav-nav" onClick={()=> {
+                    {/* <li><div className="nav-nav" onClick={()=> {
                         firebase.auth().signOut().then(() => {
                             navigate('/Login')
                           }).catch((error) => {
                             alert(error)
                           });
-                    }}><i className="fa-solid fa-arrow-right-from-bracket nav-awe"></i>Logout</div></li>
+                    }}><i className="fa-solid fa-arrow-right-from-bracket nav-awe"></i>Logout</div></li> */}
                 </ul>
             <div className='profile'>
                 <p>{name}</p>
-                <Avatar className='Enterprise-icon'>{iconName.toUpperCase()}</Avatar>
+                <Avatar className='Enterprise-icon'>{iconName?.toUpperCase()}</Avatar>
                 <i className="fa-solid fa-chevron-down chearrow"></i>
                 <ul className='dropdown-wrapper'>
                     <li><div className="nav-nav" 
@@ -136,13 +136,13 @@ export default function EnterpriseNav({
                       setCargoLink(true);
                       setIsShowRequest(false);
                     }}className="nav-nav" to="/dashboard"><i class="fa-solid fa-table-columns nav-awe"></i>Dashboard</div></li>
-                    <li><div className="nav-nav" onClick={()=> {
+                    {/* <li><div className="nav-nav" onClick={()=> {
                         firebase.auth().signOut().then(() => {
                             navigate('/Login')
                           }).catch((error) => {
                             alert(error)
                           });
-                    }}><i className="fa-solid fa-arrow-right-from-bracket nav-awe"></i>Logout</div></li>
+                    }}><i className="fa-solid fa-arrow-right-from-bracket nav-awe"></i>Logout</div></li> */}
                 </ul>
             </div>
         </div>

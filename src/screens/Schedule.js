@@ -763,7 +763,7 @@ export default function SchedulingPage({
                                     puOperatingHours: finalPick.OperatingHours !== undefined ? finalPick?.OperatingHours : "",
                                     puPhone: finalPick?.Phone,
                                     puPublicHoliday: finalPick.PublicHoliday !== undefined ? finalPick?.PublicHoliday : "",
-                                    puSpecialInstructions: finalPick?.SpecialInstructions,
+                                    puSpecialInstructions: finalPick.SpecialInstructions !== undefined ? finalPick?.SpecialInstructions : "",
                                     puSurname: finalPick?.Surname,
                                     puTelephone: finalPick?.Telephone,
                                     puAddress: finalPick?.Address
@@ -780,7 +780,7 @@ export default function SchedulingPage({
                                     doOperatingHours: finalDrop.OperatingHours !== undefined ? finalDrop?.OperatingHours: "",
                                     doPhone: finalDrop?.Phone,
                                     doPublicHoliday: finalDrop.PublicHoliday !== undefined ? finalDrop?.PublicHoliday : "",                                   
-                                    doSpecialInstructions: finalDrop?.SpecialInstructions,
+                                    doSpecialInstructions: finalDrop.SpecialInstructions !== undefined ? finalDrop?.SpecialInstructions : "",
                                     doSurname: finalDrop?.Surname,
                                     doTelephone: finalDrop?.Telephone,
                                     doAddress: finalDrop?.Address,

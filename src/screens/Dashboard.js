@@ -23,6 +23,7 @@ import GetHelp from '../components/GetHelp';
 import { useStateContextBookings } from '../context/AllBookingsContext'
 import emptyIcon from '../icons/box.png'
 import MonthlyComponent from '../components/MonthlyComponent';
+import YearlyFilter from '../components/YearlyFilter';
 
 export default function Dashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -93,7 +94,7 @@ export default function Dashboard() {
               localStorage.setItem("userUid", JSON.stringify(uid));
               firebase.database().ref('/booking_party/' + uid).once('value', (snapshot) => {
                     const userInfo = snapshot.val();
-                    const company = snapshot.val().companyName
+                    const company = snapshot.val().firstName
                     localStorage.setItem("userInformation", JSON.stringify(userInfo));
                     setCompany(company)
                 });
@@ -128,17 +129,12 @@ export default function Dashboard() {
       setTimeout(() => {
         setIsSpinner()
       }, 3000)
+      setMonthFilter(true)
     }, [])
     
     useEffect(() => {
-        console.log("tracking page", isTracking)
+        console.log("the monthly state", monthFilter)
     }, [])
-    // console.log("show request", isShowRequest)
-    // console.log("show schedule", isShowSchedule)
-    // console.log("show navigation", showNavigation);
-    console.log("January data", getJanuaryMonthlyBookings)
-    // console.log("the results", allOfTheBooking[2]?.day_created === "Thursday");
-    // filter((book) => book.date_created.substring(5,6) === "01" ))
     return (
     <div className='dashboard'>
         <div className="left-dash myLinks">
@@ -245,7 +241,7 @@ export default function Dashboard() {
                 firebase.auth().signOut().then(() => {
                     navigate('/')
                     }).catch((error) => {
-                    alert(error)
+                    alert(error)  
                     });
             }}
         ><i class="fa-sharp fa-solid fa-right-from-bracket dash-link-icon"></i>Sign out
@@ -406,15 +402,15 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            {monthFilter &&
+            {monthFilter && 
                 <MonthlyComponent/>
             }
 
-            {yearFilter &&
-                <h1>Hello yearly filter</h1>
+            {yearFilter && 
+                <YearlyFilter/>
             }
 
-            {!allOfTheBooking.length > 0 && !yearFilter &&
+            {!allOfTheBooking.length > 0 &&
                 <div className='dash-date' style={{
                                 width:"100%", 
                                 height:"100%",
@@ -425,6 +421,7 @@ export default function Dashboard() {
                                 top:"30%",
                                 height:"fit-content",
                                 marginTop:"9%",
+                                marginBottom:"9%",
                             }}>
                     <img src={emptyIcon} width={100} height={100}/>
                     Please make some bookings, it would appear you have none.

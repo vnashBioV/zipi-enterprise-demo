@@ -46,8 +46,6 @@ export default function AllMyBookings({
             allBookings={allBookings}
             setCounterOffer={setCounterOffer}
             counterOffer={counterOffer}
-            setBackColor={setBackColor}
-            backColor={backColor}
             setRateSubmit={setRateSubmit}
             rateSubmit={rateSubmit}
             setAccepted={setAccepted}

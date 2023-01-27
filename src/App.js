@@ -10,8 +10,8 @@ import TrackingPage from './components/TrackingPage';
 import ExportPdfComponent from './components/PdfComponent';
 import TestinContext from './screens/TestinContext';
 import SelectedBookingContext from './context/SelectedBooking'
-import {UserContext} from './context/NewContext';
-import {AllPricesContext} from './context/SelectAllPricesContext'
+import {StateSingleSelected} from './context/SingleSelectedBooking';
+import {StateContextAllPrices} from './context/SelectAllPricesContext'
 import {SelectedTotal} from './context/SelectedTotal'
 import Dashboard from './screens/Dashboard';
 import Cargo from './components/Cargo';
@@ -25,7 +25,9 @@ import { StateContext } from './context/DashboardStateContext'
 import { AddressStateContext } from './context/BookingAddress'
 import { AddressStateContextTwo } from './context/BookingAddressTwo'
 import { AllBookingsContext } from './context/AllBookingsContext'
+import {StateBidding} from './context/BiddingStatesContext'
 import GetHelp from './components/GetHelp';
+import ForgotPassword from './components/ForgotPassword';
 
 
 function App() {
@@ -36,13 +38,14 @@ function App() {
   return (
     <div className='app'>
         <BrowserRouter>
+        <StateBidding>
           <AllBookingsContext>
             <AddressStateContextTwo>
               <AddressStateContext>
                 <StateContext>
                   <SelectedTotal.Provider value={{selectedTotalValue, setSelectedTotalValue}}>
-                    <AllPricesContext.Provider value={{allPricesValue, setAllPricesValue}}>
-                      <UserContext.Provider value={{selectedValue, setSelectedValue}}>
+                    <StateContextAllPrices>
+                      <StateSingleSelected>
                         <Routes>
                           <Route exact path='/enterprise' element={<Enterprise />} />
                           <Route exact path='/schedule' element={<Schedule />} />
@@ -61,15 +64,17 @@ function App() {
                           <Route exact path='/cargo' element={<Cargo />} />
                           <Route exact path='/gethelp' element={<GetHelp/>} />
                           <Route exact path='/contactLink' element={<ContactLink />} />
+                          <Route exact path='/forgotpassword' element={< ForgotPassword/>} />
                           {/* <Route exact path='/setdata' element={<SetDataToContext />} /> */}
                         </Routes>
-                      </UserContext.Provider>
-                    </AllPricesContext.Provider>
+                      </StateSingleSelected>
+                    </StateContextAllPrices>
                   </SelectedTotal.Provider>
                 </StateContext>
               </AddressStateContext>
             </AddressStateContextTwo>
           </AllBookingsContext>
+          </StateBidding>
         {/* </AllBookingsContext.Provider> */}
         </BrowserRouter>
     </div>

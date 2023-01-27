@@ -13,7 +13,6 @@ export default function LocationSearchInputTwo({
     setIsAddressAuto
   } = useStateContext();
 
-  // const [address, setAddress] = useState("");
   const handleChange = (value) => {
     setIsAddressAuto(value);
     console.log("this the value", value);

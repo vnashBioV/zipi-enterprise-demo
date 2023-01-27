@@ -8,10 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 import emptyIcon from '../icons/box.png'
 import BiddingDetails from '../components/BiddingDetails';
 import AllMyBookings from '../components/AllMyBookings';
-import {UserContext} from '../context/NewContext';
-import {AllPricesContext} from '../context/SelectAllPricesContext'
+import {useStateContextSingle} from '../context/SingleSelectedBooking';
+import { useStateContextAllPrices } from '../context/SelectAllPricesContext'
 import {SelectedTotal} from '../context/SelectedTotal'
 import { useStateContext } from '../context/DashboardStateContext'
+import { useStateBidding } from '../context/BiddingStatesContext'
 
 function BiddingPageTwo() {
     const [userEmail, setUserEmail] = useState("");
@@ -22,7 +23,7 @@ function BiddingPageTwo() {
     const [fleetOpBooking, setFleetOpBooking] = useState([]);
     const [pricesFromFlt, setPricesFromFlt] = useState([]);
     const pricesFromFleet = []
-    const {selectedValue, setSelectedValue}  = useContext(UserContext)
+    const {selectedValue, setSelectedValue}  = useStateContextSingle();
     const [isBiddingLoaded, setIsBiddingLoaded] = useState(false);
     const navigate = useNavigate();
     const { 
@@ -36,6 +37,21 @@ function BiddingPageTwo() {
       isShowRequest,
       setCargoLink
     } = useStateContext();
+
+    const {
+      counterOffer, 
+      setCounterOffer,
+      finalOffer, 
+      setFinalOffer,
+      accepted, 
+      setAccepted,
+      greenBackground, 
+      setGreenBackground,
+      blueBackground, 
+      setBlueBackground,
+      yellowBackground, 
+      setYellowBackground,
+    } = useStateBidding();
 
   useEffect(() => {
     setTimeout(() =>{
@@ -62,17 +78,6 @@ function BiddingPageTwo() {
         });
     }, [])
 
-    // useEffect(() => {
-    //     document.body.style.cssText="margin-top:98px !important";
-    //     return () => {
-    //         document.body.style.marginTop= "0px";
-    //     };
-    // }, []);
-
-      const [backColor, setBackColor] = useState(true);
-      const [counterOffer, setCounterOffer] = useState(false);
-      const [finalOffer, setFinalOffer] = useState(false);
-      const [accepted, setAccepted] = useState(false);
       const [vat, setVat] = useState();
       const [total, setTotal] = useState();
       const [rateSubmit, setRateSubmit] = useState(true);
@@ -83,15 +88,17 @@ function BiddingPageTwo() {
       const [fleetsAccepted, setFleetsAccepted] = useState(false);
       const [settleAmount, setSettleAmount] = useState();
       const [deactivateAccept, setDeactivateAccept] = useState(false);
-      // const {selectedValue, setSelectedValue}  = useContext(UserContext)
-      const {allPricesValue, setAllPricesValue} = useContext(AllPricesContext)
-      const {selectedTotalValue, setSelectedTotalValue} = useContext(SelectedTotal)
 
+      const { 
+        allPricesValue, 
+        setAllPricesValue
+    } = useStateContextAllPrices(); 
+
+      const {selectedTotalValue, setSelectedTotalValue} = useContext(SelectedTotal)
       const handleSettle = (bookingId, fleet) =>{
         firebase.database().ref('/fleets/' + fleet).child("booking_bids").child(bookingId).child("price").update({ 
           1: parseFloat(settleAmount)
         });
-        console.log("The second price", secondPrice)
       }
 
       const handleDecline = (bookingId, fleet) => {
@@ -101,7 +108,6 @@ function BiddingPageTwo() {
       }
 
       const handleAccept = (bookingId, fleet) =>{
-        // console.log(fleetId)
         firebase.database().ref('/fleets/' + fleet).child("booking_bids").child(bookingId).update({ 
               accepted: true
         })
@@ -118,9 +124,6 @@ function BiddingPageTwo() {
         //   xhr.send();
         // });
       }
-
-      console.log("selected booking context", 778*0.14)
-
   return (
     <div className={`duration-500 ease-in-out ${isBiddingLoaded ? 'open-bidding' : 'bidding'}`}>
         <div  className='nav-tracking' style={{padding:"1rem 0"}}>
@@ -147,8 +150,6 @@ function BiddingPageTwo() {
                 <AllMyBookings
                   setCounterOffer={setCounterOffer}
                   counterOffer={counterOffer}
-                  setBackColor={setBackColor}
-                  backColor={backColor}
                   setRateSubmit={setRateSubmit}
                   rateSubmit={rateSubmit}
                   setAccepted={setAccepted}
@@ -222,79 +223,77 @@ function BiddingPageTwo() {
                     console.log("data", fleet);
                     return(
                     <div className='actual-offers' key={key}>
-                      {!accepted && selectedValue.booking_bids_fleet_id ?
-                        <span className={backColor ? 'yellowBidding' : 'blueBidding'} ></span>
-                        : <span className="backGreen"></span>
-                      }
+                     {yellowBackground &&
+                        <span className='yellowBidding'></span>
+                     }
+                     {blueBackground &&
+                        <span className='blueBidding'></span>
+                     }
+                     {greenBackground &&
+                        <span className='backGreen'></span>
+                     }
                       <h2 style={{fontWeight:"400", fontSize:"14px", marginBottom:"7px"}}>{selectedValue.booking_ref}</h2>
                       <div className='loads-offered'>
-                        {!accepted && selectedValue.booking_bids_fleet_id ?
-                          <div>
-                            <p>{selectedValue?.loads_required} loads offered</p>
-                            {allPricesValue ?
+
+                        {yellowBackground && 
+                        !blueBackground && 
+                        !greenBackground && 
+                        !allPricesValue.length > 1 &&
+                          <div style={{display:"flex", justifyContent:"space-between", width:"100%"}}>
+                              <div style={{width:"40%"}}>
+                                <p>{selectedValue?.loads_required} loads offered</p>
+                                <p>Transporter Quotation: R{allPricesValue[0]}</p>
+                              </div>
+                              <div style={{width:"60%", display:"flex", justifyContent:"end", alignItems:"center"}}>
+                                <div>
+                                  <input className='settle-inp' type="text" placeholder='Amount (R)' value={settleAmount} onChange={event => setSettleAmount(event.target.value)}/>
+                                  <button className='settle-bt' onClick={() => handleSettle(selectedValue.booking_id, fleet)}>Settle</button>
+                                </div>
+                                <button className='decline-offer' onClick={() => handleDecline(selectedValue.booking_id, fleet)}>Decline</button>
+                                <button className='accept-offer' style={{marginLeft:"0.5rem"}}>Accept</button>
+                              </div>
+                          </div>
+                        }
+
+                        {blueBackground && 
+                        !allPricesValue.length > 3 &&
+                        !greenBackground && 
+                          <div style={{display:"flex", justifyContent:"space-between", width:"100%"}}>
+                              <div style={{width:"40%"}}>
+                                <p>{selectedValue?.loads_required} loads offered</p>
+                                <p>Transporter Quotation: R{allPricesValue[0]}</p>
+                                <p>Counter Offer: R{allPricesValue[1]}</p> 
+                              </div>
+                          </div>
+                        }
+
+                        {allPricesValue?.length === 3 && !accepted &&
+                          <div style={{display:"flex", justifyContent:"space-between", width:"100%"}}>
+                            <div style={{width:"40%"}}>
+                              <p>{selectedValue?.loads_required} loads offered</p>
                               <p>Transporter Quotation: R{allPricesValue[0]}</p>
-                              : <p>Transporter Quotation: R00</p>
-                            }
-                            {counterOffer ?
                               <p>Counter Offer: R{allPricesValue[1]}</p> 
-                              :<></>
-                            }
-                            {finalOffer ?
                               <p>Final Offer: R{allPricesValue[2]} </p>
-                              :<></>
-                            }
-                          </div> 
-                          : <div>
-                               <p>10 loads booked</p>
-                               <p>Confirmed Net Rate: R{allPricesValue[2] ? allPricesValue[2] : allPricesValue[1]}</p>
-                               <p>Value Added Tax: R{allPricesValue[2] ? (allPricesValue[2]*0.14).toFixed(0) : (allPricesValue[1]*0.14).toFixed(0)}</p>
-                               <p>Total: R{allPricesValue[2] ? (allPricesValue[2] + (allPricesValue[2]*0.14)).toFixed(0) : (allPricesValue[1] + (allPricesValue[1]*0.14)).toFixed(0) }</p>
                             </div>
-                        }
-            
-                        {!counterOffer && !accepted ?
-                          <div>
-                            <div>
-                              <input type="text" placeholder='Amount (R)' value={settleAmount} onChange={event => setSettleAmount(event.target.value)}/>
-                              <button onClick={() => handleSettle(selectedValue.booking_id, fleet)}>Settle</button>
-                            </div>
-                          </div>
-                          : <></>
-                        }
-            
-                        {!counterOffer && !accepted ?
-                            <div>
-                              <button className={!deactivateAccept ? 'accept-offer' : 'accept-deactivated'} onClick={handleAccept(selectedValue.booking_id, fleet)}>Accept</button>
-                            </div>
-                          : <></>
-                        }
-            
-                        {!rateSubmit && !finalOffer &&
-                          <p style={{fontWeight: 'bold'}}>Rate submitted</p>
-                        }
-            
-                        {finalOffer && !accepted &&
-                          <div>
-                            <button className='decline-offer' onClick={() => handleDecline(selectedValue.booking_id, fleet)}>Decline</button>
+                            <div style={{width:"60%", display:"flex", justifyContent:"end", alignItems:"center"}}>
+                                <button className='decline-offer' onClick={() => handleDecline(selectedValue.booking_id, fleet)}>Decline</button>
+                                <button className='accept-offer' onClick={() => handleAccept(selectedValue.booking_id, fleet)} style={{marginLeft:"0.5rem"}}>Accept</button>
+                              </div>
                           </div>
                         }
-            
-                        {finalOffer && !accepted &&
+
+                        {accepted && !allPricesValue?.length <= 3 &&
                           <div>
-                            <button className='accept-offer' onClick={() => handleAccept(selectedValue.booking_id, fleet)}>Accept</button>
+                            <p>Booking accepted</p>
+                            <p>{selectedValue.actual_loads_for_cargo} loads booked</p>
+                            <p>Confirmed Net Rate: R{allPricesValue[2] !== undefined ? allPricesValue[2] : allPricesValue[1]}</p>
+                            <p>Value Added Tax: R{allPricesValue[2] !== undefined ? (allPricesValue[2]*0.14).toFixed(0) : (allPricesValue[1]*0.14).toFixed(0)}</p>
+                            <p>Total: R{allPricesValue[2] ? (allPricesValue[2] + (allPricesValue[2]*0.14)).toFixed(0) : (allPricesValue[1] + (allPricesValue[1]*0.14)).toFixed(0) }</p>
                           </div>
                         }
-                        
+
                       </div>
                   </div> 
-
-                    // <div className="fleets-offers" key={key}> 
-                    //   <SelectedBooking
-                    //     fleet={fleet}
-                    //     fleetId={selectedValue.booking_bids_fleet_id}
-                    //     booking={selectedValue}
-                    //   /> 
-                    // </div>
                   
                   )
                   })

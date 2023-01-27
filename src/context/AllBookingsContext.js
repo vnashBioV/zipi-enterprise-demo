@@ -20,19 +20,9 @@ export const AllBookingsContext  = ({ children }) => {
     const getOctoberMonthlyBookings = allOfTheBooking.filter((booking) => months[(new Date(booking.date_created)).getMonth()] === months[9])
     const getNovemberMonthlyBookings = allOfTheBooking.filter((booking) => months[(new Date(booking.date_created)).getMonth()] === months[10])
     const getDecemberMonthlyBookings = allOfTheBooking.filter((booking) => months[(new Date(booking.date_created)).getMonth()] === months[11])
+    const getYearlyBookings = allOfTheBooking.filter((booking) => (new Date(booking.date_created)).getYear() === (new Date()).getYear())
 
-    console.log("month from January context", getJanuaryMonthlyBookings);
-    console.log("month from February context", getFebruaryMonthlyBookings);
-    console.log("month from March context", getMarchMonthlyBookings);
-    console.log("month from April context", getAprilMonthlyBookings);
-    console.log("month from May context", getMayMonthlyBookings);
-    console.log("month from June context", getJuneMonthlyBookings);
-    console.log("month from July context", getJulyMonthlyBookings);
-    console.log("month from August context", getAugustMonthlyBookings);
-    console.log("month from September context", getSeptemberMonthlyBookings);
-    console.log("month from October context", getOctoberMonthlyBookings);
-    console.log("month from November context", getNovemberMonthlyBookings);
-    console.log("month from December context", getDecemberMonthlyBookings);
+    console.log("get the full year booking", getYearlyBookings);
 
     return (
         <Context.Provider
@@ -50,7 +40,8 @@ export const AllBookingsContext  = ({ children }) => {
                 getSeptemberMonthlyBookings,
                 getOctoberMonthlyBookings,
                 getNovemberMonthlyBookings,
-                getDecemberMonthlyBookings
+                getDecemberMonthlyBookings,
+                getYearlyBookings
             }}
         >
             {children}

@@ -15,8 +15,6 @@ import RegStepThree from '../components/registrationSteps/RegStepThree';
 // import { Oval } from 'react-loader-spinner'
 import Spinner from '../components/Spinner';
 
-
-
 export default function Register() {
       const [email, setEmail] = useState("");
       const [loginEmail, setLoginEmail] = useState("")
@@ -66,7 +64,6 @@ export default function Register() {
       const [boardingActiveTwo, setBoardingActiveTwo] = useState(false)
       const [boardingActiveThree, setBoardingActiveThree] = useState(false)
       const [sucess, setSucess] = useState(false)
-
 
       const boardingArray = [
         {
@@ -132,6 +129,7 @@ export default function Register() {
         setUser(user)
         var uid = user.uid;
         const email = user.email;
+        setEmail(user.email)
         firebase.database().ref('/booking_party/' + uid).set({
           firstName: data.firstName,
           lastName: data.lastName,
@@ -204,6 +202,11 @@ export default function Register() {
       setStepBar("100%")
       setSteps(4)
     })
+
+    // const passwordReset = (email) => {
+    //   return firebase.auth().sendPasswordResetEmail(email)
+    // }
+
     // firebase.auth().createUserWithEmailAndPassword(stepOneData.email, stepOneData.password)
     // .then((userCredential) => {
     //     const user = userCredential.user
@@ -317,7 +320,7 @@ export default function Register() {
                
           </div>
           <div class="btnHolder">
-            <button class="btnTertiary">Reset password</button>
+            <button class="btnTertiary" onClick={() =>navigate ('/forgotpassword')}>Reset password</button>
             <button 
               class="btnPrimary"
               onClick={(e) => {authenticateUser(e)}}
@@ -402,14 +405,14 @@ export default function Register() {
                 placeholder="First Name"
                 {...register("firstName", { required: true })} 
               />
-              {errors.firstName && <p style={{color:"red", marginTop:"0"}}>Please don't leave the first name blank</p>}
+              {errors.firstName && <p style={{color:"red", marginTop:"0"}}>Please don't leave the first name blank.</p>}
               <input 
                 type="text" 
                 className='loginInput' 
                 placeholder="Last Name" 
                 {...register("lastName", { required: true })} 
               />
-              {errors.lastName && <p style={{color:"red", marginTop:"0"}}>Please don't leave the last name blank</p>}
+              {errors.lastName && <p style={{color:"red", marginTop:"0"}}>Please don't leave the last name blank.</p>}
               <input 
                 type="email" 
                 className='loginInput' 
@@ -419,7 +422,7 @@ export default function Register() {
                   pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ 
                 })}
               />
-              {errors.email && <p style={{color:"red", marginTop:"0"}}>Please check Email format</p>}
+              {errors.email && <p style={{color:"red", marginTop:"0"}}>Please check Email format.</p>}
               <div 
                 className='loginInput' 
                 style={{
@@ -452,12 +455,11 @@ export default function Register() {
                 }
                
               </div>
-              {errors.password && <p style={{color:"red", marginTop:"0"}}>Please create strong password</p>}
+              {errors.password && <p style={{color:"red", marginTop:"0"}}>Please create strong password that consists of at least one capital letter, one small letter and one numeric, the length of the password needs to be 8 characters at most.</p>}
               <div class="btnHolder">
                 <button class="btnTertiary" onClick={()=> {
                   setShowLogin(true);
                   setShowRegister(false);
-                  // setStepFour(false)
                 }}><i class="fa-solid fa-arrow-left" style={{marginRight:"5px"}}></i>Back</button>
                 <button class="btnPrimary" 
                   type='submit'
