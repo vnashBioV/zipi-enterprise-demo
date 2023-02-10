@@ -75,7 +75,6 @@ function App() {
             </AddressStateContextTwo>
           </AllBookingsContext>
           </StateBidding>
-        {/* </AllBookingsContext.Provider> */}
         </BrowserRouter>
     </div>
   );

@@ -97,6 +97,48 @@ input:focus, textarea:focus, select:focus {
   .side-section{
     display: none !important;
   }
+  .offer-container-last > div:nth-child(2){
+    flex-direction: column !important;
+  }
+  .settings-menu{
+    margin-bottom: 10px;
+  }
+  .dashboard > div:nth-child(1){
+    overflow-y: unset !important;
+  }
+  .myLinks > div{
+    padding-bottom: 0px;
+  }
+  .nav{
+    height: 100px !important;
+  }
+  .enter-wrapper{
+    margin-top: 25px !important;
+  }
+  .dropdown-wrapper{
+    top: 74% !important;
+  }
+  .dashboard > div:nth-child(1){
+    background: #e3e3e3 !important;
+  }
+  .bid-parent{
+    margin-top: 10px;
+  }
+  .btn-settle-block > div{
+    margin: 10px 0;
+  }
+  .bidding-page-container > div:last-child, .actual-bid-block{
+    width: 100% !important;
+  }
+  .accept-the-bid{
+    width: 95% !important;
+  }
+  .bidding-page-container > div:first-child, .btn-settle-block{
+    width: 100% !important;
+  }
+  .bidding-page-container, .bid-parent, .btn-settle-block{
+    flex-direction: column !important;
+  }
   .animate-addcontact-one{
     width: 93% !important;
   }
@@ -127,6 +169,16 @@ input:focus, textarea:focus, select:focus {
     width: 100% !important;
     max-width: unset !important;
     padding: 0 15px;
+  }
+  .bidding-page-container > div:first-child{
+    max-height: 371px;
+    min-height: 371px;
+  } 
+  .nav > div{
+    width: 51% !important;
+  }
+  .summary-wrap > div:nth-child(2) > div:nth-child(1){
+    height: 76px !important;
   }
   .search, 
   .search-container, 

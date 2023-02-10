@@ -14,6 +14,19 @@
   margin-bottom: 3rem;
   margin-top: 28px;
 }
+.css-1v5z18m{
+  width: 100% !important;
+}
+.css-1gv0vcd-MuiSlider-track{
+  background-color: #fade05 !important;
+  border: 1px solid #fade05 !important;
+}
+.css-187mznn-MuiSlider-root{
+  color: #fade05 !important;
+}
+.css-14pt78w-MuiSlider-rail{
+  background-color: #8b8b8b !important;
+}
 .schedule-page > div > a >i, .open-schedule > div > a >i{
   width: 26px;
   color: black;

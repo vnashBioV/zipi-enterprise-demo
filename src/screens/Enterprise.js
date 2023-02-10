@@ -38,6 +38,7 @@ import EnterpriseLoader from '../components/LoaderEnterprise'
 import { motion } from 'framer-motion';
 import { useStateContext } from '../context/DashboardStateContext'
 import { v4 as uuidv4 } from 'uuid';
+import {Avatar} from '@mui/material';
 
 
 export default function Enterprise() {
@@ -132,12 +133,9 @@ export default function Enterprise() {
     const [puDetails, setPuDetails] = useState([]);
     const [doDetails, setDoDetails] = useState([]);
     const [cargoDetails, setCargoDetails] = useState([])
-    const [cargoDetailsArray, setCargoDetailsArray] = useState([])
     const [fileUrl, setFileUrl] = useState(null)
     const [selectedbookingThree, setSelectedBookingThree] = useState([])
     const [bookingArrayThree, setBookingArrayThree] = useState([])
-    const [pickLocal, setPickLocal] = useState([])
-    const [quantity, setQuantity] = useState(0)
     const [defaultPick, setDefaultPick] = useState([])
     const [defaultDrop, setDefaultDrop] = useState([])
     const [allContacts,setAllContacts] = useState([]);
@@ -145,6 +143,8 @@ export default function Enterprise() {
     const [defaultCargo,setDefaultCargo] = useState([]);
     const [alertQuantity, setAlertQuantity] = useState(false)
     const [trackin, setTrackin] = useState(false);
+    const [pointer, setPointer] = useState(false);
+    const [selectLocation, setSelectLocation] = useState(false);
 
     const contactOneClick = useRef();
     const hOne = useRef(null);
@@ -153,58 +153,41 @@ export default function Enterprise() {
     const dropOffContainer = useRef()
 
     const onSearchChange = (query) =>{
-        let matches = []
-        if (query.length>0){
-            matches = allContacts.filter(booking =>{
-                const regex = new RegExp(`${query}`, "gi");
-                return booking.details.Name.match(regex);
-            })
-        }
-        console.log('matches', matches)
-        setSuggestions(matches)
-        setQuery(query)
+        const suggest = allContacts.filter((item) => {
+            return query.toLowerCase() === '' ? item : item.details.Name.toLowerCase().includes(query)
+        })
+        setSuggestions(suggest)
     }
 
     const onSearchChangeTwo = (queryTwo) =>{
-        let matches = []
-        if (queryTwo.length>0){
-            matches = allContacts.filter(booking =>{
-                const regex = new RegExp(`${queryTwo}`, "i");
-                return booking.details.Name.match(regex);
-            })
-        }
-        console.log('matches', matches)
-        setSuggestionsTwo(matches)
-        setQueryTwo(queryTwo)
+        const suggest = allContacts.filter((item) => {
+            return queryTwo.toLowerCase() === '' ? item : item.details.Name.toLowerCase().includes(queryTwo)
+        })
+        setSuggestionsTwo(suggest)
     }
 
     const onSearchChangeThree = (queryThree) =>{
-        let matches = []
-        if (queryThree.length>0){
-            matches = bookingArrayThree.filter(booking =>{
-                const regex = new RegExp(`${queryThree}`, "i");
-                return booking.details.productName.match(regex);
-            })
-        }
-        console.log('matches', matches)
-        setSuggestionsThree(matches)
-        setQueryThree(queryThree)
+        const suggest = bookingArrayThree.filter((item) => {
+            return queryThree.toLowerCase() === '' ? item : item.details.productName.toLowerCase().includes(queryThree)
+        })
+        setSuggestionsThree(suggest)
     }
+    console.log("this is suggestions three", suggestionsThree);
 
-    const onSuggestHandler = (query) =>{
-        setQuery(query)
-        setSuggestions([])
-    }
+    // const onSuggestHandler = (query) =>{
+    //     setQuery(query)
+    //     setSuggestions([])
+    // }
 
-    const onSuggestHandlerTwo = (queryTwo) =>{
-        setQueryTwo(queryTwo)
-        setSuggestionsTwo([])
-    }
+    // const onSuggestHandlerTwo = (queryTwo) =>{
+    //     setQueryTwo(queryTwo)
+    //     setSuggestionsTwo([])
+    // }
 
-    const onSuggestHandlerThree = (queryThree) =>{
-        setQueryTwo(queryThree)
-        setSuggestionsTwo([])
-    }
+    // const onSuggestHandlerThree = (queryThree) =>{
+    //     setQueryTwo(queryThree)
+    //     setSuggestionsTwo([])
+    // }
 
    const handleBusiness = (e)=>{
         if(residenceType === false){
@@ -406,6 +389,7 @@ export default function Enterprise() {
             }
         });
     }, [])
+    
 
     useEffect(() => {
         setTimeout(() =>{
@@ -427,12 +411,12 @@ export default function Enterprise() {
 
 
   return (
-    <div style={{background:"#e3e3e3"}}>
+    <div style={{background:"#e3e3e3", marginTop:"44px"}} className="enter-wrapper">
         
         <div className='enterprise-booking-page duration-500 ease-in-out'>
 {/*==================================LOCATION ONE================================================================================================= */}
             <div className={`location-style duration-500 ease-in-out ${isPageLoaded ? 'scale-1' : 'scale-0'} ${locationTwo && "pick-padding"}`} ref={pickUpContainer}>
-                <h1 className='transform transition-all duration-1000 ease-out' ref={hOne}>Location 1</h1>
+                <h1 className='transform transition-all duration-1000 ease-out' ref={hOne}>Collection Address</h1>
                 {locationtitle ? 
                     <LocationTitle>
                         <p>Search for a contact that is already existing and click on it to select it, if there is no contact please click the user icon to add new contact details</p>
@@ -444,46 +428,50 @@ export default function Enterprise() {
                     <Search>
                         <div className={!locationOneSearch ? "search-container" : "not-search-container"} >
                             <span className='search-wrapper'>
-                                <input type="text" placeholder='Search' className='pick-search' onChange={e => onSearchChange(e.target.value)} value={query}  />
+                                <input type="text" placeholder='Search' className='pick-search' onChange={e => {
+                                    setQuery(e.target.value) 
+                                    onSearchChange(e.target.value)}} 
+                                    value={query}  />
                                 {query.length>0 ? 
                                     <div className='search-results'>
-                                        {suggestions?.length > 0 ? suggestions?.filter((booking) =>
-                                            keys?.some((key) => booking?.details[key].includes(query))
-                                        ).map((booking, i) => (
+                                        {suggestions?.length > 0 ? suggestions?.map((booking, i) => (
                                             <div
-                                                key={i}
-                                                onClick={() => {
-                                                    const selected = ([booking])
-                                                    setDefaultPick(selected)
-                                                    setPickHomeIcon(true)
-                                                    setPickDefault(false)
-                                                    setPickSelected([booking])
-                                                    setTrackLocation(true)
-                                                    setContactDate(false)
-                                                    setLocationtitle(false)
-                                                    setSearchLocationOne(false)
-                                                    setContactBackground(false)
-                                                    setLocationOneWrapper(true)
-                                                    setChangeContact(false)
-                                                    setNextBtn(false)
-                                                    setlocationTwo(true)
-                                                    localStorage.setItem("pickSelectd", JSON.stringify(selected));
-                                                    setIsLoading(true)
-                                                    setTimeout(() =>{
-                                                        setIsLoading(false);
-                                                        closeLocationModal()
-                                                    }, 1000)
-                                                }}
-                                            >
-                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                                            style={{display:"flex", marginTop:"10px"}}
+                                            key={i}
+                                            onClick={() => {
+                                                const selected = ([booking])
+                                                setDefaultPick(selected)
+                                                setPickHomeIcon(true)
+                                                setPickDefault(false)
+                                                setPickSelected([booking])
+                                                setTrackLocation(true)
+                                                setContactDate(false)
+                                                setLocationtitle(false)
+                                                setSearchLocationOne(false)
+                                                setContactBackground(false)
+                                                setLocationOneWrapper(true)
+                                                setChangeContact(false)
+                                                setNextBtn(false)
+                                                setlocationTwo(true)
+                                                localStorage.setItem("pickSelectd", JSON.stringify(selected));
+                                                setIsLoading(true)
+                                                setTimeout(() =>{
+                                                    setIsLoading(false);
+                                                    // closeLocationModal()
+                                                }, 1000)
+                                            }}
+                                        >
+                                            <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
+                                            <div style={{marginLeft:"10px"}}>
+                                                <p style={{margin:"2px 0", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
                                                 <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
-                                                <hr />
                                             </div>
+                                            <hr />
+                                        </div>
                                         )): <></>}
                                     </div>
                                     : <></>
                                 }
-                                
                             </span> 
                             <button className='duration-500 ease-in-out'
                                 onClick={() => {
@@ -497,9 +485,7 @@ export default function Enterprise() {
                 }
                
                 <div className='pu-containing'>
-                    {defaultPick?.length > 0 ? defaultPick?.filter((booking) =>
-                        keys?.some((key) => booking?.details[key].includes(query))
-                    ).map((booking, i) =>(
+                    {defaultPick?.length > 0 ? defaultPick?.map((booking, i) =>(
                         <ContactsDetails key={i} setContactDate={setContactDate} >
                             <div
                                 onClick={(event) => handleContactClick(event, booking)}
@@ -525,9 +511,7 @@ export default function Enterprise() {
                         ))
                         : <div style={{height:"10px"}}></div>
                     } 
-                     
                 </div>
-
                 {openSpinner && <Spinner/>}
                 {openAlert && 
                     <Alert >
@@ -586,7 +570,7 @@ export default function Enterprise() {
 {/*==============================LOCATION TWO==================================================================================================== */}
             {/* {locationTwo ?  */}
                 <div className={`location-two duration-500 ease-in-out ${isPageLoaded ? 'scale-1' : 'scale-0'}  ${locationTwo && "pick-padding"}`}>
-                    <h1 className='duration-500 ease-in-out'>Location 2</h1>
+                    <h1 className='duration-500 ease-in-out'>Delivery Address</h1>
                     {locationtitleTwo ? 
                         <LocationTitle>
                             <p className='duration-500 ease-in-out'>Search for a contact that is already existing and click on it to select it, if there is no contact please click the user icon to add new contact details</p>
@@ -599,12 +583,13 @@ export default function Enterprise() {
                         <Search>
                             <div className={`${!locationTwoSearch ? "search-container" : "not-search-container"} duration-500 ease-in-out`} >
                                 <span className='search-wrapper duration-500 ease-in-out'>
-                                    <input type="text" placeholder='Search' className='pick-search duration-500 ease-in-out' onChange={e => onSearchChangeTwo(e.target.value)} value={queryTwo}  />
+                                    <input type="text" placeholder='Search' className='pick-search duration-500 ease-in-out' onChange={e => {
+                                        setQueryTwo(e.target.value)
+                                        onSearchChangeTwo(e.target.value)
+                                        }} value={queryTwo}  />
                                     {queryTwo.length>0 ? 
                                     <div className='search-results'>
-                                        {suggestionsTwo?.length > 0 ? suggestionsTwo?.filter((booking) =>
-                                            keysTwo?.some((key) => booking?.details[key].includes(queryTwo))
-                                        ).map((booking, i) => (
+                                        {suggestionsTwo?.length > 0 ? suggestionsTwo?.map((booking, i) => (
                                             <div
                                                 key={i}
                                                 onClick={() => {
@@ -645,9 +630,7 @@ export default function Enterprise() {
                         : <></>
                     }
                     <div className='do-containing duration-500 ease-in-out' ref={dropOffContainer}>
-                        {defaultDrop?.length > 0 ? defaultDrop?.filter((booking) =>
-                            keysTwo.some((key) => booking.details[key].includes(queryTwo))
-                        ).map((booking, i) =>(
+                        {defaultDrop?.length > 0 ? defaultDrop?.map((booking, i) =>(
                             <ContactsDetails setContactDate={setContactDate} key={i}>
                                 <div
                                     onClick={(event) => handleContactClickTwo(event, booking)}
@@ -712,7 +695,6 @@ export default function Enterprise() {
                     {
                         addLocationTwo ?
                             <AddLocationTwoContact
-                                // key={uuidv4()}
                                 setBookingArrayTwo={setBookingArrayTwo}
                                 businessTypeTwo={businessTypeTwo}
                                 handleBusinessTwo={handleBusinessTwo}
@@ -720,8 +702,6 @@ export default function Enterprise() {
                                 handleResidenceTwo={handleResidenceTwo}
                                 closeLocationModalTwo={closeLocationModalTwo}
                                 bookingArrayTwo={bookingArrayTwo}
-                                // doDetails={doDetails}
-                                // setDoDetails={setDoDetails}
                                 setDefaultDrop={setDefaultDrop}
                                 defaultDrop={defaultDrop}
                                 setAllContacts={setAllContacts}
@@ -763,30 +743,83 @@ export default function Enterprise() {
                         <Search>
                             <div className={!locationTwoSearch ? "search-container" : "not-search-container"} >
                                 <span className='search-wrapper'>
-                                    <input type="text" placeholder='Search' className='pick-search' onChange={e => onSearchChangeThree(e.target.value)} value={queryThree}  />
-                                    {/* <img src={searchIcon} alt="" /> */}
+                                    <input type="text" placeholder='Search' className='pick-search' onChange={e => {
+                                        setQueryThree(e.target.value)
+                                        onSearchChangeThree(e.target.value)
+                                        }} value={queryThree}  />
+                                    {queryThree.length>0 ? 
+                                    <div className='search-results'>
+                                        {suggestionsThree?.length > 0 ? suggestionsThree?.map((cargo, i) => (
+                                            <div
+                                                key={i}
+                                                onClick={() => {
+                                                    const cargselected = ([cargo])
+                                                    setSearchLocationThree(false)
+                                                    setLocationtitleThree(false)
+                                                    setBookingArrayThree(cargselected)
+                                                    setSelectedBookingThree(cargselected)
+                                                    setDefaultCargo(cargselected)
+                                                    setIsLoading(true)
+                    
+                                                    setTimeout(() =>{
+                                                        setIsLoading(false);
+                                                        setOpenCargoModal(false)
+                                                    }, 1000)
+                    
+                                                    localStorage.setItem("cargoSelectd", JSON.stringify(cargo));
+                    
+                                                    if(localStorage.getItem("cargoSelectd")){
+                                                        const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+                                                        if(!selectedCargoDetails.details.quantity){
+                                                            setAlertQuantity(true);
+                                                        }
+                                                    }
+                    
+                                                }}
+                                            >
+                                                <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{cargo.details.productName}</p>
+                                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{cargo.details.productCode}</p>
+                                                <hr />
+                                            </div>
+                                        )): <></>}
+                                    </div>
+                                    : <></>
+                                }
                                 </span> 
                                 <button className='duration-500 ease-in-out' onClick={() => setOpenCargoModal(true)}><i class="fa-sharp fa-solid fa-square-plus"></i></button>
                             </div>
                         </Search>
                         : <></>
                     }
-                    
-                    <div className='cargo-container'>
-                    {/* {locationtitleThree &&
-                        <p style={{fontSize:"12px", marginBottom:"14px", marginTop:"10px"}}></p>
-                    }  */}
-                    </div> 
-                    <div className='cargo-next'>
-                    </div>
-                    <div className='cargo-wrapper'>
-                        {defaultCargo?.length > 0 ? defaultCargo?.filter((cargo) =>
-                            keysThree.some((key) => cargo.details[key].includes(queryThree))
-                        ).map((cargo, i) =>{
+                    <div className="cargo-detail" style={{height:`${bookingArrayThree.length === 1 && "fit-content" || bookingArrayThree.length === 0 && "0"}`}}>
+                        {bookingArrayThree?.length > 0 ? bookingArrayThree?.map((cargo, i) =>{
                             const weightTon = parseFloat(cargo.details.weight)/1000
                             return(
                             <React.Fragment key={i}>
-                                    <div className='pill-container duration-500 ease-in-out'>
+                                    <div className='pill-container duration-500 ease-in-out pointer' style={{cursor:"pointer", pointerEvents: `${pointer && "none" }` }} onClick={() => {
+                                        const cargselected = ([cargo])
+                                        setSearchLocationThree(false)
+                                        setLocationtitleThree(false)
+                                        setBookingArrayThree(cargselected)
+                                        setSelectedBookingThree(cargselected)
+                                        setDefaultCargo(cargselected)
+                                        setIsLoading(true)
+
+                                        setTimeout(() =>{
+                                            setIsLoading(false);
+                                            setOpenCargoModal(false)
+                                        }, 1000)
+
+                                        localStorage.setItem("cargoSelectd", JSON.stringify(cargo));
+
+                                        if(localStorage.getItem("cargoSelectd")){
+                                            const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
+                                            // if(!selectedCargoDetails.details.quantity){
+                                            //     setAlertQuantity(true);
+                                            // }
+                                        }
+
+                                    }}>
                                         <div className='box-icon'>
                                             <span><i class="fa-solid fa-cube"></i></span>
                                         </div>
@@ -815,20 +848,15 @@ export default function Enterprise() {
                             </React.Fragment>
                             )})
                             : <div style={{height:"10px"}}></div>
-
                         }
-                         {isLoading  &&
-                            <EnterpriseLoader/>
-                        } 
-                        {/* {!searchLocationThree &&
-                            <p className={!changeContactTwo ? "change-contact" : "no-change-contact"}onClick={() => {
-                                firebase.database().ref('cargo_details/').child(userUid).on('value', (snapshot) => {
-                                    setBookingArrayThree(Object.values(snapshot.val()).filter((b) =>  b.drop_of_details));
-                                });
-                                setSearchLocationThree(true)
-                                setLocationtitleThree(true)
-                            }}><i class="fa-solid fa-pen"></i> Change</p>
-                        } */}
+                    </div>
+                    
+                    <div className='cargo-container'>
+                    {/* {locationtitleThree &&
+                        <p style={{fontSize:"12px", marginBottom:"14px", marginTop:"10px"}}></p>
+                    }  */}
+                    </div> 
+                    <div className='cargo-next'>
                     </div>
 
                     {openCargoModal?
@@ -943,28 +971,70 @@ export default function Enterprise() {
             addLocationOne={addLocationOne} 
             alertQuantity={alertQuantity} 
             setAlertQuantity={setAlertQuantity}
-           
+            pickSelected={pickSelected}
+            selectLocation={selectLocation}
+            setSelectLocation={setSelectLocation}
         />
         {openPreTwo &&
-            <PrerequisitesTwo openPre={openPreTwo} setOpenPreTwo={setOpenPreTwo} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+            <PrerequisitesTwo 
+                openPre={openPreTwo} 
+                setOpenPreTwo={setOpenPreTwo} 
+                alertQuantity={alertQuantity} 
+                setAlertQuantity={setAlertQuantity}
+                pickSelected={pickSelected}
+                selectLocation={selectLocation}
+                setSelectLocation={setSelectLocation}
+            />
         }
 
          {openPreThree &&
-            <PrerequisitesThreee openPreThree={openPreThree} setOpenPreThree={setOpenPreThree} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+            <PrerequisitesThreee 
+                openPreThree={openPreThree} 
+                setOpenPreThree={setOpenPreThree} 
+                alertQuantity={alertQuantity} 
+                setAlertQuantity={setAlertQuantity}
+                pickSelected={pickSelected}
+                selectLocation={selectLocation}
+                setSelectLocation={setSelectLocation}
+            />
         }
 
         {openPreFour &&
-            <PrerequisitesFour openPreFour={openPreFour} setOpenPreFour={setOpenPreFour} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+            <PrerequisitesFour 
+                openPreFour={openPreFour} 
+                setOpenPreFour={setOpenPreFour} 
+                alertQuantity={alertQuantity} 
+                setAlertQuantity={setAlertQuantity}
+                pickSelected={pickSelected}
+                selectLocation={selectLocation}
+                setSelectLocation={setSelectLocation}
+            />
         }
         {openPreFive &&
-            <PrerequisitesFive openPreFive={openPreFive} setOpenPreFive={setOpenPreFive} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+            <PrerequisitesFive 
+                openPreFive={openPreFive} 
+                setOpenPreFive={setOpenPreFive} 
+                alertQuantity={alertQuantity} 
+                setAlertQuantity={setAlertQuantity}
+                pickSelected={pickSelected}
+                selectLocation={selectLocation}
+                setSelectLocation={setSelectLocation}
+            />
         }
         {openPreSix &&
-            <PrerequisitesSix openPreSix={openPreSix} setOpenPreSix={setOpenPreSix} alertQuantity={alertQuantity} setAlertQuantity={setAlertQuantity}/>
+            <PrerequisitesSix 
+                openPreSix={openPreSix} 
+                setOpenPreSix={setOpenPreSix} 
+                alertQuantity={alertQuantity} 
+                setAlertQuantity={setAlertQuantity}
+                selectLocation={selectLocation}
+                pickSelected={pickSelected}
+                setSelectLocation={setSelectLocation}
+            />
         }
         {alertQuantity &&
             <div className='login-alert cargo-alertt' style={{border:"1px solid #c3c3c3"}}>
-                <p style={{fontSize:"13.5px"}}>Please enter cargo quantity then select vehicle</p>
+                <p style={{fontSize:"13.5px"}}>Please make sure that the collection and delivery is selected as well as cargo and cargo details</p>
                 <button className='alert-btnn' onClick={() => setAlertQuantity(false) }>Ok</button>
             </div>
         } 

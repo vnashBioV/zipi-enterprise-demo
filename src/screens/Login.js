@@ -12,7 +12,6 @@ import Sales from '../icons/Sales-Agent.svg';
 import { useForm } from "react-hook-form";
 import RegStepTwo from '../components/registrationSteps/RegStepTwo';
 import RegStepThree from '../components/registrationSteps/RegStepThree';
-// import { Oval } from 'react-loader-spinner'
 import Spinner from '../components/Spinner';
 
 export default function Register() {
@@ -552,7 +551,7 @@ export default function Register() {
                         })
                       }}
                     />
-                   <span class="checkmark"></span>I agree to Zipi's stipulated<a href="#" style={{marginLeft:"10px"}}>terms and conditions</a>.
+                   <span class="checkmark"></span>I agree to Zipi's stipulated<a href="https://zipi.co.za/developer/html/termsandconditions.html" target="_blank" style={{marginLeft:"10px"}}>terms and conditions</a>.
                  </label>
                </div>
                <div class="checker">

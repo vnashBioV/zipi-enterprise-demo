@@ -5,8 +5,17 @@ import {Avatar} from '@mui/material';
 import Alert from '../Alerts/Alert';
 import Spinner from '../Spinner';
 import Autocomplete from '../LocationSearchInput'
-import Loader from '../../components/loader/Loader'
+import Loader from '../loader/Loader'
 import { useStateContext } from '../../context/BookingAddress'
+import { height } from '@mui/system';
+import dayjs, { Dayjs } from 'dayjs';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 
 export default function AddLocationOneContact({
         setBookingArray, 
@@ -29,8 +38,6 @@ export default function AddLocationOneContact({
         setChangeContact,
         setNextBtn,
         setlocationTwo,
-        // setAllPuDetails,
-        // allPuDetails
         setAllContacts,
         allContacts
     }) {
@@ -43,53 +50,49 @@ export default function AddLocationOneContact({
     const [isLoading , setIsLoading] = useState(false);
     const [isAddOne, setIsaddOne] = useState(false);
     const [query, setQuery] = useState("");
+    const [queryName, setQueryName] = useState("");
     const keys = ["Name", "CompanyName","Surname"];
     const [suggestions, setSuggestions] = useState([]);
+    const [suggestionsName, setSuggestionsName] = useState([]);
     const [validationOpsHours, setValidationOpsHours] = useState(false);
     const [checkOpsHoursOpen, setCheckOpsHoursOpen] = useState(false);
     const [checkOpsHoursClose, setCheckOpsHoursClose] = useState(false);
-  
-
+    const [open, setOpen] = React.useState(
+        dayjs('2018-01-01T00:00:00.000Z'),
+    );
+    const [close, setClose] = React.useState(
+        dayjs('2018-01-01T00:00:00.000Z'),
+    );
+    const [pubOpen, setPubOpen] = React.useState(
+        dayjs('2018-01-01T00:00:00.000Z'),
+    );
+    const [pubClose, setPubClose] = React.useState(
+        dayjs('2018-01-01T00:00:00.000Z'),
+    );
     const { 
         isAddressAuto,
         setIsAddressAuto
     } = useStateContext();
 
-    // useEffect(() => {
-        
-    //     console.log("the address is right here", isAddressAuto);
-    // }, [])
-    
-
-    //=========STATES ARRAY=========================================================================
     const [bookingArrayInst, setBookingArrayInst] = useState([])
-    //=========END STATE ARRAY======================================================================
-
-    //========CONSOLE LOGS==========================================================================
-    // console.log(bookingArray)
     console.log("booking working array",allContacts)
-    //========END CONSOLE LOGS======================================================================
-
-    //==========FUNCTIONS===========================================================================
     const savePickContactFnc = async ()=>{
         return await firebase.database().ref().push()
     }
+
     const onSearchChange = (query) =>{
-        let matches = []
-        if (query.length>0){
-            matches = allContacts.filter(booking =>{
-                const regex = new RegExp(`${query}`, "i");
-                return booking.details?.CompanyName?.match(regex);
-            })
-        }
-        console.log('matches', matches)
-        setSuggestions(matches)
-        setQuery(query)
+        const suggest = allContacts.filter((item) => {
+            return query.toLowerCase() === '' ? item : item.details.CompanyName.toLowerCase().includes(query)
+        })
+        setSuggestions(suggest)
     }
-    //==========END FUNCTIONS=======================================================================
+    const onSearchChangeName = (queryName) =>{
+        const suggest = allContacts.filter((item) => {
+            return queryName.toLowerCase() === '' ? item : item.details.Name.toLowerCase().includes(queryName)
+        })
+        setSuggestionsName(suggest)
+    }
 
-
-    //=========USE EFFECTS==========================================================================
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -101,18 +104,61 @@ export default function AddLocationOneContact({
         });
     }, [])
 
-    // useEffect(() => {
-    //   console.log("operating hours", bookingArray?.details?.OperatingHours?.open, bookingArray.details?.OperatingHours?.close)
-    // }, [])
-    
-
     useEffect(() => {
         setTimeout(() =>{
             setIsaddOne(true);
         }, 300)
     }, [])
 
-    //===========END USE EFFECFS====================================================================
+    useEffect(() => {
+
+        setBookingArray((prevState) => ({
+            ...prevState,
+            details:{
+                ...prevState.details,
+                OperatingHours:{
+                    ...prevState?.details?.OperatingHours,
+                        open:open.$d.toString().substring(15,21)
+                }
+            } 
+        }))
+
+        setBookingArray((prevState) => ({
+            ...prevState,
+            details:{
+                ...prevState.details,
+                OperatingHours:{
+                    ...prevState?.details?.OperatingHours,
+                        close:close.$d.toString().substring(15,21)
+                }
+            } 
+        }))
+
+        setBookingArray((prevState) => ({
+            ...prevState,
+            details:{
+                ...prevState.details,
+                PublicHoliday:{
+                    ...prevState.details.PublicHoliday,
+                        open:pubOpen.$d.toString().substring(15,21)
+                }
+            } 
+        }))
+
+        setBookingArray((prevState) => ({
+            ...prevState,
+            details:{
+                ...prevState.details,
+                PublicHoliday:{
+                    ...prevState?.details?.PublicHoliday,
+                        close:pubClose.$d.toString().substring(15,21)
+                }
+            } 
+        }))
+
+    }, [open, close, pubOpen, pubClose])
+    
+    console.log("Operating hours", bookingArray?.details?.OperatingHours)
 
   return (
     <div className={`modal-container duration-500 ease-in-out ${isAddOne ? 'opacity-1' : 'opacity-0'}`}>
@@ -147,17 +193,17 @@ export default function AddLocationOneContact({
                         CompanyName:e.target.value
                     } 
                 }))
-                    onSearchChange(e.target.value) 
+                    setQuery(e.target.value) 
+                    onSearchChange(e.target.value)
                     }
                 }
                 value={query}
             />
             {query.length>0 ? 
                 <div className='search-results-pick' style={{cursor:"pointer"}}>
-                    {suggestions?.length > 0 ? suggestions?.filter((booking) =>
-                        keys?.some((key) => booking?.details[key].includes(query))
-                    ).map((booking, i) => (
+                    {suggestions?.length > 0 ? suggestions?.map((booking, i) => (
                         <div
+                            style={{display:"flex", marginTop:"10px"}}
                             key={i}
                             onClick={() => {
                                 const selected = ([booking])
@@ -182,18 +228,18 @@ export default function AddLocationOneContact({
                                 }, 1000)
                             }}
                         >
-                            <p style={{marginTop:"5px", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
-                            <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
+                            <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
+                            <div style={{marginLeft:"10px"}}>
+                                <p style={{margin:"2px 0", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                                <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
+                            </div>
                             <hr />
                         </div>
                     )): <></>}
                 </div>
                 : <></>
             }
-
-
             <Autocomplete/>
-            
             <input 
                 type="text" 
                 placeholder='City Name'
@@ -235,105 +281,6 @@ export default function AddLocationOneContact({
                 >
                 </textarea>
             </div>
-            <div className='gate-in'><h1>Gate in - Gate out Duration</h1></div>
-            <div className='gigo-container'>
-                <label htmlFor="twentymins" className='twentymins'>
-                    <input type="radio" value="20 mins" name='gigo' 
-                        onClick={e =>setBookingArray((prevState) => ({
-                            ...prevState,
-                            details:{
-                                ...prevState.details,
-                                GateInGateOut:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                    20 mins
-                </label>
-                <label htmlFor="twentymins" className='twentymins'>
-                    <input type="radio" value="2 hrs" name='gigo'
-                        onClick={e =>setBookingArray((prevState) => ({
-                            ...prevState,
-                            details:{
-                                ...prevState.details,
-                                GateInGateOut:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                    2 hrs
-                </label>
-            </div>
-            <div className='gigo-container' style={{marginTop:"5px"}}>
-                <label htmlFor="twentymins" className='twentymins'>
-                    <input type="radio" value="40 mins" name='gigo'
-                        onClick={e =>setBookingArray((prevState) => ({
-                            ...prevState,
-                                details:{
-                                    ...prevState.details,
-                                    GateInGateOut:e.target.value
-                                } 
-                            }))
-                        }
-                    />
-                    40 mins
-                </label>
-                <label htmlFor="twentymins" className='twentymins'>
-                    <input type="radio" value="3 hrs" name='gigo'
-                        onClick={e =>setBookingArray((prevState) => ({
-                            ...prevState,
-                                details:{
-                                    ...prevState.details,
-                                    GateInGateOut:e.target.value
-                                } 
-                            }))
-                        }
-                    />
-                    3 hrs
-                </label>
-            </div>
-            <div className='gigo-container' style={{marginTop:"5px", width:"192px"}}>
-                <div className='column-other'>
-                    <label htmlFor="twentymins" className='twentymins'>
-                        <input type="radio" value="60 mins" name='gigo'
-                            onClick={e =>setBookingArray((prevState) => ({
-                                ...prevState,
-                                    details:{
-                                        ...prevState.details,
-                                        GateInGateOut:e.target.value
-                                    } 
-                                }))
-                            }
-                        />
-                        60 mins
-                    </label>
-                    <label htmlFor="twentymins" className='twentymins' style={{marginTop:"5px"}}>
-                        <input type="radio" value="90 mins" name='gigo' 
-                            onClick={e =>setBookingArray((prevState) => ({
-                                ...prevState,
-                                    details:{
-                                        ...prevState.details,
-                                        GateInGateOut:e.target.value
-                                    } 
-                                }))
-                            }
-                        />
-                        90 mins
-                    </label>
-                </div>
-                <div className='other-mins'>
-                    <input type="text" name='gigo' placeholder='Other (mins)'
-                        onChange={e =>setBookingArray((prevState) => ({
-                            ...prevState,
-                                details:{
-                                    ...prevState.details,
-                                    GateInGateOut:e.target.value
-                                } 
-                            }))
-                        }
-                    />
-                </div>
-            </div>
             <div className='loading-offload-bays'>
                 <input type="number" placeholder='Loading/offloading Bays'
                     onChange={e =>setBookingArray((prevState) => ({
@@ -347,18 +294,15 @@ export default function AddLocationOneContact({
                 />
             </div>
             <span style={{display:"flex", alignItems:"center"}}>
-                <h2 style={{fontSize:"13px", marginTop:"11px", marginBottom:"8px"}}>Operating Hours</h2>
-                <i className="fa-solid fa-asterisk" style={{fontSize:"10px", color:"red", marginLeft:"5px"}}></i>
             </span>
             <div className='operating-hours'>
                 <div>
                     <div>Open</div>
                     <div>Close</div>
                 </div>
-
                 <div>
                     <div>
-                        <input 
+                        {/* <input 
                             className='time-pill' 
                             type="time" 
                             placeholder=''
@@ -375,10 +319,19 @@ export default function AddLocationOneContact({
                                     setCheckOpsHoursOpen(true)
                                 }
                             }
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Stack spacing={3}>
+                                <TimePicker
+                                value={open}
+                                onChange={setOpen}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                            </Stack>
+                        </LocalizationProvider>
                     </div>
                     <div>
-                        <input 
+                        {/* <input 
                             className='time-pill' 
                             type="time" 
                             placeholder=''
@@ -395,16 +348,24 @@ export default function AddLocationOneContact({
                                     setCheckOpsHoursClose(true);
                                 }
                             }
-                        />
+                        /> */}
+                         <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Stack spacing={3}>
+                                <TimePicker
+                                value={close}
+                                onChange={setClose}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                            </Stack>
+                        </LocalizationProvider>
                     </div>
                 </div>
-
             </div>
             <div className='operating-hours'>
                 <h3 style={{fontSize:"13px", marginTop:"10px", marginBottom:"12px"}}>Public Holidays</h3>
                 <div>
                     <div>
-                        <input 
+                        {/* <input 
                             className='time-pill' 
                             type="time" 
                             placeholder=''
@@ -420,10 +381,19 @@ export default function AddLocationOneContact({
                                 }))
                                 }
                             }
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Stack spacing={3}>
+                                <TimePicker
+                                value={pubOpen}
+                                onChange={setPubOpen}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                            </Stack>
+                        </LocalizationProvider>
                     </div>
                     <div>
-                        <input 
+                        {/* <input 
                             className='time-pill' 
                             type="time" 
                             placeholder=''
@@ -439,7 +409,16 @@ export default function AddLocationOneContact({
                                 }))
                                 }
                             }
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Stack spacing={3}>
+                                <TimePicker
+                                value={pubClose}
+                                onChange={setPubClose}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                            </Stack>
+                        </LocalizationProvider>
                     </div>
                    
                 </div>
@@ -461,18 +440,63 @@ export default function AddLocationOneContact({
                 }
             />
             <div className='double-inputs'>
-                <input 
-                    type="text" 
-                    placeholder='Name'
-                    onChange={e =>setBookingArray((prevState) => ({
-                        ...prevState,
-                        details:{
-                            ...prevState.details,
-                            Name:e.target.value
-                        } 
-                        }))
+                <div className='name-div'>
+                    <input 
+                        type="text" 
+                        placeholder='Name'
+                        onChange={e =>{setBookingArray((prevState) => ({
+                            ...prevState,
+                            details:{
+                                ...prevState.details,
+                                Name:e.target.value
+                            } 
+                            }))
+                            setQueryName(e.target.value) 
+                            onSearchChangeName(e.target.value);
+                            }
+                        }
+                    />
+                    {queryName.length>0 ? 
+                        <div style={{cursor:"pointer", position:"absolute", background:"#fff", padding:"10px", width:"100%", display:`${suggestionsName.length ? "block": "none"}`}}>
+                            {suggestionsName?.length > 0 ? suggestionsName?.map((booking, i) => (
+                                <div
+                                    style={{display:"flex", marginTop:"10px"}}
+                                    key={i}
+                                    onClick={() => {
+                                        const selected = ([booking])
+                                        setDefaultPick(selected)
+                                        setPickHomeIcon(true)
+                                        setPickDefault(false)
+                                        setPickSelected([booking])
+                                        setTrackLocation(true)
+                                        setContactDate(false)
+                                        setLocationtitle(false)
+                                        setSearchLocationOne(false)
+                                        setContactBackground(false)
+                                        setLocationOneWrapper(true)
+                                        setChangeContact(false)
+                                        setNextBtn(false)
+                                        setlocationTwo(true)
+                                        localStorage.setItem("pickSelectd", JSON.stringify(selected));
+                                        setIsLoading(true)
+                                        setTimeout(() =>{
+                                            setIsLoading(false);
+                                            closeLocationModal()
+                                        }, 1000)
+                                    }}
+                                >
+                                    <div style={{marginLeft:"10px"}}>
+                                        <p style={{margin:"2px 0", fontWeight:"bold", fontSize:"11.5px"}}>{booking.details.Name}</p>
+                                        <p style={{marginBottom:"5px", fontSize:"10px"}}>{booking.details.CompanyName}</p>
+                                    </div>
+                                    <hr />
+                                </div>
+                            )): <></>}
+                        </div>
+                        : <></>
                     }
-                />
+
+                </div>
                 <input 
                     type="text" 
                     placeholder='Surname'
@@ -527,64 +551,13 @@ export default function AddLocationOneContact({
                 <option value="Email">Email</option>
                 <option value="Both">Both</option>
             </select>
-            <div className='add-to-contact'>
-                <button 
-                    onClick={() =>{
-                        if(
-                            checkOpsHoursClose && 
-                            checkOpsHoursOpen 
-                        ){
-                            var contact_Uid
-                            const pick_up_details = bookingArray.details
-                            savePickContactFnc().then((data ) => {
-                                contact_Uid = data.key
-                                firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
-                                    details: {
-                                        ...pick_up_details,
-                                        Address: isAddressAuto
-                                    },
-                                    date: new Date().toISOString().substring(0,10)
-                                });
-                                console.log("pick_up_details", bookingArray);
-                                console.log("contact_Uid", contact_Uid);
-                            });
-                            setIsLoading(true);
-                            setTimeout(() => {
-                                    setIsLoading(false);
-                            }, 2000)
-                        }else{
-                            setValidationOpsHours(true);
-                        }
-                        }
-                    }
-                >
-                    Add to contacts
-                </button>
-                {openSpinner && <Spinner/>}
-                {openAlert && 
-                    <Alert >
-                        <div style={{width:"256px"}}>
-                            <p style={{
-                                position:"absolute",
-                                right:"0px",
-                                top:"0px",
-                                padding:"7px",
-                                cursor:"pointer",
-                                fontWeight:"bold"
-                            }}
-                            onClick={() => setAlert(false)}
-                            >X</p>
-                            <h1 style={{fontSize:"14px", fontWeight:"normal"}}>Contact Successfully added...</h1>
-                        </div>
-                    </Alert>
-                }
-            </div>
+            
         </div>
         <div>
             <h2 style={{marginBottom:"17px"}}>Contacts</h2>
-            {allContacts?.length > 0 ? allContacts?.filter((booking) =>
-                        keys?.some((key) => booking?.details[key]?.includes(query))
-                    ).map((booking, i) =>(
+            {allContacts?.length > 0 ? allContacts.filter((item) => {
+                return query.toLowerCase() === '' ? item : item.details.CompanyName.toLowerCase().includes(query)
+            }).map((booking, i) =>(
                 <React.Fragment key={i}>
                     <div className='contact-wrapper'
                         onClick={() => {
@@ -611,7 +584,6 @@ export default function AddLocationOneContact({
                                 setIsLoading(false);
                                 closeLocationModal()
                             }, 1000)
-
                         }}
                     >
                         <Avatar className='Enterprise-icon'>{booking.details.Name.toUpperCase().substring(0,2)}</Avatar>
@@ -622,7 +594,6 @@ export default function AddLocationOneContact({
                     </div>
                 </React.Fragment>
             ))
-            
             : <div className='no-contacts'>
                 <p>
                     You currently don't have any contact for the 
@@ -635,10 +606,55 @@ export default function AddLocationOneContact({
             }
         </div>
         </div>
-        <div className='cancel-add-btn'>
-            <button onClick={closeLocationModal}>Cancel</button>
-            <button onClick={closeLocationModal}>Save</button>
-        </div> 
+        <div className='add-to-contact '>
+                <button onClick={() => {closeLocationModal()}} style={{background:"#fff", width:"15%", marginRight:"1rem"}}>Cancel</button>
+                <button 
+                    style={{width:"15%"}}
+                    onClick={() => {
+                      
+                            var contact_Uid
+                            const pick_up_details = bookingArray.details
+                            savePickContactFnc().then((data ) => {
+                                contact_Uid = data.key
+                                firebase.database().ref('/booking_party/' + userUid).child("contacts").push({
+                                    details: {
+                                        ...pick_up_details,
+                                        Address: isAddressAuto
+                                    },
+                                    date: new Date().toISOString().substring(0,10)
+                                });
+                                console.log("pick_up_details", bookingArray);
+                                console.log("contact_Uid", contact_Uid);
+                            });
+                            setIsLoading(true);
+                            setTimeout(() => {
+                                    setIsLoading(false);
+                                    closeLocationModal()
+                            }, 2000)
+                        }
+                    }
+                >
+                    Save
+                </button>
+                {openSpinner && <Spinner/>}
+                {openAlert && 
+                    <Alert >
+                        <div style={{width:"256px"}}>
+                            <p style={{
+                                position:"absolute",
+                                right:"0px",
+                                top:"0px",
+                                padding:"7px",
+                                cursor:"pointer",
+                                fontWeight:"bold"
+                            }}
+                            onClick={() => setAlert(false)}
+                            >X</p>
+                            <h1 style={{fontSize:"14px", fontWeight:"normal"}}>Contact Successfully added...</h1>
+                        </div>
+                    </Alert>
+                }
+            </div>
         </div>
 
         {isLoading  &&
@@ -653,7 +669,5 @@ export default function AddLocationOneContact({
             </div>
         }
     </div>
-
-    
   )
 }

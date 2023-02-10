@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
-import EnterpriseNav from '../components/EnterpriseNav'
+import EnterpriseNav from './EnterpriseNav'
 import firebase from '../firebase-config';
 import { Link } from 'react-router-dom';
 import '../css/bidding.css'

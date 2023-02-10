@@ -7,6 +7,7 @@ export default function Summary({
     openPreFive, 
     setOpenPreFive,
     alertQuantity,
+    pickSelected,
     setAlertQuantity
  }) {
     const {id} = useParams();
@@ -41,7 +42,7 @@ export default function Summary({
     const handleContinue = () =>{
         if(localStorage.getItem("cargoSelectd")){
             const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
-            if(!selectedCargoDetails.details.quantity){
+            if(!selectedCargoDetails.details.quantity || pickSelected.length < 1){
                 setAlertQuantity(true);
                 setOpenPreFive(false);
             }else{
@@ -145,14 +146,22 @@ export default function Summary({
             </div>
         </div>
         <div className='continue-btn-container' style={{width:"100%"}}>
-        <button style={{marginRight:"10px", padding:"3px 19px", borderRadius:"10px", boxShadow:"0px 0px 2px 0px", fontSize:"13.5px"}} onClick={() => setOpenPreFive(false)}>Cancel</button>
-        <button 
-            className='summary-one-close' 
-            onClick={handleContinue}
-        >
-            Continue &nbsp; <i class="fa-solid fa-chevron-right"></i>
-        </button>
-        </div> 
+            <button 
+                style={{
+                        marginRight:"10px", 
+                        padding:"3px 19px", 
+                        borderRadius:"10px", 
+                        boxShadow:"0px 0px 2px 0px", 
+                        fontSize:"13.5px",
+                        backgroundColor:"#fff"
+                }} onClick={() => setOpenPreFive(false)}>Cancel</button>
+            <button 
+                className='summary-one-close' 
+                onClick={handleContinue}
+            >
+                Continue &nbsp; <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
       </div>
     </div>
   )

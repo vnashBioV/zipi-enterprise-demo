@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Enterprise from './Enterprise';
 import TrackingPage from '../components/TrackingPage';
 import Schedule from './Schedule';
-import BiddingPageTwo from '../screens/BiddingPageTwo';
+import BiddingPageTwo from './BiddingPageTwo';
 import EnterpriseNav from '../components/EnterpriseNav'
 import { useStateContext } from '../context/DashboardStateContext'
 import Myfleet from '../components/Myfleet';
@@ -24,6 +24,8 @@ import { useStateContextBookings } from '../context/AllBookingsContext'
 import emptyIcon from '../icons/box.png'
 import MonthlyComponent from '../components/MonthlyComponent';
 import YearlyFilter from '../components/YearlyFilter';
+import BiddingFinalPage from '../components/BiddingFinalPage';
+import { useMediaQuery } from 'react-responsive'
 
 export default function Dashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -45,6 +47,8 @@ export default function Dashboard() {
     const [showNavigationX, setShowNavigationX] = useState(false);
     const [monthFilter, setMonthFilter] = useState(true);
     const [yearFilter, setYearFilter] = useState(false);
+    const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' })
+
     // const [counter, setCounter] = useState(0);
 
     const {
@@ -135,145 +139,266 @@ export default function Dashboard() {
     useEffect(() => {
         console.log("the monthly state", monthFilter)
     }, [])
+
+    console.log("cargoLink", cargoLink, "enterprise", isEnterprise, "tracking", isTracking, "schedule", isShowSchedule, "request", isShowRequest, "fleetLink", fleetLink, "referalLink", referalLink, "getHelpLink", getHelpLink )
+    // isShowSchedule &&
+    //         <Schedule/>
+    //     }
+    //     {isShowRequest &&
+    //         <BiddingFinalPage/>
+    //     }
+    //     {fleetLink &&
+    //         <Myfleet/>
+    //     }
+    //     {referalLink &&
+    //         <Myreferrals/>
+    //     }
+    //     {getHelpLink &&
+    //         <GetHelp/>
+
     return (
     <div className='dashboard'>
+        {!isSmallScreen && 
         <div className="left-dash myLinks">
             <div>
                 <img className="zipiicon" src={logo} />
-                {/* {!showNavigation &&
-                    <i 
-                        class="fa-solid fa-bars" 
-                        style={{color:"#000", fontSize:"29px", cursor:"pointer"}}
-                        onClick={() => {
-                            setShowNavigation(!showNavigation)
-                            setShowNavigationX(!showNavigationX)
-                        }}
-                    ></i>
-                }
-                {showNavigationX &&
-                    <i 
-                        class="fa-solid fa-xmark"
-                        style={{color:"#000", fontSize:"29px", cursor:"pointer"}}
-                        onClick={() => {
-                            setShowNavigation(!showNavigation)
-                            setShowNavigationX(!showNavigationX)
-                        }}
-                    ></i>
-                } */}
-                
             </div>
-        <div>
-        <div><div className={`transition-all ease-in-out cursor-pointer ${
-        cargoLink && "active"
-        } options`}
-        onClick={() => {
-            setCargoLink(true)
-            setFleetLink(false)
-            setReferalLink(false)
-            setProfileLink(false)
-            setAnalysisLink(false)
-            setWalletLink(false)
-            setGetHelpLink(false)
-            setContactLink(false)
-            setIsEnterprise(false)
-        }}
-    >
-        <i class="fa-sharp fa-solid fa-cube dash-link-icon"></i>My cargo
-    </div>
-    <div
-        className={` transition-all cursor-pointer ease-in-out ${
-        fleetLink && "active"
-        } options`}
-        onClick={() => {
-            setCargoLink(false)
-            setFleetLink(true)
-            setReferalLink(false)
-            setProfileLink(false)
-            setAnalysisLink(false)
-            setWalletLink(false)
-            setGetHelpLink(false)
-            setContactLink(false)
-            setIsEnterprise(false)
-        }}
-    >
-        <i class="fa-sharp fa-solid fa-bus dash-link-icon"></i>My fleet
-    </div>
-    <div
-        className={`transition-all cursor-pointer ease-in-out ${referalLink && "active"} options`}
-        onClick={() => {
-            setCargoLink(false)
-            setFleetLink(false)
-            setReferalLink(true)
-            setProfileLink(false)
-            setAnalysisLink(false)
-            setWalletLink(false)
-            setGetHelpLink(false)
-            setContactLink(false)
-        }}
-    >
-        <i class={`fa-solid fa-user dash-link-icon`}></i>My referrals
-    </div>
-
-    <div className="option1">
-        <Link
-        to="/"
-        className="drop-down-dash-anc transition-all ease-in-out options1"
-        onClick={() => setIsChevUp(!isChevUp)}
-        >
-        <i class="fa-solid fa-briefcase dash-link-icon"></i>Account
-        <i className={`fa-solid arrow-chev ${
-            isChevUp ? "fa-chevron-up" : "fa-chevron-down"
-            }`} onClick={() => setIsChevUp(!isChevUp)}
-        ></i>
-        </Link>
-    </div>
-    <div className={`${!isChevUp ? "account-menu" : "account-menu-open"} transition-all ease-in-out`}>
-    
-    <div className="moreOptions">
-    <Link to='/profile' class="options">
-            <i class={`fa-solid fa-briefcase dash-link-icon ${profileLink && "active"}`}></i>Profile
-    </Link>
-    <Link to='/wallet' class="options">
-        <i class="fa-sharp fa-solid fa-wallet dash-link-icon"></i>Wallet
-    </Link>
-    <Link to='/'  class="options"
-            onClick={()=> {
-                firebase.auth().signOut().then(() => {
-                    navigate('/')
-                    }).catch((error) => {
-                    alert(error)  
-                    });
-            }}
-        ><i class="fa-sharp fa-solid fa-right-from-bracket dash-link-icon"></i>Sign out
-    </Link>        
-    </div>
-    
-    
+            <div>
+                <div>
+                    <div className={`transition-all ease-in-out cursor-pointer ${cargoLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(true)
+                            setFleetLink(false)
+                            setReferalLink(false)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                            setIsEnterprise(false)
+                        }}
+                    >
+                        <i class="fa-sharp fa-solid fa-cube dash-link-icon"></i>My cargo
+                    </div>
+                    <div className={` transition-all cursor-pointer ease-in-out ${fleetLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(false)
+                            setFleetLink(true)
+                            setReferalLink(false)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                            setIsEnterprise(false)
+                        }}
+                    >
+                        <i class="fa-sharp fa-solid fa-bus dash-link-icon"></i>My fleet 
+                    </div>
+                    <div
+                        className={`transition-all cursor-pointer ease-in-out ${referalLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(false)
+                            setFleetLink(false)
+                            setReferalLink(true)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                        }}
+                    >
+                        <i class={`fa-solid fa-user dash-link-icon`}></i>My referrals
+                    </div>
+                    <div className="option1">
+                        <Link
+                        to="/"
+                        className="drop-down-dash-anc transition-all ease-in-out options1"
+                        onClick={() => setIsChevUp(!isChevUp)}
+                        >
+                        <i class="fa-solid fa-briefcase dash-link-icon"></i>Account
+                        <i className={`fa-solid arrow-chev ${
+                            isChevUp ? "fa-chevron-up" : "fa-chevron-down"
+                            }`} onClick={() => setIsChevUp(!isChevUp)}
+                        ></i>
+                        </Link>
+                    </div>
+                    <div className={`${!isChevUp ? "account-menu" : "account-menu-open"} transition-all ease-in-out`}>
+                        <div className="moreOptions">
+                            <Link to='/profile' class="options">
+                                    <i class={`fa-solid fa-briefcase dash-link-icon ${profileLink && "active"}`}></i>Profile
+                            </Link>
+                            <Link to='/wallet' class="options">
+                                <i class="fa-sharp fa-solid fa-wallet dash-link-icon"></i>Wallet
+                            </Link>
+                            <Link to='/'  class="options"
+                                    onClick={()=> {
+                                        firebase.auth().signOut().then(() => {
+                                            navigate('/')
+                                            }).catch((error) => {
+                                            alert(error)  
+                                            });
+                                    }}
+                                ><i class="fa-sharp fa-solid fa-right-from-bracket dash-link-icon"></i>Sign out
+                            </Link>        
+                        </div>    
+                    </div>
+                    <div 
+                        className={`transition-all cursor-pointer ease-in-out ${contactLink && "active"} options`}
+                        onClick={() => {
+                            navigate('/contactLink')
+                        }}
+                    >
+                        <i class={`fa-solid fa-address-book dash-link-icon`}></i>Contact
+                    </div>
+                    <div
+                        className={`transition-all cursor-pointer ease-in-out ${getHelpLink && "active"} options`}
+                        onClick={() => {
+                            navigate('/gethelp')
+                        }}
+                    >
+                        <i class={`fa-solid fa-circle-info dash-link-icon`}></i>Get help
+                    </div>
+        
+                </div>
+                <div className="settings-menu">
+                    <img src={setting} alt="settings icon" className="theIcon" />
+                    <p>Version 1.0.1</p>
+                </div>
+            </div>
         </div>
-    <div 
-        className={`transition-all cursor-pointer ease-in-out ${contactLink && "active"} options`}
-        onClick={() => {
-            navigate('/contactLink')
-        }}
-    >
-        <i class={`fa-solid fa-address-book dash-link-icon`}></i>Contact
-    </div>
-    <div
-        className={`transition-all cursor-pointer ease-in-out ${getHelpLink && "active"} options`}
-        onClick={() => {
-            navigate('/gethelp')
-        }}
-    >
-        <i class={`fa-solid fa-circle-info dash-link-icon`}></i>Get help
-    </div>
-    
-    </div>
-    <div className="settings-menu">
-        <img src={setting} alt="settings icon" className="theIcon" />
-        <p>Version 1.0.1</p>
-    </div>
-    </div>
-    </div>
+        }
+        {isSmallScreen && 
+        cargoLink &&
+        !isEnterprise &&
+        !isTracking &&
+        !isShowSchedule &&
+        !isShowRequest &&
+        !walletLink &&
+        !profileLink &&
+        !analysisLink &&
+        !fleetLink &&
+        !referalLink &&
+        !contactLink &&
+        !getHelpLink &&
+        <div className="left-dash myLinks" style={{background:"#fff"}}>
+            <div style={{background:"#fff", height:"20px"}}>
+                <img className="zipiicon" src={logo} />
+                {!isMenuOpen &&
+                    <i class="fa-solid fa-bars-staggered" style={{fontSize:"25px"}} onClick={() => setIsMenuOpen(!isMenuOpen)}></i>
+                }
+                {isMenuOpen &&
+                    <img src={crossDash} height={19} width={19} onClick={() => setIsMenuOpen(!isMenuOpen)}></img>
+                }
+            </div>
+            <div style={{background:"#fff", height:`${isMenuOpen ? "100vh" : "0"}`}}>
+                <div>
+                    <div className={`transition-all ease-in-out cursor-pointer ${cargoLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(true)
+                            setFleetLink(false)
+                            setReferalLink(false)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                            setIsEnterprise(false)
+                            setIsTracking(false)
+                            setIsShowSchedule(false)
+                            setIsShowRequest(false)
+                        }}
+                    >
+                        <i class="fa-sharp fa-solid fa-cube dash-link-icon"></i>My cargo
+                    </div>
+                    <div className={` transition-all cursor-pointer ease-in-out ${fleetLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(false)
+                            setFleetLink(true)
+                            setReferalLink(false)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                            setIsEnterprise(false)
+                        }}
+                    >
+                        <i class="fa-sharp fa-solid fa-bus dash-link-icon"></i>My fleet
+                    </div>
+                    <div
+                        className={`transition-all cursor-pointer ease-in-out ${referalLink && "active"} options`}
+                        onClick={() => {
+                            setCargoLink(false)
+                            setFleetLink(false)
+                            setReferalLink(true)
+                            setProfileLink(false)
+                            setAnalysisLink(false)
+                            setWalletLink(false)
+                            setGetHelpLink(false)
+                            setContactLink(false)
+                        }}
+                    >
+                        <i class={`fa-solid fa-user dash-link-icon`}></i>My referrals
+                    </div>
+                    <div className="option1">
+                        <Link
+                        to="/"
+                        className="drop-down-dash-anc transition-all ease-in-out options1"
+                        onClick={() => setIsChevUp(!isChevUp)}
+                        >
+                        <i class="fa-solid fa-briefcase dash-link-icon"></i>Account
+                        <i className={`fa-solid arrow-chev ${
+                            isChevUp ? "fa-chevron-up" : "fa-chevron-down"
+                            }`} onClick={() => setIsChevUp(!isChevUp)}
+                        ></i>
+                        </Link>
+                    </div>
+                    <div className={`${!isChevUp ? "account-menu" : "account-menu-open"} transition-all ease-in-out`}>
+                        <div className="moreOptions">
+                            <Link to='/profile' class="options">
+                                    <i class={`fa-solid fa-briefcase dash-link-icon ${profileLink && "active"}`}></i>Profile
+                            </Link>
+                            <Link to='/wallet' class="options">
+                                <i class="fa-sharp fa-solid fa-wallet dash-link-icon"></i>Wallet
+                            </Link>
+                            <Link to='/'  class="options"
+                                    onClick={()=> {
+                                        firebase.auth().signOut().then(() => {
+                                            navigate('/')
+                                            }).catch((error) => {
+                                            alert(error)  
+                                            });
+                                    }}
+                                ><i class="fa-sharp fa-solid fa-right-from-bracket dash-link-icon"></i>Sign out
+                            </Link>        
+                        </div>    
+                    </div>
+                    <div 
+                        className={`transition-all cursor-pointer ease-in-out ${contactLink && "active"} options`}
+                        onClick={() => {
+                            navigate('/contactLink')
+                        }}
+                    >
+                        <i class={`fa-solid fa-address-book dash-link-icon`}></i>Contact
+                    </div>
+                    <div
+                        className={`transition-all cursor-pointer ease-in-out ${getHelpLink && "active"} options`}
+                        onClick={() => {
+                            navigate('/gethelp')
+                        }}
+                    >
+                        <i class={`fa-solid fa-circle-info dash-link-icon`}></i>Get help
+                    </div>
+        
+                </div>
+                <div className="settings-menu">
+                    <img src={setting} alt="settings icon" className="theIcon" />
+                    <p>Version 1.0.1</p>
+                </div>
+            </div>
+        </div>
+        }
         {cargoLink &&
         <div style={{height:"100%", overflowY:"auto", width:"81%", position:"relative"}}>
             <div className='right-top-section'>
@@ -320,7 +445,7 @@ export default function Dashboard() {
                 <div>
                     <div className='transition ease-in-out hover:scale-105 hover:cursor-pointer' id="tshili">
                         <div className='stat-ico'>
-                            <CircularProgress className="stat-ico" variant="determinate" value={95} />
+                            <CircularProgress className="stat-ico" variant="determinate" value={0} />
 
                             {/* <img src={loader} style={{transform:"rotate(279deg)"}} alt="" /> */}
                             <p style={{color:"#2cdc00"}}>+2.5% (+3)</p>
@@ -330,7 +455,7 @@ export default function Dashboard() {
                                     fontSize:"21px", 
                                     fontWeight:"bold", 
                                     marginTop:"8px"
-                            }}>95%</p>
+                            }}>0</p>
                         </div>
                         <p style={{
                                 textTransform:"uppercase", 
@@ -350,7 +475,7 @@ export default function Dashboard() {
                                     fontSize:"21px", 
                                     fontWeight:"bold", 
                                     marginTop:"8px"
-                            }}>15 hours</p>
+                            }}>0 hours</p>
                         </div>
                         <p style={{
                                 textTransform:"uppercase", 
@@ -370,7 +495,7 @@ export default function Dashboard() {
                                     fontSize:"21px", 
                                     fontWeight:"bold", 
                                     marginTop:"8px"
-                            }}>2812</p>
+                            }}>0</p>
                         </div>
                         <p style={{
                                 textTransform:"uppercase", 
@@ -389,7 +514,7 @@ export default function Dashboard() {
                                     fontSize:"21px", 
                                     fontWeight:"bold", 
                                     marginTop:"8px"
-                            }}>2130</p>
+                            }}>0</p>
                         </div>
                         <p style={{
                                 textTransform:"uppercase", 
@@ -420,7 +545,7 @@ export default function Dashboard() {
                                 flexDirection:"column",
                                 top:"30%",
                                 height:"fit-content",
-                                marginTop:"9%",
+                                marginTop:"10%",
                                 marginBottom:"9%",
                             }}>
                     <img src={emptyIcon} width={100} height={100}/>
@@ -447,7 +572,7 @@ export default function Dashboard() {
             <Schedule/>
         }
         {isShowRequest &&
-            <BiddingPageTwo/>
+            <BiddingFinalPage/>
         }
         {fleetLink &&
             <Myfleet/>

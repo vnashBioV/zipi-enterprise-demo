@@ -42,7 +42,7 @@ export default function RegStepTwo({
                   })
                 }}  
               />
-                <select 
+                {/* <select 
                     className='loginInput'
                     name='entityType'
                     onChange={(e) => setEntityTypeData(e.target.value)}
@@ -50,7 +50,7 @@ export default function RegStepTwo({
                   <option value="0">Entity type:</option>
                   <option value="(PTY) Ltd">(PTY) Ltd</option>
                   <option value="BMW">BMW</option>
-                </select>
+                </select> */}
               <input 
                 type="text" 
                 className='loginInput' 

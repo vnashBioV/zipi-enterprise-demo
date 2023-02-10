@@ -6,7 +6,7 @@ import firebase from '../../firebase-config'
 import Spinner from '../Spinner';
 import Alert from '../Alerts/Alert';
 import LoginAlert from '../Alerts/LoginAlert';
-import Loader from '../../components/loader/Loader'
+import Loader from '../loader/Loader'
 
 export default function Cargo({
     setOpenCargoModal,
@@ -225,6 +225,9 @@ export default function Cargo({
                 console.log("cargo_details", cargoDetails);
                 console.log("contact_Uid", contact_Uid);
             });
+            setTimeout(()=>{
+                setOpenCargoModal(false);
+            }, 1000)
         }else{
             setOpenAlertFinal(true);
         }
@@ -247,8 +250,8 @@ export default function Cargo({
     }, [])
         
   return (
-    <div className={`modal-container duration-500 ease-in-out ${isCargo ? 'opacity-1' : 'opacity-0'}`}>
-        <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{ margin:"9rem 0"}}>
+    <div className={`modal-container duration-500 ease-in-out${isCargo ? 'opacity-1' : 'opacity-0'}`}>
+        <div className={`modal duration-500 ease-in-out cargo-modal-wrap ${isCargo ? 'animate-addcontact-one' : 'modal'}`} style={{ margin:"0"}}>
             <div className='cargo-modal'>
                 <h1>New Product</h1>  
                 <p>Add a new package by adding its information</p>
@@ -278,21 +281,7 @@ export default function Cargo({
                         }
                     />
                 </div>
-                <select name="" id=""
-                     onChange={e =>setCargoDetails((prevState) => ({
-                        ...prevState,
-                        cargoDetails:{
-                            ...prevState.cargoDetails,
-                            category:e.target.value
-                        } 
-                        }))
-                    }
-                >
-                    <option value="">Category</option>
-                    <option value="Sand">Sand</option>
-                    <option value="Bricks">Bricks</option>
-                    <option value="paper">Paper</option>
-                </select>
+                
                 <div className='horizontal-line'>
                     <hr />
                 </div>
@@ -365,109 +354,7 @@ export default function Cargo({
                 </div>
                 <div className='horizontal-line'>
                     <hr />
-                </div>
-                <p>Additional Information</p>
-                <div>
-                    <input type="text" placeholder='Job Type' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                job_type:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                      <input type="text" placeholder='HS Code' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                hs_code:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                </div>
-
-                <div>
-                    <input type="text" placeholder='Crane Truck' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                crane_truck:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                      <input type="text" placeholder='Container Loading' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                container_loading:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                </div>
-
-                <div>
-                    <input type="text" placeholder='Load time' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                load_time:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                      <input type="text" placeholder='Offload time' 
-                        onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                off_load_time:e.target.value
-                            } 
-                            }))
-                        }
-                    />
-                </div>
-
-                <p style={{marginTop:"15px"}}>Verified Gross Mass</p>
-                <div style={{display:"flex", justifyContent:"start", fontSize:"12px", marginBottom:"10px"}}>
-                    <label htmlFor="">
-                        <input type="radio"  name='grossMass'
-                            onClick={e =>setCargoDetails((prevState) => ({
-                                    ...prevState,
-                                    cargoDetails:{
-                                        ...prevState.cargoDetails,
-                                        verified_gross_mass: e.target.value
-                                    } 
-                                }))
-                            }
-                        value="True"
-                        />
-                        True
-                    </label>
-                    <label htmlFor="">
-                        <input type="radio" name='grossMass'
-                            onClick={e =>setCargoDetails((prevState) => ({
-                                ...prevState,
-                                cargoDetails:{
-                                    ...prevState.cargoDetails,
-                                    verified_gross_mass: e.target.value
-                                } 
-                            }))
-                        }
-                        value="False"
-                        />
-                        False
-                    </label>
-                </div>
-           
+                </div>           
                 <label htmlFor="">
                     <input type="checkbox" 
                         value="Fragile"
@@ -526,21 +413,7 @@ export default function Cargo({
                     />
                     Hazardous
                 </label>
-                <input type="text" placeholder='IMDG Number' 
-                    disabled = {!checkedThree ? "disabled" : ""}
-                    className={`${!checkedThree && "disabled:opacity-25"}`}
-                    onChange={e =>setCargoDetails((prevState) => ({
-                            ...prevState,
-                            cargoDetails:{
-                                ...prevState.cargoDetails,
-                                hazard:{
-                                    ...prevState.cargoDetails.hazard, 
-                                    IMDG_number:e.target.value
-                                }
-                            }
-                        }))
-                    }
-                />
+
                 <div className='un-number'>
                     <input 
                         disabled = {!checkedThree ? "disabled" : ""}
@@ -590,8 +463,8 @@ export default function Cargo({
                             width:"20px"
                         }}
                         onClick={handleUpload}
-                        disabled = {checkedThree ? "disabled" : ""}
-                        className={`${checkedThree && "disabled:opacity-25"}`}
+                        disabled = {!checkedThree ? "disabled" : ""}
+                        className={`${!checkedThree && "disabled:opacity-25"}`}
                         >+</button>
                     </label>
                     {openAlertTwo &&
@@ -618,12 +491,9 @@ export default function Cargo({
                         </div>
                     } */}
                 </div>
-                <div className='cancel-add-btn' style={{width:"100%", margin:"unset",dispplay:"flex", justifyContent:"end"}}>
-                    {/* <button onClick={() => setOpenCargoModal(false)}>Cancel</button> */}
-                    <button onClick={HandleSaveCargo} style={{background:"#f9dd07", boxShadow:"none"}}>Add cargo</button>
-                </div>
+                
             </div> 
-            <div className="left-cargo-secti">
+            {/* <div className="left-cargo-secti">
                 <h2 style={{marginBottom:"17px"}}>Cargos</h2>
                 {bookingArrayThree?.length > 0 ? bookingArrayThree?.filter((booking) =>
                             keysThree?.some((key) => booking?.details[key].includes(queryThree))
@@ -681,12 +551,14 @@ export default function Cargo({
                 </div>
                 }
                 <div className='cancel-add-btn' style={{width:"100%", margin:"unset", position:"absolute",bottom:0}}>
-                    <button onClick={() => setOpenCargoModal(false)}>Cancel</button>
                     <button onClick={() => setOpenCargoModal(false)}>Save</button>
                 </div>   
                  
+            </div> */}
+           <div className='cancel-add-btn' style={{width:"100%", margin:"unset",dispplay:"flex", justifyContent:"end", boxShadow:"none", border:"transparent"}}>
+                <button onClick={() => setOpenCargoModal(false)} style={{background:"#fff"}}>Cancel</button>
+                <button onClick={HandleSaveCargo} style={{background:"#f9dd07", boxShadow:"none"}}>Save</button>
             </div>
-           
         </div>
        
         {openSpinner && <Spinner/>}

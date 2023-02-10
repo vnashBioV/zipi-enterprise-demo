@@ -5,6 +5,198 @@
     height: 0;
     overflow: hidden;
 }
+.bidding-page-container{
+    background:#fff;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 5% auto;
+    border-radius: 10px;
+    margin-top: 1%;
+}
+.tril-deal-container{
+    display: flex;
+    justify-content: space-between;
+}
+/* .booking-card{
+    
+} */
+.bidding-page-container > div:nth-child(2) > div > div > button{
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 7px;
+    background: black;
+    border-radius: 100%;
+    color: red;
+    height: 23px;
+    width: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.negotiation-block > span{
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}.negotiation-block{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.negotiation-block > span >p:nth-child(1){
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+.negotiation-block > span >p:nth-child(1){
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.offer-container-last{
+    margin-top: 2rem;
+}
+.bidding-page-container > div:nth-child(2) > div > div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bidding-page-container > div:nth-child(2) > div:nth-child(3) > div:nth-child(1){
+    align-items: start !important;
+}
+.bidding-page-container > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > p:not(
+    .bidding-page-container > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > p:nth-child(1)
+){
+    color: grey;
+}
+.bid-parent{
+    position: relative;
+    height: fit-content;
+    width: 100%;
+    margin-top: 11px;
+    background: #f5f5f5;
+    padding:10px;
+    border-radius: 15px;
+    display: flex;
+}
+.btn-settle-block{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+.btn-settle-block > div{
+    margin-right: 1.7rem;
+    height:31px;
+}
+.btn-settle-block > div > button{
+    padding: 4px;
+    font-size: 13px;
+    border: 1px solid;
+    width: 89px;
+    border-radius: 0 15px 15px 0;
+    height: 100%;
+}
+.btn-settle-block > div > input{
+    background: #e8e8e8;
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+    padding: 0 17px;
+    width: 124px;
+    font-size: 13px;
+    color: #000;
+}
+.accept-the-bid{
+    padding: 0 10px;
+    font-size: 13px;
+    background: #fde202;
+    height: 31px;
+    width: 100px;
+    border-radius: 15px;
+}
+.actual-bid-block{
+    margin-left: 1.4rem;
+    height: 100%;
+    width: 30%;
+}
+.color-bid{
+    background: #fde202;
+    position: absolute;
+    width: 16px;
+    height: 100%;
+    left: 0;
+    border-radius: 18px 0 0 18px;
+    top: 0;
+}
+.bid-container{
+    justify-content: unset !important;
+    align-items: unset !important;
+    height: 186px;
+    max-height: 186px;
+    overflow: scroll;
+    flex-direction:column;
+}
+.card-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding: 13px 8px;
+    border-bottom: 1.4px solid #b1b1b1;
+    cursor: pointer;
+}
+.card-container > div:nth-child(2){
+    text-align: end;
+}
+.card-container > div:nth-child(1) > p:nth-child(1){
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+} 
+.card-container > div:nth-child(1) > p:nth-child(2){
+    font-size: 11.5px;
+    color: grey;
+}   
+.card-container > div:nth-child(2) > p{
+    font-size: 11.5px;
+    line-height: 13px;
+    color: grey;
+}  
+.bidding-page-container > div:first-child{
+    background-color: #e8e8e8;
+    border-radius: 10px 0 0 10px;
+    max-height: 500px;
+    min-height: 500px;
+    overflow: scroll;
+    width: 30%;
+    padding: 19px 17px;
+}
+.bidding-page-container > div:first-child::-webkit-scrollbar,
+.bidding-page-container>div:last-child::-webkit-scrollbar
+.bid-container::-webkit-scrollbar{
+    display: none;
+  }
+.bidding-page-container > div:first-child > div{
+    display: flex;
+    justify-content: space-between;
+}
+.bidding-page-container > div:last-child{
+    background-color: #fff;
+    border-radius: 0 10px 10px 0;
+    max-height: 500px;
+    min-height: 500px;
+    overflow: scroll;
+    overflow: auto;
+    scrollbar-width: none;
+    width: 70%;
+    padding: 19px 17px;
+}
+.bidding-page-container:first-child
 .open-bidding{
     height: auto !important;
     width: 90%;

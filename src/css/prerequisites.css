@@ -1,8 +1,8 @@
 .modal-summary{
-    background-color: #fefefe;
+    /* background-color: #fefefe; */
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
+    /* border: 1px solid #888; */
     width: 68%;
     border-radius: 10px;
     position: relative;
@@ -134,15 +134,20 @@
     display: flex;
   }
   .container-prerequiz{
-    margin: 0;
-    padding: 0;
+    margin: -1px auto;
+    padding: 1rem 0;
     text-align: center;
     font-size: 15px;
-    margin-bottom: 25px;
+    background: #fff;
+    border-radius: 10px 10px 0 0;
+    width: 100%;
   }
   .summary-wrapper{
     display: flex;
     flex-direction: row;
+    padding: 20px;
+    background: #fff;
+    border-radius: 0px 0px 10px 10px;
   }
   
   .summary-wrapper > div:nth-child(1){
@@ -219,7 +224,7 @@
     /* display: none; */
     position: fixed; 
     z-index: 1; 
-    padding-top: 100px; 
+    padding: 20px; 
     left: 0;
     top: 0;
     width: 100%; 

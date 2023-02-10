@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import EnterpriseNav from './EnterpriseNav'
 import { useParams, useNavigate } from 'react-router-dom'
-import Spinner from '../components/Spinner';
-import Alert from '../components/Alerts/Alert';
+import Spinner from './Spinner';
+import Alert from './Alerts/Alert';
 import { useStateContext } from '../context/DashboardStateContext'
 
 export default function Summary({ 
     openPreSix, 
     setOpenPreSix,
     alertQuantity,
+    pickSelected,
     setAlertQuantity
 }) {
     const {id} = useParams();
@@ -39,7 +40,7 @@ export default function Summary({
     const handleContinue = () =>{
         if(localStorage.getItem("cargoSelectd")){
             const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
-            if(!selectedCargoDetails.details.quantity){
+            if(!selectedCargoDetails.details.quantity || pickSelected.length < 1){
                 setAlertQuantity(true);
                 setOpenPreSix(false);
             }else{
@@ -257,7 +258,15 @@ export default function Summary({
             </div>
         </div>
         <div className='continue-btn-container' style={{width:"100%"}}>
-        <button style={{marginRight:"10px", padding:"3px 19px", borderRadius:"10px", boxShadow:"0px 0px 2px 0px", fontSize:"13.5px"}} onClick={() => setOpenPreSix(false)}>Cancel</button>
+            <button 
+                style={{
+                        marginRight:"10px", 
+                        padding:"3px 19px", 
+                        borderRadius:"10px", 
+                        boxShadow:"0px 0px 2px 0px", 
+                        fontSize:"13.5px",
+                        backgroundColor:"#fff"
+                }} onClick={() => setOpenPreSix(false)}>Cancel</button>
             <button 
                 className='summary-one-close' 
                 onClick={handleContinue}

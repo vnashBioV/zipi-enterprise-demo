@@ -1,9 +1,5 @@
 {
   "projects": {
-    "default": "zipi-pro-max",
-    "enterprise": "zipi-pro-max",
-    "zipi-enterprise": "zipi-pro-max",
-    "zipi-pro-max": "zipi-pro-max"
-  },
-  "targets": {}
+    "default": "zipi-demo-app"
+  }
 }

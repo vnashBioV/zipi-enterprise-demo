@@ -21,6 +21,7 @@ import { useStateContext } from '../context/DashboardStateContext'
 import { parseJSON } from 'date-fns/esm';
 import { database } from 'firebase';
 import { getNativeSelectUtilityClasses } from '@mui/material';
+import Slider from '@mui/material/Slider';
 
 export default function SchedulingPage({
    
@@ -37,6 +38,7 @@ export default function SchedulingPage({
     const [endDate, setEndDate] = useState(new Date());
     const [cargoSchedule, setCargoSchedule] = useState([]);
     const [operationDays, setOperationDays] = useState([])
+    const [operationDaysNew, setOperationDaysNew] = useState([])
     const [includeHolidays, setIncludeHolidays] = useState(false)
     const [rateIndication, setRateIndication] = useState(null)
     const [finalPick, setFinalPick] = useState([])
@@ -61,6 +63,13 @@ export default function SchedulingPage({
     const [askingPrice, setAskingPrice] = useState(false)
     const [validationOpsHours, setValidationOpsHours] = useState(false);
     const [selectDate, setSelectDate] = useState(false);
+    const [isMon, setIsMon] = useState(false);
+    const [isTue, setIsTue] = useState(false);
+    const [isWed, setIsWed] = useState(false);
+    const [isThu, setIsThu] = useState(false);
+    const [isFri, setIsFri] = useState(false);
+    const [isSat, setIsSat] = useState(false);
+    const [isSun, setIsSun] = useState(false);
 
     const { 
         isEnterprise,
@@ -242,8 +251,24 @@ export default function SchedulingPage({
         get_drop_coords();
     }, [])
 
-    console.log("the pick coords", pickUpData);
-    // console.log("the date", );
+    useEffect(() => {
+        isMon && setOperationDays([...operationDays, "Monday"])
+        isTue && setOperationDays([...operationDays, "Tuesday"])
+        isWed && setOperationDays([...operationDays, "Wednesday"])
+        isThu && setOperationDays([...operationDays, "Thursday"])
+        isFri && setOperationDays([...operationDays, "Friday"])
+        isSat && setOperationDays([...operationDays, "Saturday"])
+        isSun && setOperationDays([...operationDays, "Sunday"])
+
+        const removeDuplicates = (arr) => {
+            return arr.filter((item,
+                index) => arr.indexOf(item) === index);
+        }
+
+        setOperationDaysNew(Array.from(new Set(operationDays)))
+
+    }, [isMon, isTue, isWed, isThu, isFri, isSat])
+
 
   return (
     <div className={`duration-500 ease-in-out ${isScheduleLoaded ? 'open-schedule' : 'schedule-page'}`} style={{position:"relative"}}>
@@ -383,7 +408,7 @@ export default function SchedulingPage({
                                         <p>{
                                                 ((cargo.details?.lengthValue *
                                                 cargo.details?.breadth *
-                                                cargo.details?.height)/1000000).toFixed(5)
+                                                cargo.details?.height)/1000).toFixed(5)
 
                                             }&#x33a5; :</p> 
                                         <p>{parseFloat((cargo.details?.weight)/1000).toFixed(3)}t :</p> 
@@ -488,7 +513,7 @@ export default function SchedulingPage({
 
                         {cargoDetails.length > 0 ? cargoDetails.map((cargo) =>(
                             <React.Fragment key={cargo?.date}>
-                                 <a href={cargo?.sds_url}  className='view-sds'>View SDS <i className="fa-solid fa-eye"></i></a>
+                                 <a href={cargo?.sds_url} target="_black"  className='view-sds'>View SDS <i className="fa-solid fa-eye"></i></a>
                             </React.Fragment>
                             ))
                     
@@ -581,39 +606,46 @@ export default function SchedulingPage({
                 </div>
                 <p style={{marginTop:"10px", marginBottom:"10px"}}>Handling Operation Days</p>
                 <div className='days-of-week' style={{marginBottom:"10px"}}>
-                    <button onClick={(e) => {
-                             e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isMon ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsMon(!isMon);
                         }
                     } value="Monday">M</button>
-                    <button onClick={(e) => {
-                             e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isTue ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsTue(!isTue);
                         }
                     } value="Tuesday">T</button>
-                    <button onClick={(e) => {
-                             e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isWed ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsWed(!isWed);
                         }
                     } value="Wednesday">W</button>
-                    <button onClick={(e) => {
-                            e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isThu ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsThu(!isThu);
                         }
-                    } value="Thursday">T</button>
-                    <button onClick={(e) => {
-                            e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    }value="Thursday">T</button>
+                    <button 
+                        style={{background: `${isFri ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsFri(!isFri);
                         }
                     } value="Friday">F</button>
-                    <button onClick={(e) => {
-                            e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isSat ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsSat(!isSat);
                         }
                     } value="Saturday">S</button>
-                    <button onClick={(e) => {
-                            e.target.style.background = "#f9dd07"
-                            setOperationDays([...operationDays, e.target.value])
+                    <button 
+                        style={{background: `${isSun ? "#f9dd07" : "#fff"}`}}
+                        onClick={(e) => {
+                            setIsSun(!isSun);
                         }
                     } value="Sunday">S</button>
                 </div>
@@ -681,7 +713,7 @@ export default function SchedulingPage({
                     <div className='time-loads'>
                         <p>Time vs Loads</p>
                         <p style={{fontSize:"10px"}}>Move the slider to see how it's going to affect loads and duration.</p>
-                        <input 
+                        {/* <input 
                             type="range" 
                             max={dates.length} 
                             min={1} 
@@ -694,7 +726,17 @@ export default function SchedulingPage({
                                 }
                             }}
                             className='range-input'
-                        />
+                        /> */}
+                        <Box>
+                            <Slider 
+                                defaultValue={50} 
+                                aria-label="Default" 
+                                valueLabelDisplay="off"
+                                onChange={(e) => {
+                                    console.log("heeeelp me win this fucker", e.target.value)
+                                }} 
+                            />
+                        </Box>
                         <div className='track-label'>
                             <div>
                                 <p>More days</p>
@@ -789,7 +831,7 @@ export default function SchedulingPage({
                                 dates_time_selection: {
                                     start_date_string: startDateString,
                                     end_date_string: endDateString,
-                                    operation_days: operationDays,
+                                    operation_days: operationDaysNew,
                                     include_holidays: includeHolidays,
                                     bays: bays
                                 },
@@ -878,7 +920,7 @@ export default function SchedulingPage({
                     }}
                     onClick={() => setAlert(false)}
                     >X</p>
-                    <h1 style={{fontSize:"14px", fontWeight:"normal"}}>Requet Successfully made</h1>
+                    <h1 style={{fontSize:"14px", fontWeight:"normal"}}>Request Successfully made</h1>
                 </div>
             </Alert>
         }

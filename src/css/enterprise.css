@@ -116,6 +116,9 @@
 .add-contacts-wrapper{
   display: flex;
   justify-content: space-between;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
 }
 .add-contacts-wrapper > div:nth-child(1){
   width: 446px;
@@ -124,8 +127,21 @@
   overflow: scroll;
   max-height: 489px;
 }
+.name-div > input{
+  padding: 8px 15px;
+  border-radius: 10px;
+  border: transparent;
+  background: #e8e8e8;
+  width: 100%;
+  font-size: 13.5px;
+}
+.name-div{
+  width:48.8%;
+  position: relative;
+}
 .add-contacts-wrapper > div:nth-child(1)::-webkit-scrollbar, 
 .add-contacts-wrapper > div:nth-child(2)::-webkit-scrollbar,
+.cargo-detail::-webkit-scrollbar,
 .tracking-pannel::-webkit-scrollbar{
   display: none;
 }
@@ -146,7 +162,7 @@
 }
 .add-contacts-wrapper > div > select{
   color: #686868;
-  width: 444px;
+  /* width: 444px; */
 }
 .text-area-wrap > textarea{
   padding: 8px 15px;
@@ -169,7 +185,7 @@
   font-size: 13px;
 }
 .operating-hours > div > div{
-  width: calc(100%/4);
+  width: calc(100%/2);
   display: flex;
   justify-content: start;
   align-items: center;
@@ -276,7 +292,15 @@
 .pen-dir{
   margin-right: 7px;
 }
-
+.cargo-detail{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 188px;
+  max-height: 188px;
+  overflow: scroll;
+}
 .change-contact{
   /* display: block; */
   padding: 3px 10px;
@@ -298,8 +322,9 @@
   align-items: center;
   padding: 6px 10px;
   border-radius: 10px;
-  background-color: #f3f3f3;
+  background-color: #e7e7e7;
   margin-bottom: 13px;
+  height: 83px;
 }
 .pill-container:nth-child(3n){
   margin-right: 0;
@@ -349,6 +374,7 @@
   padding: 3px 10px;
   font-size: 11px;
   height: 100%;
+  pointer-events: auto;
 }
 .add-vehicle{
   margin: auto;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import EnterpriseNav from '../components/EnterpriseNav'
+import EnterpriseNav from './EnterpriseNav'
 import firebase from '../firebase-config';
 import { Link } from 'react-router-dom';
 import '../css/bidding.css'
@@ -10,7 +10,7 @@ import {Avatar} from '@mui/material';
 import printIcon from '../icons/awesome-print.png'
 import chatIcon from '../icons/chat.png';
 import { v4 as uuidv4 } from 'uuid';
-import DriverTrackingBar from '../components/DriverTrackingBar'
+import DriverTrackingBar from './DriverTrackingBar'
 import BookingTrackingBar from './BookingTrackingBar';
 import ReactToPdf from 'react-to-pdf';
 import { useStateContext } from '../context/DashboardStateContext'

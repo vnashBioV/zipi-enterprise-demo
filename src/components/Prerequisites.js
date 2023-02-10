@@ -10,6 +10,9 @@ export default function Summary({
     setOpenPre,
     alertQuantity,
     setAlertQuantity,
+    pickSelected,
+    selectLocation,
+    setSelectLocation
 }) {
     const {id} = useParams();
     const [vehicleEquipmentArray, setVehicleEquipment] = useState([])
@@ -48,7 +51,7 @@ export default function Summary({
     const handleContinue = ()=>{
         if(localStorage.getItem("cargoSelectd")){
             const selectedCargoDetails = JSON.parse(localStorage.getItem("cargoSelectd"))
-            if(!selectedCargoDetails.details.quantity){
+            if(!selectedCargoDetails.details.quantity || pickSelected.length < 1){
                 setAlertQuantity(true);
                 setOpenPre(false);
             }else{
@@ -97,8 +100,6 @@ export default function Summary({
         console.log("Prerequisites open", isLoadedPage);
     }, [])
     
-    
-
   return (
     <>{ openPre ? 
             (<div className={`modal-container duration-500 ease-in-out ${setIsLoadedPage ? 'opacity-1' : 'opacity-0'}`}>
@@ -140,7 +141,15 @@ export default function Summary({
                         </div>
                     </div>
                     <div className='continue-btn-container' style={{width:"100%"}}>
-                        <button style={{marginRight:"10px", padding:"3px 19px", borderRadius:"10px", boxShadow:"0px 0px 2px 0px", fontSize:"13.5px"}} onClick={() => setOpenPre(false)}>Cancel</button>
+                        <button 
+                            style={{
+                                    marginRight:"10px", 
+                                    padding:"3px 19px", 
+                                    borderRadius:"10px", 
+                                    boxShadow:"0px 0px 2px 0px", 
+                                    fontSize:"13.5px",
+                                    backgroundColor:"#fff"
+                            }} onClick={() => setOpenPre(false)}>Cancel</button>
                         <button 
                             className='summary-one-close' 
                             onClick={handleContinue}

@@ -35,7 +35,10 @@
 .cargo-modal{
     display: flex;
     flex-direction: column;
-    width: 56%;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
 }
 .horizontal-line > hr{
     width: 100%;
@@ -57,7 +60,7 @@
 }
 .un-number > input{
     padding: 10px 10px !important;
-    width: 109px !important;
+    width: 157px !important;
     text-align: center;
     margin-top: 0 !important;
 }
@@ -104,7 +107,7 @@ input[type="file"]{
     opacity: 0.2;
 }
 .cargo-modal-wrap{
-    width:790px;
+    width:33rem;
     margin: 11rem 0px;
-    display: flex;
+    /* display: flex; */
 }
